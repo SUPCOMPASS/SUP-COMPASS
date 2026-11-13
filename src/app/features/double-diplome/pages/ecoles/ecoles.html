@@ -1,1 +1,59 @@
-<p>ecoles works!</p>
+<section class="ecoles-page">
+    <h1>Double diplôme</h1>
+    <p class="sub">Trouve les écoles selon ton pays, ton domaine et ton rang.</p>
+
+    <!-- Barre de filtres -->
+    <div class="filters-grid">
+        <div>
+            <strong class="filter-title">Pays</strong>
+            <div class="chips">
+                @for (p of paysList; track p) {
+                <button type="button" class="chip" [class.on]="selectedPays() === p" (click)="selectedPays.set(p)">
+                    {{ p === 'all' ? 'Tous' : p }}
+                </button>
+                }
+            </div>
+        </div>
+
+        <div>
+            <strong class="filter-title">Domaine enseigné</strong>
+            <div class="chips">
+                @for (d of domainesFilter; track d.id) {
+                <button type="button" class="chip" [class.on]="selectedDomaine() === d.id"
+                    (click)="selectedDomaine.set(d.id)">
+                    {{ d.label }}
+                </button>
+                }
+            </div>
+        </div>
+
+        <div>
+            <label for="rang-promo" class="filter-title">Ton rang dans la promotion</label>
+            <input id="rang-promo" type="number" min="1" max="200" placeholder="Ex. 12" [value]="rangInput()"
+                (input)="onRangChange($event)" />
+            <span class="hint">Laisse vide pour tout voir.</span>
+        </div>
+    </div>
+
+    <!-- Grille des écoles filtrées -->
+    @if (filteredEcoles().length > 0) {
+    <div class="schools-grid">
+        @for (ecole of filteredEcoles(); track ecole.id) {
+        <article class="card">
+            <h3>{{ ecole.name }}</h3>
+            <div class="tags-row">
+                <span class="tag">{{ ecole.pays }}</span>
+                <span class="tag">{{ ecole.langue }}</span>
+                <span class="tag tag-orange">Rang {{ ecole.rangMin }}–{{ ecole.rangMax }}</span>
+            </div>
+            <p class="deadline">Date limite : {{ ecole.deadline }}</p>
+        </article>
+        }
+    </div>
+    } @else {
+    <div class="card">
+        <h3>Aucune école trouvée</h3>
+        <p>Élargis tes filtres : change de pays, de domaine ou de rang.</p>
+    </div>
+    }
+</section>

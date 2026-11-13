@@ -1,1 +1,146 @@
-<p>atlas works!</p>
+<section class="atlas-page">
+    <h1>Atlas d’orientation</h1>
+    <p class="sub">Règle les curseurs : le classement change en direct.</p>
+
+    <div class="atlas-layout">
+        <!-- Colonne gauche : Radar + 8 curseurs -->
+        <div class="card">
+            <h3>Ton profil</h3>
+
+            <div class="radar-wrapper">
+                <svg viewBox="0 0 300 300" role="img" aria-label="Radar du profil">
+                    @for (points of gridPolygons; track $index) {
+                    <polygon [attr.points]="points" fill="none" stroke="#DCE3EC" />
+                    }
+
+                    @for (axis of axisLabels; track axis.label) {
+                    <text [attr.x]="axis.x" [attr.y]="axis.y" text-anchor="middle" class="radar-label">
+                        {{ axis.label }}
+                    </text>
+                    }
+
+                    <!-- Profil du domaine le plus proche (pointillés) -->
+                    <polygon [attr.points]="topDomainePolygon()" fill="none" stroke="#14325C" stroke-width="2"
+                        stroke-dasharray="5 4" />
+
+                    <!-- Profil de l'étudiant (orange) -->
+                    <polygon [attr.points]="userPolygon()" fill="rgba(242, 140, 40, 0.3)" stroke="#F28C28"
+                        stroke-width="2.5" />
+                </svg>
+            </div>
+
+            <p class="legend">
+                Orange : toi. Pointillés : <strong>{{ topDomaine().name }}</strong>.
+            </p>
+
+            @for (criterion of criteria; track criterion; let i = $index) {
+            <div class="slider-group">
+                <label [for]="'criterion-' + i">
+                    <span>{{ criterion }}</span>
+                    <span>{{ scores()[i] }}/5</span>
+                </label>
+                <input [id]="'criterion-' + i" type="range" min="0" max="5" [class.disposition]="i >= 4"
+                    [value]="scores()[i]" (input)="updateScore(i, $event)" />
+            </div>
+            }
+
+            <p class="legend">Bleu : centres d’intérêt. Orange : dispositions.</p>
+        </div>
+
+        <!-- Colonne droite : Classement en direct -->
+        <div class="card">
+            <h3>Domaines proches</h3>
+
+            @for (item of rankedDomaines(); track item.domaine.id; let i = $index) {
+            <div class="rank-row">
+                <span class="rank-num">{{ i + 1 }}</span>
+                <div>
+                    <a routerLink="/domaines" class="domaine-link">{{ item.domaine.name }}</a>
+                    <div class="progress-bar">
+                        <div class="progress-fill" [style.width.%]="item.match"></div>
+                    </div>
+                </div>
+                <span class="rank-pct">{{ item.match }} %</span>
+            </div>
+            }
+
+            <div class="save-box">
+                <a class="btn" routerLink="/connexion">Sauvegarder mon profil</a>
+                <p class="legend">Connexion requise pour sauvegarder.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="atlas-page">
+    <h1>Atlas d’orientation</h1>
+    <p class="sub">Règle les curseurs : le classement change en direct.</p>
+
+    <div class="atlas-layout">
+        <!-- Colonne gauche : Radar + 8 curseurs -->
+        <div class="card">
+            <h3>Ton profil</h3>
+
+            <div class="radar-wrapper">
+                <svg viewBox="0 0 300 300" role="img" aria-label="Radar du profil">
+                    @for (points of gridPolygons; track $index) {
+                    <polygon [attr.points]="points" fill="none" stroke="#DCE3EC" />
+                    }
+
+                    @for (axis of axisLabels; track axis.label) {
+                    <text [attr.x]="axis.x" [attr.y]="axis.y" text-anchor="middle" class="radar-label">
+                        {{ axis.label }}
+                    </text>
+                    }
+
+                    <!-- Profil du domaine le plus proche (pointillés) -->
+                    <polygon [attr.points]="topDomainePolygon()" fill="none" stroke="#14325C" stroke-width="2"
+                        stroke-dasharray="5 4" />
+
+                    <!-- Profil de l'étudiant (orange) -->
+                    <polygon [attr.points]="userPolygon()" fill="rgba(242, 140, 40, 0.3)" stroke="#F28C28"
+                        stroke-width="2.5" />
+                </svg>
+            </div>
+
+            <p class="legend">
+                Orange : toi. Pointillés : <strong>{{ topDomaine().name }}</strong>.
+            </p>
+
+            @for (criterion of criteria; track criterion; let i = $index) {
+            <div class="slider-group">
+                <label [for]="'criterion-' + i">
+                    <span>{{ criterion }}</span>
+                    <span>{{ scores()[i] }}/5</span>
+                </label>
+                <input [id]="'criterion-' + i" type="range" min="0" max="5" [class.disposition]="i >= 4"
+                    [value]="scores()[i]" (input)="updateScore(i, $event)" />
+            </div>
+            }
+
+            <p class="legend">Bleu : centres d’intérêt. Orange : dispositions.</p>
+        </div>
+
+        <!-- Colonne droite : Classement en direct -->
+        <div class="card">
+            <h3>Domaines proches</h3>
+
+            @for (item of rankedDomaines(); track item.domaine.id; let i = $index) {
+            <div class="rank-row">
+                <span class="rank-num">{{ i + 1 }}</span>
+                <div>
+                    <a routerLink="/domaines" class="domaine-link">{{ item.domaine.name }}</a>
+                    <div class="progress-bar">
+                        <div class="progress-fill" [style.width.%]="item.match"></div>
+                    </div>
+                </div>
+                <span class="rank-pct">{{ item.match }} %</span>
+            </div>
+            }
+
+            <div class="save-box">
+                <a class="btn" routerLink="/connexion">Sauvegarder mon profil</a>
+                <p class="legend">Connexion requise pour sauvegarder.</p>
+            </div>
+        </div>
+    </div>
+</section>

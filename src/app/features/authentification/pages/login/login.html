@@ -1,1 +1,53 @@
-<p>login works!</p>
+<section class="login-page">
+    <div class="login-card">
+        @if (mode() === 'login') {
+        <h2>Connexion</h2>
+        } @else if (mode() === 'register') {
+        <h2>Créer un compte</h2>
+        } @else {
+        <h2>Mot de passe oublié</h2>
+        }
+
+        <form (submit)="onSubmit($event)">
+            @if (mode() === 'register') {
+            <label for="fullname">Nom complet</label>
+            <input id="fullname" type="text" placeholder="Ex. Yassine Affes" [value]="fullName()"
+                (input)="fullName.set($any($event.target).value)" required />
+            }
+
+            <label for="email">Adresse e-mail</label>
+            <input id="email" type="email" placeholder="prenom.nom@supcom.tn" [value]="email()"
+                (input)="email.set($any($event.target).value)" required />
+
+            @if (mode() !== 'forgot') {
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" placeholder="••••••••" [value]="password()"
+                (input)="password.set($any($event.target).value)" required />
+            }
+
+            <button type="submit" class="btn-submit">
+                @if (mode() === 'login') {
+                Se connecter
+                } @else if (mode() === 'register') {
+                S’inscrire
+                } @else {
+                Envoyer le lien
+                }
+            </button>
+        </form>
+
+        @if (statusMessage()) {
+        <p class="feedback">{{ statusMessage() }}</p>
+        }
+
+        <p class="switch-links">
+            @if (mode() === 'login') {
+            <button type="button" class="link-btn" (click)="switchMode('forgot')">Mot de passe oublié ?</button>
+            <span>·</span>
+            <button type="button" class="link-btn strong" (click)="switchMode('register')">Créer un compte</button>
+            } @else {
+            <button type="button" class="link-btn strong" (click)="switchMode('login')">← Retour à la connexion</button>
+            }
+        </p>
+    </div>
+</section>
