@@ -1,0 +1,106 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 8px 24px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #DCE3EC;
+}
+
+/* Logo */
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-sup {
+    color: #14325C;
+}
+
+.logo-compass {
+    color: #3B6EA5;
+}
+
+/* Liens de navigation */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    padding: 8px 14px;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+
+    color: #5F6B7C;
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.on {
+    background: #E8F0F9;
+    color: #14325C;
+}
+
+/* Bouton connexion */
+
+.btn-login {
+    display: inline-block;
+
+    padding: 10px 22px;
+    border-radius: 12px;
+
+    background: #F28C28;
+    border: 2px solid #F28C28;
+
+    color: #14233F;
+    text-decoration: none;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: filter 0.2s ease;
+}
+
+.btn-login:hover {
+    filter: brightness(1.06);
+}
+
+/* Responsive */
+
+@media (max-width: 760px) {
+
+    .navbar {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+    }
+
+}

@@ -1,0 +1,81 @@
+﻿SUPCOMPASS/
+├── .vscode/
+│   ├── extensions.json
+│   ├── launch.json
+│   └── tasks.json
+├── public/
+│   └── favicon.ico
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── guards/
+│   │   │   │   └── auth.guard.ts
+│   │   │   ├── interceptors/
+│   │   │   │   └── auth.interceptor.ts
+│   │   │   └── services/
+│   │   │       ├── api.service.ts
+│   │   │       └── auth.service.ts
+│   │   ├── features/
+│   │   │   ├── authentification/
+│   │   │   │   └── pages/
+│   │   │   │       └── login/
+│   │   │   │           ├── login.css
+│   │   │   │           ├── login.html
+│   │   │   │           ├── login.spec.ts
+│   │   │   │           └── login.ts
+│   │   │   ├── dashboard/
+│   │   │   ├── double-diplome/
+│   │   │   │   └── pages/
+│   │   │   │       └── ecoles/
+│   │   │   │           ├── ecoles.css
+│   │   │   │           ├── ecoles.html
+│   │   │   │           ├── ecoles.spec.ts
+│   │   │   │           └── ecoles.ts
+│   │   │   ├── home/
+│   │   │   │   └── pages/
+│   │   │   │       └── home/
+│   │   │   │           ├── home.css
+│   │   │   │           ├── home.html
+│   │   │   │           ├── home.spec.ts
+│   │   │   │           └── home.ts
+│   │   │   └── orientation/
+│   │   │       └── pages/
+│   │   │           ├── atlas/
+│   │   │           │   ├── atlas.css
+│   │   │           │   ├── atlas.html
+│   │   │           │   ├── atlas.spec.ts
+│   │   │           │   └── atlas.ts
+│   │   │           └── domaines/
+│   │   │               ├── domaines.css
+│   │   │               ├── domaines.html
+│   │   │               ├── domaines.spec.ts
+│   │   │               └── domaines.ts
+│   │   ├── shared/
+│   │   │   ├── components/
+│   │   │   └── models/
+│   │   ├── app.component.ts
+│   │   ├── app.config.server.ts
+│   │   ├── app.config.ts
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── app.routes.server.ts
+│   │   ├── app.routes.ts
+│   │   ├── app.spec.ts
+│   │   └── app.ts
+│   ├── index.html
+│   ├── main.server.ts
+│   ├── main.ts
+│   ├── material-theme.scss
+│   ├── server.ts
+│   └── styles.css
+├── .editorconfig
+├── .gitignore
+├── .prettierrc
+├── angular.json
+├── package.json
+├── package-lock.json
+├── README.md
+├── structure_actuelle.txt
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json

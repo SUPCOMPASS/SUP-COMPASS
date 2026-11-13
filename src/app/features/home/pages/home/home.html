@@ -1,0 +1,209 @@
+<!-- SECTION HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="welcome-tag">
+            Bienvenue sur SUP'COMPASS
+        </span>
+
+        <h1>
+            Par où commencer ?
+            <span>Trouve ton domaine à SUP'COM.</span>
+        </h1>
+
+        <p class="hero-description">
+            Explore les domaines technologiques, découvre les différentes
+            spécialités et identifie les parcours qui correspondent
+            à tes ambitions professionnelles.
+        </p>
+
+        <div class="hero-actions">
+
+            <a routerLink="/atlas" class="primary-button">
+                Essayer l'atlas
+            </a>
+
+            <a routerLink="/domaines" class="secondary-button">
+                Explorer les domaines
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="visual-circle">
+
+            <div class="center-circle">
+                SUP'COM
+            </div>
+
+            <div class="domain-circle domain-one">
+                IA & Data
+            </div>
+
+            <div class="domain-circle domain-two">
+                Cyber
+            </div>
+
+            <div class="domain-circle domain-three">
+                Embarqué
+            </div>
+
+            <div class="domain-circle domain-four">
+                Réseaux
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SECTION DOMAINES -->
+
+<section class="domains-section">
+
+    <div class="section-heading">
+
+        <h2>Explore les domaines</h2>
+
+        <p>
+            Découvre les principales spécialités technologiques
+            enseignées à SUP'COM.
+        </p>
+
+    </div>
+
+
+    <div class="domains-grid">
+
+        @for (domain of domains; track domain.name) {
+
+        <article class="domain-card">
+
+            <div class="card-icon">
+                ✦
+            </div>
+
+            <h3>
+                {{ domain.name }}
+            </h3>
+
+            <p>
+                {{ domain.description }}
+            </p>
+
+            <div class="job-tags">
+
+                @for (job of domain.jobs; track job) {
+
+                <span class="job-tag">
+                    {{ job }}
+                </span>
+
+                }
+
+            </div>
+
+            <a [routerLink]="domain.link" class="card-link">
+                Découvrir le domaine →
+            </a>
+
+        </article>
+
+        }
+
+    </div>
+
+
+    <div class="section-action">
+
+        <a routerLink="/domaines" class="secondary-button">
+            Voir tous les domaines
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- SECTION ATLAS -->
+
+<section class="atlas-section">
+
+    <div class="atlas-content">
+
+        <span class="welcome-tag">
+            Outil d'orientation
+        </span>
+
+        <h2>
+            Découvre le domaine qui te correspond.
+        </h2>
+
+        <p>
+            Évalue tes préférences, explore tes centres d'intérêt
+            et découvre les domaines technologiques qui correspondent
+            le mieux à ton profil.
+        </p>
+
+        <a routerLink="/atlas" class="primary-button">
+            Commencer le test
+        </a>
+
+    </div>
+
+    <div class="atlas-visual">
+
+        <div class="radar-placeholder">
+            <span>ATLAS</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SECTION DOUBLE DIPLOME -->
+
+<section class="double-section">
+
+    <div class="section-heading">
+
+        <h2>Double diplôme</h2>
+
+        <p>
+            Découvre les possibilités de mobilité académique
+            et les établissements partenaires.
+        </p>
+
+    </div>
+
+    <div class="double-card">
+
+        <div>
+
+            <h3>
+                Prépare ton parcours international.
+            </h3>
+
+            <p>
+                Explore les écoles, les pays, les domaines
+                et les conditions d'admission.
+            </p>
+
+        </div>
+
+        <a routerLink="/double-diplome" class="primary-button">
+            Explorer les écoles
+        </a>
+
+    </div>
+
+</section>

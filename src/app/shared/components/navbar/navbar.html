@@ -1,0 +1,35 @@
+<header class="navbar">
+
+    <!-- Logo -->
+    <a routerLink="/" class="logo" aria-label="Accueil SUP'COMPASS">
+        <span class="logo-sup">SUP</span>
+        <span class="logo-compass">COMPASS</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="nav-links">
+
+        <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">
+            Accueil
+        </a>
+
+        <a routerLink="/domaines" routerLinkActive="on">
+            Domaines
+        </a>
+
+        <a routerLink="/atlas" routerLinkActive="on">
+            Atlas
+        </a>
+
+        <a routerLink="/double-diplome" routerLinkActive="on">
+            Double diplôme
+        </a>
+
+    </nav>
+
+    <!-- Bouton de connexion -->
+    <a routerLink="/connexion" class="btn-login">
+        Se connecter
+    </a>
+
+</header>
