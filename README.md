@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  A modern web platform designed to help students explore academic opportunities, discover professional careers, and build their future with confidence.
+  A modern web platform designed to help SUP'COM students explore academic opportunities, discover professional careers, and build their future with confidence.
 </p>
 
 ---
@@ -37,7 +37,7 @@
 
 # 🌍 Project Overview
 
-**SUPCOMPASS** is a web-based academic and professional orientation platform designed to guide students throughout their educational and career journeys.
+**SUPCOMPASS** is a web-based academic and professional orientation platform designed to guide SUP'COM students throughout their educational and career journeys.
 
 Choosing an academic specialization, identifying suitable universities, understanding professional opportunities, and planning a future career can be complicated.
 
