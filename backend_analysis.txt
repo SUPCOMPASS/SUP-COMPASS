@@ -1,0 +1,397 @@
+========================================
+       SUPCOMPASS - BACKEND AUDIT
+========================================
+
+
+========== BACKEND STRUCTURE ==========
+
+
+========== ALL BACKEND FILES ==========
+.\.env.example
+.\.gitkeep
+.\package-lock.json
+.\package.json
+.\tsconfig.json
+.\src\server.ts
+.\src\config\database.ts
+.\src\middleware\error.middleware.ts
+.\src\modules\auth\controllers\auth.controller.ts
+.\src\modules\auth\routes\auth.routes.ts
+.\src\modules\auth\services\auth.service.ts
+.\src\modules\users\controllers\user.controller.ts
+.\src\modules\users\routes\user.routes.ts
+.\src\modules\users\services\user.service.ts
+.\src\types\express.d.ts
+
+
+========== PACKAGE.JSON ==========
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc --rootDir src --outDir dist",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit --rootDir src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
+
+
+========== TSCONFIG.JSON ==========
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "nodenext",
+    "target": "esnext",
+    "types": ["node"],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+  }
+}
+
+
+========== TYPESCRIPT SOURCE FILES ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\server.ts ==========
+import 'dotenv/config';
+import express from 'express';
+
+import {
+  checkDatabaseConnection,
+  pool
+} from './config/database.js';
+
+import {
+  errorMiddleware
+} from './middleware/error.middleware.js';
+
+const app = express();
+
+const port = Number(process.env.PORT ?? 3000);
+
+// ========================================
+// 1. VALIDATION DU PORT
+// ========================================
+
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535.');
+}
+
+// ========================================
+// 2. MIDDLEWARES
+// ========================================
+
+app.use(express.json());
+
+// ========================================
+// 3. HEALTH CHECK
+// ========================================
+
+app.get('/health', async (_request, response) => {
+  try {
+    await checkDatabaseConnection();
+
+    response.status(200).json({
+      status: 'ok',
+      database: 'connected'
+    });
+
+  } catch (error) {
+    console.error('Health check failed:', error);
+
+    response.status(503).json({
+      status: 'error',
+      database: 'disconnected'
+    });
+  }
+});
+
+// ========================================
+// 4. ROUTE 404
+// ========================================
+
+app.use((_request, response) => {
+  response.status(404).json({
+    error: 'Not found'
+  });
+});
+
+// ========================================
+// 5. ERROR HANDLING
+// ========================================
+
+app.use(errorMiddleware);
+
+// ========================================
+// 6. HTTP SERVER
+// ========================================
+
+let server: ReturnType<typeof app.listen> | undefined;
+
+async function startServer(): Promise<void> {
+
+  // VÃ©rifier PostgreSQL avant le dÃ©marrage HTTP
+  await checkDatabaseConnection();
+
+  console.info('PostgreSQL connected successfully.');
+
+  // DÃ©marrer Express
+  server = app.listen(port, () => {
+    console.info(`Backend listening on port ${port}.`);
+  });
+
+}
+
+// ========================================
+// 7. GRACEFUL SHUTDOWN
+// ========================================
+
+let isShuttingDown = false;
+
+async function shutdown(signal: NodeJS.Signals): Promise<void> {
+
+  if (isShuttingDown) {
+    return;
+  }
+
+  isShuttingDown = true;
+
+  console.info(`Received ${signal}; shutting down.`);
+
+  try {
+
+    if (server) {
+      await new Promise<void>((resolve, reject) => {
+        server!.close((error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        });
+      });
+    }
+
+    await pool.end();
+
+    console.info('Server and database connections closed.');
+
+  } catch (error) {
+
+    console.error('Shutdown error:', error);
+
+    process.exitCode = 1;
+  }
+}
+
+// ========================================
+// 8. PROCESS SIGNALS
+// ========================================
+
+process.once('SIGINT', () => {
+  void shutdown('SIGINT');
+});
+
+process.once('SIGTERM', () => {
+  void shutdown('SIGTERM');
+});
+
+// ========================================
+// 9. START APPLICATION
+// ========================================
+
+void startServer().catch(async (error: unknown) => {
+
+  console.error('Failed to start backend:', error);
+
+  await pool.end().catch((poolError: unknown) => {
+    console.error('Failed to close PostgreSQL pool:', poolError);
+  });
+
+  process.exitCode = 1;
+
+});
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\config\database.ts ==========
+import 'dotenv/config';
+import { Pool } from 'pg';
+
+const connectionString = process.env.DATABASE_URL;
+
+export const pool = new Pool(
+  connectionString ? { connectionString } : {}
+);
+
+export async function checkDatabaseConnection(): Promise<void> {
+  if (!connectionString) {
+    throw new Error('DATABASE_URL is not configured.');
+  }
+
+  await pool.query('SELECT 1');
+}
+
+pool.on('error', (error: Error) => {
+  console.error('Unexpected PostgreSQL pool error:', error);
+});
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\middleware\error.middleware.ts ==========
+import type { ErrorRequestHandler } from 'express';
+
+export const errorMiddleware: ErrorRequestHandler = (
+  error,
+  _request,
+  response,
+  _next
+) => {
+  console.error('Unhandled request error:', error);
+  response.status(500).json({ error: 'Internal server error' });
+};
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\auth\controllers\auth.controller.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\auth\routes\auth.routes.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\auth\services\auth.service.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\users\controllers\user.controller.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\users\routes\user.routes.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\modules\users\services\user.service.ts ==========
+
+
+========== FILE: C:\Users\user\Desktop\Projets\SUPCOMPASS\backend\src\types\express.d.ts ==========
+
+
+========== DATABASE MIGRATIONS ==========
+
+
+========== MIGRATION: 001_create_users.sql ==========
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'admin')),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+
+CREATE OR REPLACE FUNCTION set_users_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_users_updated_at ON users;
+CREATE TRIGGER trg_users_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_users_updated_at();
+
+
+========== ENVIRONMENT CONFIGURATION ==========
+PORT
+DATABASE_URL
+JWT_SECRET
+JWT_EXPIRES_IN
+
+
+========== TYPESCRIPT TYPECHECK ==========
+
+> backend@1.0.0 typecheck
+> tsc --noEmit --rootDir src
+
+
+
+
+========== DEPENDENCIES ==========
+backend@1.0.0 C:\Users\user\Desktop\Projets\SUPCOMPASS\backend
+Ôö£ÔöÇÔöÇ @types/bcrypt@6.0.0
+Ôö£ÔöÇÔöÇ @types/cors@2.8.19
+Ôö£ÔöÇÔöÇ @types/express@5.0.6
+Ôö£ÔöÇÔöÇ @types/jsonwebtoken@9.0.10
+Ôö£ÔöÇÔöÇ @types/node@26.6.6
+Ôö£ÔöÇÔöÇ @types/pg@8.23.1
+Ôö£ÔöÇÔöÇ bcrypt@6.0.0
+Ôö£ÔöÇÔöÇ cors@2.8.6
+Ôö£ÔöÇÔöÇ dotenv@18.0.10
+Ôö£ÔöÇÔöÇ express@5.3.0
+Ôö£ÔöÇÔöÇ jsonwebtoken@9.0.3
+Ôö£ÔöÇÔöÇ pg@8.23.1
+Ôö£ÔöÇÔöÇ tsx@4.23.15
+Ôö£ÔöÇÔöÇ typescript@7.0.2
+ÔööÔöÇÔöÇ zod@4.6.7
+
+

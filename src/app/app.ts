@@ -1,7 +1,9 @@
+
 import { Component } from '@angular/core';
-import { FooterComponent } from './shared/components/footer/footer';
-import { NavbarComponent } from './shared/components/navbar/navbar';
 import { RouterOutlet } from '@angular/router';
+
+import { NavbarComponent } from './shared/components/navbar/navbar';
+import { FooterComponent } from './shared/components/footer/footer';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,7 @@ import { RouterOutlet } from '@angular/router';
     FooterComponent
   ],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrl: './app.css'
 })
 export class App {
 }

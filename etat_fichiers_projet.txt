@@ -1,0 +1,85 @@
+=== ETAT REEL DES FICHIERS DU PROJET ANGULAR (SUPCOMPASS) ===
+
+1. FICHIERS NON TRAITES / VIDES / PAR DEFAUT (8) :
+- src/app/app.component.ts (0 lignes - fichier vide)
+- src/app/app.ts (18 lignes - gabarit Angular par defaut)
+- src/app/core/guards/auth.guard.ts (0 lignes - fichier vide)
+- src/app/core/interceptors/auth.interceptor.ts (0 lignes - fichier vide)
+- src/app/core/services/api.service.ts (0 lignes - fichier vide)
+- src/app/core/services/auth.service.ts (0 lignes - fichier vide)
+- src/app/shared/components/footer/footer.ts (13 lignes - gabarit Angular par defaut)
+- src/app/shared/components/navbar/navbar.ts (13 lignes - gabarit Angular par defaut)
+
+2. FICHIERS DEJA TRAITES / MODIFIES (27) :
+- src/app/app.config.ts (11 lignes)
+- src/app/app.css (132 lignes)
+- src/app/app.html (5 lignes)
+- src/app/app.routes.ts (15 lignes)
+- src/app/features/authentification/pages/login/login.css (115 lignes)
+- src/app/features/authentification/pages/login/login.html (53 lignes)
+- src/app/features/authentification/pages/login/login.ts (36 lignes)
+- src/app/features/double-diplome/pages/ecoles/ecoles.css (455 lignes)
+- src/app/features/double-diplome/pages/ecoles/ecoles.html (59 lignes)
+- src/app/features/double-diplome/pages/ecoles/ecoles.ts (62 lignes)
+- src/app/features/home/pages/home/home.css (408 lignes)
+- src/app/features/home/pages/home/home.html (209 lignes)
+- src/app/features/home/pages/home/home.ts (39 lignes)
+- src/app/features/orientation/pages/atlas/atlas.css (168 lignes)
+- src/app/features/orientation/pages/atlas/atlas.html (146 lignes)
+- src/app/features/orientation/pages/atlas/atlas.ts (106 lignes)
+- src/app/features/orientation/pages/domaines/domaines.css (184 lignes)
+- src/app/features/orientation/pages/domaines/domaines.html (66 lignes)
+- src/app/features/orientation/pages/domaines/domaines.ts (117 lignes)
+- src/app/shared/components/footer/footer.css (82 lignes)
+- src/app/shared/components/footer/footer.html (205 lignes)
+- src/app/shared/components/navbar/navbar.css (106 lignes)
+- src/app/shared/components/navbar/navbar.html (35 lignes)
+- src/index.html (23 lignes)
+- src/main.ts (6 lignes)
+- src/material-theme.scss (38 lignes)
+- src/styles.css (29 lignes)
+
+3. CONTENU TECHNIQUE DETECTE DANS LES FICHIERS TRAITES :
+* src/app/app.config.ts (11 lignes)
+* src/app/app.css (132 lignes)
+* src/app/app.html (5 lignes)
+    -> Elements: app-navbar, router-outlet, app-footer
+* src/app/app.routes.ts (15 lignes)
+    -> Routes: /, domaines, atlas, double-diplome, connexion, **
+* src/app/features/authentification/pages/login/login.css (115 lignes)
+* src/app/features/authentification/pages/login/login.html (53 lignes)
+    -> Titres: Connexion | Créer un compte | Mot de passe oublié
+    -> Elements: form
+* src/app/features/authentification/pages/login/login.ts (36 lignes)
+    -> Methodes TS: switchMode, onSubmit
+* src/app/features/double-diplome/pages/ecoles/ecoles.css (455 lignes)
+* src/app/features/double-diplome/pages/ecoles/ecoles.html (59 lignes)
+    -> Titres: Double diplôme | {{ ecole.name }} | Aucune école trouvée
+* src/app/features/double-diplome/pages/ecoles/ecoles.ts (62 lignes)
+    -> Methodes TS: onRangChange
+* src/app/features/home/pages/home/home.css (408 lignes)
+* src/app/features/home/pages/home/home.html (209 lignes)
+    -> Titres: Explore les domaines | Double diplôme
+* src/app/features/home/pages/home/home.ts (39 lignes)
+* src/app/features/orientation/pages/atlas/atlas.css (168 lignes)
+* src/app/features/orientation/pages/atlas/atlas.html (146 lignes)
+    -> Titres: Atlas d’orientation | Ton profil | Domaines proches | Atlas d’orientation | Ton profil
+    -> Elements: svg
+* src/app/features/orientation/pages/atlas/atlas.ts (106 lignes)
+    -> Methodes TS: updateScore
+* src/app/features/orientation/pages/domaines/domaines.css (184 lignes)
+* src/app/features/orientation/pages/domaines/domaines.html (66 lignes)
+    -> Titres: Carte des domaines | {{ node.label }} | Choisis un élément
+    -> Elements: svg
+* src/app/features/orientation/pages/domaines/domaines.ts (117 lignes)
+    -> Methodes TS: toggleNode, getEdgePath, isEdgeHighlighted, isNodeDimmed, getTypeLabel
+* src/app/shared/components/footer/footer.css (82 lignes)
+* src/app/shared/components/footer/footer.html (205 lignes)
+    -> Titres: Navigation | À propos | Navigation | À propos | Navigation
+* src/app/shared/components/navbar/navbar.css (106 lignes)
+* src/app/shared/components/navbar/navbar.html (35 lignes)
+* src/index.html (23 lignes)
+    -> Elements: app-root
+* src/main.ts (6 lignes)
+* src/material-theme.scss (38 lignes)
+* src/styles.css (29 lignes)

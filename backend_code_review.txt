@@ -1,0 +1,212 @@
+﻿
+==============================
+FICHIER : backend/package.json
+==============================
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc --rootDir src --outDir dist",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit --rootDir src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
+
+==============================
+FICHIER : backend/tsconfig.json
+==============================
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "nodenext",
+    "target": "esnext",
+    "types": ["node"],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+  }
+}
+
+==============================
+FICHIER : backend/src/server.ts
+==============================
+import 'dotenv/config';
+import express from 'express';
+import { checkDatabaseConnection, pool } from './config/database.js';
+import { errorMiddleware } from './middleware/error.middleware.js';
+
+const app = express();
+const port = Number(process.env.PORT ?? 3000);
+
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535.');
+}
+
+app.use(express.json());
+
+app.get('/health', async (_request, response) => {
+  try {
+    await checkDatabaseConnection();
+    response.status(200).json({ status: 'ok', database: 'connected' });
+  } catch (error) {
+    console.error('Health check failed:', error);
+    response.status(503).json({ status: 'error', database: 'disconnected' });
+  }
+});
+
+app.use((_request, response) => {
+  response.status(404).json({ error: 'Not found' });
+});
+
+app.use(errorMiddleware);
+
+const server = app.listen(port, () => {
+  console.info(`Backend listening on port ${port}.`);
+});
+
+let isShuttingDown = false;
+
+function shutdown(signal: NodeJS.Signals): void {
+  if (isShuttingDown) {
+    return;
+  }
+
+  isShuttingDown = true;
+  console.info(`Received ${signal}; shutting down.`);
+
+  server.close((error) => {
+    if (error) {
+      console.error('Failed to close the HTTP server:', error);
+      process.exitCode = 1;
+    }
+
+    void pool.end().catch((poolError: unknown) => {
+      console.error('Failed to close the PostgreSQL pool:', poolError);
+      process.exitCode = 1;
+    });
+  });
+}
+
+process.once('SIGINT', () => shutdown('SIGINT'));
+process.once('SIGTERM', () => shutdown('SIGTERM'));
+
+==============================
+FICHIER : backend/src/config/database.ts
+==============================
+import 'dotenv/config';
+import { Pool } from 'pg';
+
+const connectionString = process.env.DATABASE_URL;
+
+export const pool = new Pool(
+  connectionString ? { connectionString } : {}
+);
+
+export async function checkDatabaseConnection(): Promise<void> {
+  if (!connectionString) {
+    throw new Error('DATABASE_URL is not configured.');
+  }
+
+  await pool.query('SELECT 1');
+}
+
+pool.on('error', (error: Error) => {
+  console.error('Unexpected PostgreSQL pool error:', error);
+});
+
+==============================
+FICHIER : backend/src/middleware/error.middleware.ts
+==============================
+import type { ErrorRequestHandler } from 'express';
+
+export const errorMiddleware: ErrorRequestHandler = (
+  error,
+  _request,
+  response,
+  _next
+) => {
+  console.error('Unhandled request error:', error);
+  response.status(500).json({ error: 'Internal server error' });
+};
+
+==============================
+FICHIER : backend/src/modules/auth/controllers/auth.controller.ts
+==============================
+
+==============================
+FICHIER : backend/src/modules/auth/routes/auth.routes.ts
+==============================
+
+==============================
+FICHIER : backend/src/modules/auth/services/auth.service.ts
+==============================
+
+==============================
+FICHIER : backend/src/modules/users/controllers/user.controller.ts
+==============================
+
+==============================
+FICHIER : backend/src/modules/users/routes/user.routes.ts
+==============================
+
+==============================
+FICHIER : backend/src/modules/users/services/user.service.ts
+==============================
+
+==============================
+FICHIER : backend/src/types/express.d.ts
+==============================
