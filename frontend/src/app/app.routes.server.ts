@@ -1,7 +1,7 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 /** Pages publiques statiques : pré-rendues au build. */
-const PAGES_STATIQUES = ['', 'domaines', 'atlas', 'double-diplome', 'connexion', 'inscription',
+const PAGES_STATIQUES = ['', 'domaines', 'atlas', 'quiz', 'double-diplome', 'connexion', 'inscription',
   'mot-de-passe-oublie', 'a-propos', 'contact', 'confidentialite'];
 
 export const serverRoutes: ServerRoute[] = [

@@ -5,6 +5,7 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 import { FooterComponent } from './shared/components/footer/footer';
 import { NavbarComponent } from './shared/components/navbar/navbar';
 import { AuthService } from './core/services/auth.service';
+import { QuizService } from './core/services/quiz.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { AuthService } from './core/services/auth.service';
 export class App {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
+  private readonly quiz = inject(QuizService);
   private readonly main = viewChild<ElementRef<HTMLElement>>('main');
 
   /** Vrai pendant une navigation (barre de progression). */
@@ -22,7 +24,10 @@ export class App {
 
   constructor() {
     // La session est relue après le 1er rendu pour rester identique au rendu serveur (hydratation).
-    afterNextRender(() => this.auth.restore());
+    afterNextRender(() => {
+      this.auth.restore();
+      this.quiz.restore();
+    });
 
     let premiere = true;
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {

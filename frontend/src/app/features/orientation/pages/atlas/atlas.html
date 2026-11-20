@@ -1,6 +1,17 @@
 <section class="page">
     <app-page-header heading="Atlas d’orientation" subtitle="Règle les curseurs : le classement change en direct." />
 
+    @if (depuisQuiz()) {
+    <p class="feedback quiz-banner" role="status">
+        Atlas rempli automatiquement avec les résultats de ton quiz. Tu peux encore ajuster les curseurs.
+        <a routerLink="/quiz">Refaire le quiz</a>
+    </p>
+    } @else {
+    <p class="feedback quiz-banner">
+        Pas envie de régler les curseurs ? <a routerLink="/quiz">Passe le quiz</a> : l’atlas se remplit tout seul.
+    </p>
+    }
+
     <div class="atlas-layout">
         <div class="card">
             <h2 class="card-title">Ton profil</h2>
@@ -34,6 +45,7 @@
             }
 
             <p class="legend">Bleu : centres d’intérêt. Orange : dispositions.</p>
+            <button type="button" class="btn btn-outline btn-sm" (click)="reset()">Réinitialiser l’atlas</button>
         </div>
 
         <div class="card">

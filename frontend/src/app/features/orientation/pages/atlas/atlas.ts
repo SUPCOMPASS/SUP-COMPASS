@@ -3,17 +3,16 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DataService } from '../../../../core/services/data.service';
 import { ProfileService } from '../../../../core/services/profile.service';
+import { QuizService } from '../../../../core/services/quiz.service';
 import { Domaine } from '../../../../core/models/models';
+import { DomaineScore, MAX_NOTE, NOTE_NEUTRE, classerDomaines } from '../../../../core/utils/matching';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
-
-export type DomaineScore = { domaine: Domaine; match: number };
 
 /** Géométrie du radar (repère SVG) */
 const CX = 150;
 const CY = 150;
 const RADIUS = 105;
 const LABEL_RADIUS = 125;
-const MAX_NOTE = 5;
 
 @Component({
   selector: 'app-atlas',
@@ -24,29 +23,25 @@ const MAX_NOTE = 5;
 export class Atlas {
   private readonly data = inject(DataService);
   private readonly profile = inject(ProfileService);
+  private readonly quiz = inject(QuizService);
   protected readonly auth = inject(AuthService);
 
   protected readonly criteres = this.data.criteres.items;
 
-  /** Valeur de chaque curseur (sur 5), 3 = neutre au départ. */
+  /** Curseurs déplacés à la main (sur 5) ; tant qu'ils ne le sont pas, on part du quiz, sinon du neutre. */
   protected readonly scores = signal<number[]>([]);
+  /** Vrai si l'atlas est pré-rempli par le quiz et que l'utilisateur n'a encore rien modifié. */
+  protected readonly depuisQuiz = computed(() => this.quiz.aResultat() && this.scores().length === 0);
   protected readonly saved = signal(false);
 
   private readonly count = computed(() => this.criteres().length);
-  private readonly valeurs = computed(() => this.criteres().map((_, i) => this.scores()[i] ?? 3));
+  private readonly valeurs = computed(() => {
+    const quiz = this.quiz.notes();
+    return this.criteres().map((c, i) => this.scores()[i] ?? quiz?.[c.id] ?? NOTE_NEUTRE);
+  });
 
   /** Classement des domaines, recalculé en direct à chaque mouvement de curseur. */
-  protected readonly rankedDomaines = computed<DomaineScore[]>(() => {
-    const current = this.valeurs();
-    const max = MAX_NOTE * Math.max(this.count(), 1);
-    return this.data.domaines
-      .items()
-      .map((domaine) => {
-        const ecart = current.reduce((sum, note, i) => sum + Math.abs(note - (domaine.profil[i] ?? 0)), 0);
-        return { domaine, match: Math.round(100 * (1 - ecart / max)) };
-      })
-      .sort((a, b) => b.match - a.match);
-  });
+  protected readonly rankedDomaines = computed<DomaineScore[]>(() => classerDomaines(this.valeurs(), this.data.domaines.items()));
 
   /** Domaine arrivé en tête (pointillés sur le radar). */
   protected readonly topDomaine = computed<Domaine | null>(() => this.rankedDomaines()[0]?.domaine ?? null);
@@ -81,6 +76,13 @@ export class Atlas {
     next[index] = Number((event.target as HTMLInputElement).value);
     this.saved.set(false);
     this.scores.set(next);
+  }
+
+  /** Revient à un atlas vierge (efface le quiz). */
+  protected reset(): void {
+    this.quiz.reinitialiser();
+    this.scores.set([]);
+    this.saved.set(false);
   }
 
   /** Enregistre le profil dans « Mon profil » (utilisateur connecté). */

@@ -20,6 +20,8 @@ export const routes: Routes = [
   },
   { path: 'atlas', title: `Atlas d’orientation | ${TITRE}`,
     loadComponent: () => import('./features/orientation/pages/atlas/atlas').then((m) => m.Atlas) },
+  { path: 'quiz', title: `Quiz d’orientation | ${TITRE}`,
+    loadComponent: () => import('./features/orientation/pages/quiz/quiz').then((m) => m.Quiz) },
   {
     path: 'double-diplome',
     children: [
