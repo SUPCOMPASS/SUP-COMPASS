@@ -13,6 +13,6 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'profil', renderMode: RenderMode.Client },
   { path: 'admin', renderMode: RenderMode.Client },
   { path: 'admin/**', renderMode: RenderMode.Client },
-  ...PAGES_STATIQUES.map((path) => ({ path, renderMode: RenderMode.Prerender })),
+  ...PAGES_STATIQUES.map((path): ServerRoute => ({ path, renderMode: RenderMode.Prerender })),
   { path: '**', renderMode: RenderMode.Server },
 ];

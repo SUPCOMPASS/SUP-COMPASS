@@ -1,35 +1,63 @@
 {
-  "hash": "2c5c4c12",
-  "configHash": "6189ae4b",
+  "hash": "f9e5e81d",
+  "configHash": "5244afe2",
   "lockfileHash": "03e34351",
-  "browserHash": "5b2b1772",
+  "browserHash": "a9a68ec6",
   "optimized": {
+    "@angular/common": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
+      "file": "@angular_common.js",
+      "fileHash": "a2b0a388",
+      "needsInterop": false
+    },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "ed8aeeda",
+      "fileHash": "8cb301a3",
+      "needsInterop": false
+    },
+    "@angular/core/rxjs-interop": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/rxjs-interop.mjs",
+      "file": "@angular_core_rxjs-interop.js",
+      "fileHash": "0c146643",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "9bd81598",
+      "fileHash": "5feb57e9",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "d2cefe81",
+      "fileHash": "9f005214",
       "needsInterop": false
     }
   },
   "chunks": {
-    "core-D4iryrxe": {
-      "file": "core-D4iryrxe.js",
+    "_resource-chunk-Dpvt7irD": {
+      "file": "_resource-chunk-Dpvt7irD.js",
       "isDynamicEntry": false
     },
-    "platform-browser-CSzv5OSS": {
-      "file": "platform-browser-CSzv5OSS.js",
+    "common-C2aBmCk_": {
+      "file": "common-C2aBmCk_.js",
+      "isDynamicEntry": false
+    },
+    "core-D-lrU26Z": {
+      "file": "core-D-lrU26Z.js",
+      "isDynamicEntry": false
+    },
+    "innerFrom-K6fOLYIA": {
+      "file": "innerFrom-K6fOLYIA.js",
+      "isDynamicEntry": false
+    },
+    "platform-browser-C2hPKnL0": {
+      "file": "platform-browser-C2hPKnL0.js",
+      "isDynamicEntry": false
+    },
+    "takeUntil-B1E8Oo0-": {
+      "file": "takeUntil-B1E8Oo0-.js",
       "isDynamicEntry": false
     }
   }
