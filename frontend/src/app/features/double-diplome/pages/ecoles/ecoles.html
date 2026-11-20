@@ -1,59 +1,65 @@
-<section class="ecoles-page">
-    <h1>Double diplôme</h1>
-    <p class="sub">Trouve les écoles selon ton pays, ton domaine et ton rang.</p>
+<section class="page">
+    <app-page-header heading="Double diplôme"
+        subtitle="Trouve les écoles selon ton domaine, ton pays, la langue et ton rang." />
 
-    <!-- Barre de filtres -->
-    <div class="filters-grid">
-        <div>
-            <strong class="filter-title">Pays</strong>
-            <div class="chips">
-                @for (p of paysList; track p) {
-                <button type="button" class="chip" [class.on]="selectedPays() === p" (click)="selectedPays.set(p)">
-                    {{ p === 'all' ? 'Tous' : p }}
-                </button>
-                }
-            </div>
-        </div>
+    <div class="filters-grid" role="search" aria-label="Filtres des écoles">
 
-        <div>
-            <strong class="filter-title">Domaine enseigné</strong>
+        <fieldset>
+            <legend class="filter-title">Domaine enseigné</legend>
             <div class="chips">
-                @for (d of domainesFilter; track d.id) {
+                <button type="button" class="chip" [class.on]="selectedDomaine() === tous"
+                    [attr.aria-pressed]="selectedDomaine() === tous" (click)="selectedDomaine.set(tous)">Tous</button>
+                @for (d of domainesFilter(); track d.id) {
                 <button type="button" class="chip" [class.on]="selectedDomaine() === d.id"
-                    (click)="selectedDomaine.set(d.id)">
-                    {{ d.label }}
-                </button>
+                    [attr.aria-pressed]="selectedDomaine() === d.id" (click)="selectedDomaine.set(d.id)">{{ d.nom }}</button>
                 }
             </div>
-        </div>
+        </fieldset>
 
-        <div>
+        <fieldset>
+            <legend class="filter-title">Pays</legend>
+            <div class="chips">
+                <button type="button" class="chip" [class.on]="selectedPays() === tous"
+                    [attr.aria-pressed]="selectedPays() === tous" (click)="selectedPays.set(tous)">Tous</button>
+                @for (p of paysList(); track p) {
+                <button type="button" class="chip" [class.on]="selectedPays() === p"
+                    [attr.aria-pressed]="selectedPays() === p" (click)="selectedPays.set(p)">{{ p }}</button>
+                }
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend class="filter-title">Langue</legend>
+            <div class="chips">
+                <button type="button" class="chip" [class.on]="selectedLangue() === tous"
+                    [attr.aria-pressed]="selectedLangue() === tous" (click)="selectedLangue.set(tous)">Toutes</button>
+                @for (l of langues(); track l) {
+                <button type="button" class="chip" [class.on]="selectedLangue() === l"
+                    [attr.aria-pressed]="selectedLangue() === l" (click)="selectedLangue.set(l)">{{ l }}</button>
+                }
+            </div>
+        </fieldset>
+
+        <div class="field rang">
             <label for="rang-promo" class="filter-title">Ton rang dans la promotion</label>
             <input id="rang-promo" type="number" min="1" max="200" placeholder="Ex. 12" [value]="rangInput()"
-                (input)="onRangChange($event)" />
-            <span class="hint">Laisse vide pour tout voir.</span>
+                (input)="onRangChange($event)" aria-describedby="rang-aide" />
+            <span id="rang-aide" class="hint">Laisse vide pour tout voir.</span>
         </div>
     </div>
 
-    <!-- Grille des écoles filtrées -->
+    <p class="count" role="status">
+        {{ filteredEcoles().length }} école{{ filteredEcoles().length > 1 ? 's' : '' }} trouvée{{ filteredEcoles().length > 1 ? 's' : '' }}
+    </p>
+
     @if (filteredEcoles().length > 0) {
-    <div class="schools-grid">
+    <div class="grid-cards">
         @for (ecole of filteredEcoles(); track ecole.id) {
-        <article class="card">
-            <h3>{{ ecole.name }}</h3>
-            <div class="tags-row">
-                <span class="tag">{{ ecole.pays }}</span>
-                <span class="tag">{{ ecole.langue }}</span>
-                <span class="tag tag-orange">Rang {{ ecole.rangMin }}–{{ ecole.rangMax }}</span>
-            </div>
-            <p class="deadline">Date limite : {{ ecole.deadline }}</p>
-        </article>
+        <app-school-card [ecole]="ecole" />
         }
     </div>
     } @else {
-    <div class="card">
-        <h3>Aucune école trouvée</h3>
-        <p>Élargis tes filtres : change de pays, de domaine ou de rang.</p>
-    </div>
+    <app-empty-state heading="Aucune école trouvée" message="Élargis tes filtres : change de pays, de domaine ou de rang." />
+    <p class="reset"><button type="button" class="btn btn-outline btn-sm" (click)="reset()">Réinitialiser les filtres</button></p>
     }
 </section>

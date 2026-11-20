@@ -1,62 +1,50 @@
-<section class="domaines-page">
-    <h1>Carte des domaines</h1>
-    <p class="sub">
-        Clique sur un domaine pour voir ses combinaisons et ses métiers. Clique sur « Voir la fiche » pour les détails.
-    </p>
+<section class="page">
+    <app-page-header heading="Carte des domaines"
+        subtitle="Clique sur un domaine pour voir ses combinaisons et ses métiers. Clique sur « Voir la fiche » pour les détails." />
 
     <div class="map-layout">
-        <!-- Carte interactive SVG -->
         <div class="card map-card">
-            <svg viewBox="0 0 800 420" role="group" aria-label="Carte des domaines">
+            <svg [attr.viewBox]="'0 0 800 ' + viewHeight()" role="group" aria-label="Carte des domaines">
                 <defs>
-                    <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"
-                        orient="auto">
+                    <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
                         <path d="M0,0L10,5L0,10z" fill="#3B6EA5" />
                     </marker>
-                    <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"
-                        orient="auto">
+                    <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
                         <path d="M0,0L10,5L0,10z" fill="#F28C28" />
                     </marker>
                 </defs>
 
-                <!-- Titres des 3 colonnes -->
                 <text x="110" y="18" text-anchor="middle" class="col-title">Domaines</text>
                 <text x="400" y="18" text-anchor="middle" class="col-title">Combinaisons</text>
                 <text x="690" y="18" text-anchor="middle" class="col-title">Métiers</text>
 
-                <!-- Flèches (courbes de Bézier) -->
-                @for (edge of edges; track edge.from + '-' + edge.to) {
+                @for (edge of edges(); track edge.from + '-' + edge.to) {
                 <path class="edge" [class.on]="isEdgeHighlighted(edge)"
-                    [class.dim]="reachableIds() && !isEdgeHighlighted(edge)" [attr.d]="getEdgePath(edge)"
+                    [class.dim]="reachableIds() && !isEdgeHighlighted(edge)" [attr.d]="edgePath(edge)"
                     [attr.marker-end]="isEdgeHighlighted(edge) ? 'url(#arrow-active)' : 'url(#arrow-default)'" />
                 }
 
-                <!-- Nœuds cliquables -->
-                @for (node of nodes; track node.id) {
+                @for (node of nodes(); track node.id) {
                 <g class="node" [class.type-d]="node.type === 'd'" [class.type-c]="node.type === 'c'"
                     [class.type-m]="node.type === 'm'" [class.on]="selectedId() === node.id"
-                    [class.dim]="isNodeDimmed(node.id)" tabindex="0" role="button" [attr.aria-label]="node.label"
-                    (click)="toggleNode(node.id)" (keydown.enter)="toggleNode(node.id)"
-                    (keydown.space)="toggleNode(node.id); $event.preventDefault()">
-                    <rect [attr.x]="node.x - 75" [attr.y]="node.y - 22" width="150" height="44" rx="12" />
-                    <text [attr.x]="node.x" [attr.y]="node.y + 5" text-anchor="middle">
-                        {{ node.label }}
-                    </text>
+                    [class.dim]="isNodeDimmed(node.id)" tabindex="0" role="button"
+                    [attr.aria-label]="typeLabel(node.type) + ' : ' + node.label"
+                    [attr.aria-pressed]="selectedId() === node.id" (click)="toggleNode(node.id)"
+                    (keydown.enter)="toggleNode(node.id)" (keydown.space)="toggleNode(node.id); $event.preventDefault()">
+                    <rect [attr.x]="node.x - halfWidth" [attr.y]="node.y - 22" [attr.width]="halfWidth * 2" height="44" rx="12" />
+                    <text [attr.x]="node.x" [attr.y]="node.y + 5" text-anchor="middle">{{ node.label }}</text>
                 </g>
                 }
             </svg>
         </div>
 
-        <!-- Panneau d'aperçu à droite -->
-        <div class="card preview-card">
+        <div class="card preview-card" aria-live="polite">
             @if (selectedNode(); as node) {
-            <span class="tag" [class.tag-orange]="node.type === 'm'">
-                {{ getTypeLabel(node.type) }}
-            </span>
+            <span class="tag" [class.tag-orange]="node.type === 'm'">{{ typeLabel(node.type) }}</span>
             <h3>{{ node.label }}</h3>
             <p>{{ node.summary }}</p>
             <p class="hint">Les chemins possibles sont en orange sur la carte.</p>
-            <a class="btn" [routerLink]="['/domaines', node.routeSlug]">Voir la fiche</a>
+            <a class="btn" [routerLink]="node.link">{{ node.type === 'm' ? 'Voir le parcours associé' : 'Voir la fiche' }}</a>
             } @else {
             <h3>Choisis un élément</h3>
             <p>Clique sur un domaine : les combinaisons et métiers accessibles s’allument.</p>

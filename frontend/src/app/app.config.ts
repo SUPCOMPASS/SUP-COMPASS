@@ -1,10 +1,5 @@
-
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners
-} from '@angular/core';
-
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
@@ -12,7 +7,12 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
-    provideClientHydration()
-  ]
+    provideRouter(
+      routes,
+      // Paramètres d'URL (:id, data, ?returnUrl) injectés dans les input() des pages.
+      withComponentInputBinding(),
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
+    ),
+    provideClientHydration(),
+  ],
 };

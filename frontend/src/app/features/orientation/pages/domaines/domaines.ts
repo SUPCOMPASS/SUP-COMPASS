@@ -1,77 +1,70 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DataService } from '../../../../core/services/data.service';
+import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
-export type NodeType = 'd' | 'c' | 'm'; // d = Domaine, c = Combinaison, m = Métier
+export type NodeType = 'd' | 'c' | 'm'; // Domaine, Combinaison, Métier
+export type MapNode = { id: string; type: NodeType; label: string; x: number; y: number; link: string; summary: string };
+export type MapEdge = { from: string; to: string };
 
-export interface MapNode {
-  id: string;
-  type: NodeType;
-  label: string;
-  x: number;
-  y: number;
-  routeSlug: string;
-  summary: string;
-}
-
-export interface MapEdge {
-  from: string;
-  to: string;
-}
+/** Géométrie de la carte SVG */
+const COL_X: Record<NodeType, number> = { d: 110, c: 400, m: 690 };
+const HALF_WIDTH = 85;
+const ROW_STEP = 80;
+const TOP = 60;
 
 @Component({
   selector: 'app-domaines',
-  standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeader],
   templateUrl: './domaines.html',
-  styleUrl: './domaines.css'
+  styleUrl: './domaines.css',
 })
 export class Domaines {
-  readonly nodes: MapNode[] = [
-    { id: 'ia', type: 'd', label: 'IA & Data', x: 110, y: 60, routeSlug: 'domaine/ia', summary: 'Analyser et prédire à partir des données.' },
-    { id: 'cy', type: 'd', label: 'Cybersécurité', x: 110, y: 160, routeSlug: 'domaine/cy', summary: 'Protéger réseaux et systèmes.' },
-    { id: 'em', type: 'd', label: 'Systèmes embarqués', x: 110, y: 260, routeSlug: 'domaine/em', summary: 'Objets connectés, logiciel et matériel.' },
-    { id: 'rt', type: 'd', label: 'Réseaux & Télécoms', x: 110, y: 360, routeSlug: 'domaine/rt', summary: '5G, fibre, cœur de réseau.' },
+  private readonly data = inject(DataService);
 
-    { id: 'ia-cy', type: 'c', label: 'IA + Cyber', x: 400, y: 110, routeSlug: 'combo/ia-cy', summary: 'Détecter les attaques avec l’apprentissage automatique.' },
-    { id: 'em-ia', type: 'c', label: 'Embarqué + IA', x: 400, y: 210, routeSlug: 'combo/em-ia', summary: 'Faire tourner l’IA directement sur l’appareil.' },
-    { id: 'rt-cy', type: 'c', label: 'Réseaux + Cyber', x: 400, y: 310, routeSlug: 'combo/rt-cy', summary: 'Sécuriser les infrastructures de télécoms.' },
+  protected readonly halfWidth = HALF_WIDTH;
+  protected readonly selectedId = signal<string | null>(null);
 
-    { id: 'm1', type: 'm', label: 'Data scientist', x: 690, y: 60, routeSlug: 'metier/m1', summary: 'Transforme les données en décisions.' },
-    { id: 'm2', type: 'm', label: 'Ingénieur IA sécurité', x: 690, y: 160, routeSlug: 'metier/m2', summary: 'Conçoit des outils de détection d’intrusion.' },
-    { id: 'm3', type: 'm', label: 'Ingénieur Edge AI', x: 690, y: 260, routeSlug: 'metier/m3', summary: 'Déploie des modèles sur des puces à faible énergie.' },
-    { id: 'm4', type: 'm', label: 'Architecte sécurité réseau', x: 690, y: 360, routeSlug: 'metier/m4', summary: 'Dessine des réseaux résistants aux attaques.' }
-  ];
+  /** Nœuds construits à partir des données (domaines, combinaisons, métiers). */
+  protected readonly nodes = computed<MapNode[]>(() => {
+    const domaines = this.data.domaines.items();
+    const combos = this.data.combinaisons.items();
+    const metiers = this.data.metiers.items();
+    const rows = Math.max(domaines.length, combos.length, metiers.length, 1);
+    const y = (index: number, count: number) => TOP + index * ROW_STEP + ((rows - count) * ROW_STEP) / 2;
 
-  readonly edges: MapEdge[] = [
-    { from: 'ia', to: 'ia-cy' },
-    { from: 'cy', to: 'ia-cy' },
-    { from: 'em', to: 'em-ia' },
-    { from: 'ia', to: 'em-ia' },
-    { from: 'rt', to: 'rt-cy' },
-    { from: 'cy', to: 'rt-cy' },
-    { from: 'ia', to: 'm1' },
-    { from: 'ia-cy', to: 'm2' },
-    { from: 'em-ia', to: 'm3' },
-    { from: 'rt-cy', to: 'm4' }
-  ];
-
-  selectedId = signal<string | null>(null);
-
-  selectedNode = computed<MapNode | null>(() => {
-    const id = this.selectedId();
-    return id ? this.nodes.find(n => n.id === id) ?? null : null;
+    return [
+      ...domaines.map((d, i) => ({ id: d.id, type: 'd' as const, label: d.nom, x: COL_X.d, y: y(i, domaines.length),
+        link: `/domaines/domaine/${d.id}`, summary: d.resume })),
+      ...combos.map((c, i) => ({ id: c.id, type: 'c' as const, label: c.nom, x: COL_X.c, y: y(i, combos.length),
+        link: `/domaines/combo/${c.id}`, summary: c.resume })),
+      // Un métier renvoie vers la fiche du domaine / de la combinaison dont il est issu.
+      ...metiers.map((m, i) => ({ id: m.id, type: 'm' as const, label: m.nom, x: COL_X.m, y: y(i, metiers.length),
+        link: this.data.lienCible(m.sources[0] ?? ''), summary: m.resume })),
+    ];
   });
 
-  reachableIds = computed<Set<string> | null>(() => {
-    const startId = this.selectedId();
-    if (!startId) return null;
+  protected readonly viewHeight = computed(() => Math.max(...this.nodes().map((n) => n.y), TOP) + 50);
 
-    const visited = new Set<string>([startId]);
+  protected readonly edges = computed<MapEdge[]>(() => [
+    ...this.data.combinaisons.items().flatMap((c) => c.domaines.map((d) => ({ from: d, to: c.id }))),
+    ...this.data.metiers.items().flatMap((m) => m.sources.map((s) => ({ from: s, to: m.id }))),
+  ]);
+
+  protected readonly selectedNode = computed<MapNode | null>(() => {
+    const id = this.selectedId();
+    return id ? (this.nodes().find((n) => n.id === id) ?? null) : null;
+  });
+
+  /** Éléments atteignables depuis le nœud sélectionné (chemins possibles). */
+  protected readonly reachableIds = computed<Set<string> | null>(() => {
+    const start = this.selectedId();
+    if (!start) return null;
+    const visited = new Set<string>([start]);
     let changed = true;
-
     while (changed) {
       changed = false;
-      for (const edge of this.edges) {
+      for (const edge of this.edges()) {
         if (visited.has(edge.from) && !visited.has(edge.to)) {
           visited.add(edge.to);
           changed = true;
@@ -81,37 +74,31 @@ export class Domaines {
     return visited;
   });
 
-  toggleNode(id: string): void {
-    this.selectedId.update(current => (current === id ? null : id));
+  protected toggleNode(id: string): void {
+    this.selectedId.update((current) => (current === id ? null : id));
   }
 
-  getEdgePath(edge: MapEdge): string {
-    const source = this.nodes.find(n => n.id === edge.from);
-    const target = this.nodes.find(n => n.id === edge.to);
+  protected edgePath(edge: MapEdge): string {
+    const source = this.nodes().find((n) => n.id === edge.from);
+    const target = this.nodes().find((n) => n.id === edge.to);
     if (!source || !target) return '';
-
-    const x1 = source.x + 75;
-    const x2 = target.x - 75;
+    const x1 = source.x + HALF_WIDTH;
+    const x2 = target.x - HALF_WIDTH;
     const midX = (x1 + x2) / 2;
-
     return `M${x1},${source.y} C${midX},${source.y} ${midX},${target.y} ${x2 - 6},${target.y}`;
   }
 
-  isEdgeHighlighted(edge: MapEdge): boolean {
-    const reachable = this.reachableIds();
-    return !!reachable && reachable.has(edge.from) && reachable.has(edge.to);
+  protected isEdgeHighlighted(edge: MapEdge): boolean {
+    const r = this.reachableIds();
+    return !!r && r.has(edge.from) && r.has(edge.to);
   }
 
-  isNodeDimmed(nodeId: string): boolean {
-    const reachable = this.reachableIds();
-    return !!reachable && !reachable.has(nodeId);
+  protected isNodeDimmed(nodeId: string): boolean {
+    const r = this.reachableIds();
+    return !!r && !r.has(nodeId);
   }
 
-  getTypeLabel(type: NodeType): string {
-    switch (type) {
-      case 'd': return 'Domaine';
-      case 'c': return 'Combinaison';
-      case 'm': return 'Métier';
-    }
+  protected typeLabel(type: NodeType): string {
+    return type === 'd' ? 'Domaine' : type === 'c' ? 'Combinaison' : 'Métier';
   }
 }

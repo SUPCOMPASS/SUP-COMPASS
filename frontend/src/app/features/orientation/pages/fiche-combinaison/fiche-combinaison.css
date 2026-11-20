@@ -1,0 +1,5 @@
+:host { display: block; }
+.composition { margin: 0 0 20px; color: var(--mute); }
+.card-title { font-size: 18px; margin: 0 0 10px; }
+.sous-titre { margin-top: 20px; }
+ul.tags-row { list-style: none; padding: 0; margin: 0; }

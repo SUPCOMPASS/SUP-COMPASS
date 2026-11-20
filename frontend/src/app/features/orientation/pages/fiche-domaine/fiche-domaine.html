@@ -1,0 +1,90 @@
+@if (domaine(); as d) {
+<section class="page">
+
+    <app-page-header [heading]="d.nom" [subtitle]="d.resume"
+        [crumbs]="[{ label: 'Domaines', link: '/domaines' }, { label: d.nom }]">
+        @if (auth.user()) {
+        <button type="button" class="btn" [class.btn-outline]="estFavori()" [attr.aria-pressed]="estFavori()"
+            (click)="toggleFavori()">{{ estFavori() ? '★ Dans mes favoris' : '☆ Ajouter aux favoris' }}</button>
+        } @else {
+        <a class="btn btn-outline" routerLink="/connexion" [queryParams]="{ returnUrl: '/domaines/domaine/' + d.id }">
+            ☆ Connecte-toi pour ajouter aux favoris
+        </a>
+        }
+    </app-page-header>
+
+    <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections de la fiche domaine" />
+
+    <div role="tabpanel" [id]="'panel-' + activeTab()" [attr.aria-labelledby]="'tab-' + activeTab()" tabindex="0">
+        @switch (activeTab()) {
+
+        @case ('presentation') {
+        <div class="two-cols">
+            <div class="card">
+                <h2 class="card-title">Description</h2>
+                <p>{{ d.description }}</p>
+            </div>
+            <div class="stack">
+                <div class="card">
+                    <h2 class="card-title">Prérequis</h2>
+                    <ul class="plain-list">
+                        @for (item of d.prerequis; track item) { <li>{{ item }}</li> }
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2 class="card-title">Compétences</h2>
+                    <ul class="tags-row">
+                        @for (item of d.competences; track item) { <li class="tag">{{ item }}</li> }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+
+        @case ('roadmap') {
+        <app-roadmap [steps]="parcours()" />
+        }
+
+        @case ('debouches') {
+        <div class="two-cols">
+            <div class="card">
+                <h2 class="card-title">Débouchés</h2>
+                <ul class="tags-row">
+                    @for (item of d.debouches; track item) { <li class="tag tag-orange">{{ item }}</li> }
+                </ul>
+            </div>
+            <div class="card">
+                <h2 class="card-title">Combinaisons possibles</h2>
+                @if (combinaisons().length) {
+                <ul class="plain-list">
+                    @for (c of combinaisons(); track c.id) {
+                    <li><a [routerLink]="['/domaines/combo', c.id]">{{ c.nom }}</a> — {{ c.resume }}</li>
+                    }
+                </ul>
+                } @else {
+                <p class="hint">Aucune combinaison renseignée pour ce domaine.</p>
+                }
+            </div>
+        </div>
+        }
+
+        @case ('double-diplome') {
+        @if (ecoles().length) {
+        <div class="grid-cards">
+            @for (ecole of ecoles(); track ecole.id) { <app-school-card [ecole]="ecole" /> }
+        </div>
+        } @else {
+        <app-empty-state heading="Aucune école pour ce domaine" message="Les écoles partenaires seront ajoutées bientôt."
+            actionLabel="Voir toutes les écoles" actionLink="/double-diplome" />
+        }
+        }
+
+        }
+    </div>
+</section>
+} @else {
+<section class="page">
+    <app-empty-state heading="Domaine introuvable" message="Cette fiche n’existe pas ou a été supprimée."
+        actionLabel="Retour à la carte des domaines" actionLink="/domaines" />
+</section>
+}

@@ -1,36 +1,78 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { ADMIN_DEMO_EMAIL, AuthService } from '../../../../core/services/auth.service';
 
 export type AuthMode = 'login' | 'register' | 'forgot';
+type FieldErrors = { nom?: string; email?: string; password?: string };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Connexion, inscription et mot de passe oublié : le mode vient de la route (`data.mode`). */
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 export class Login {
-  mode = signal<AuthMode>('login');
-  email = signal<string>('');
-  password = signal<string>('');
-  fullName = signal<string>('');
-  statusMessage = signal<string | null>(null);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
-  switchMode(newMode: AuthMode): void {
-    this.mode.set(newMode);
-    this.statusMessage.set(null);
+  readonly mode = input<AuthMode>('login');
+  /** Page à rejoindre après connexion (?returnUrl=…). */
+  readonly returnUrl = input<string>();
+
+  protected readonly adminEmail = ADMIN_DEMO_EMAIL;
+  protected readonly fullName = signal('');
+  protected readonly email = signal('');
+  protected readonly password = signal('');
+  protected readonly errors = signal<FieldErrors>({});
+  protected readonly status = signal<{ text: string; error: boolean } | null>(null);
+  protected readonly loading = signal(false);
+
+  protected async onSubmit(event: Event): Promise<void> {
+    event.preventDefault();
+    if (this.loading() || !this.validate()) return;
+
+    this.loading.set(true);
+    this.status.set(null);
+    try {
+      switch (this.mode()) {
+        case 'login':
+          await this.auth.login(this.email(), this.password());
+          await this.router.navigateByUrl(this.destination());
+          break;
+        case 'register':
+          await this.auth.register(this.fullName(), this.email(), this.password());
+          await this.router.navigateByUrl(this.destination());
+          break;
+        case 'forgot':
+          await this.auth.requestReset(this.email());
+          this.status.set({ text: `Un lien de réinitialisation a été envoyé à ${this.email()}.`, error: false });
+          break;
+      }
+    } catch (e) {
+      this.status.set({ text: e instanceof Error ? e.message : 'Une erreur est survenue.', error: true });
+    } finally {
+      this.loading.set(false);
+    }
   }
 
-  onSubmit(event: Event): void {
-    event.preventDefault();
-    const currentMode = this.mode();
-
-    if (currentMode === 'login') {
-      this.statusMessage.set(`Connexion réussie pour ${this.email() || 'prenom.nom@supcom.tn'} (prêt pour liaison API).`);
-    } else if (currentMode === 'register') {
-      this.statusMessage.set(`Compte créé pour ${this.fullName() || this.email()} ! Tu peux maintenant te connecter.`);
-    } else {
-      this.statusMessage.set(`Un lien de réinitialisation a été envoyé à ${this.email()}.`);
+  /** Validation côté client avec messages par champ. */
+  private validate(): boolean {
+    const errors: FieldErrors = {};
+    if (this.mode() === 'register' && !this.fullName().trim()) errors.nom = 'Indique ton nom complet.';
+    if (!EMAIL_RE.test(this.email())) errors.email = 'Saisis une adresse e-mail valide.';
+    if (this.mode() !== 'forgot' && this.password().length < 8) {
+      errors.password = 'Le mot de passe doit contenir au moins 8 caractères.';
     }
+    this.errors.set(errors);
+    return Object.keys(errors).length === 0;
+  }
+
+  /** Redirection sûre : uniquement vers une page interne du site. */
+  private destination(): string {
+    const url = this.returnUrl();
+    return url && url.startsWith('/') && !url.startsWith('//') ? url : '/profil';
   }
 }

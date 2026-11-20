@@ -1,0 +1,6 @@
+:host { display: block; }
+.tablist { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+button { flex: none; padding: 12px 18px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--mute);
+    cursor: pointer; font: 600 15px 'Poppins', sans-serif; transition: color 0.15s ease, border-color 0.15s ease; }
+button:hover { color: var(--navy); }
+button.on { color: var(--navy); border-bottom-color: var(--org); }

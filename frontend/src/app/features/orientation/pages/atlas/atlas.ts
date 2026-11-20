@@ -1,105 +1,104 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
+import { DataService } from '../../../../core/services/data.service';
+import { ProfileService } from '../../../../core/services/profile.service';
+import { Domaine } from '../../../../core/models/models';
+import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
-export interface DomaineProfil {
-  id: string;
-  name: string;
-  values: number[];
-}
+export type DomaineScore = { domaine: Domaine; match: number };
 
-export interface DomaineScore {
-  domaine: DomaineProfil;
-  match: number;
-}
+/** Géométrie du radar (repère SVG) */
+const CX = 150;
+const CY = 150;
+const RADIUS = 105;
+const LABEL_RADIUS = 125;
+const MAX_NOTE = 5;
 
 @Component({
   selector: 'app-atlas',
-  standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeader],
   templateUrl: './atlas.html',
-  styleUrl: './atlas.css'
+  styleUrl: './atlas.css',
 })
 export class Atlas {
-  readonly criteria: string[] = [
-    'Matériel',
-    'Maths',
-    'Équipe',
-    'Concret',
-    'Code',
-    'Créativité',
-    'Rigueur',
-    'Recherche'
-  ];
+  private readonly data = inject(DataService);
+  private readonly profile = inject(ProfileService);
+  protected readonly auth = inject(AuthService);
 
-  readonly domaines: DomaineProfil[] = [
-    { id: 'ia', name: 'IA & Data', values: [1, 5, 3, 2, 5, 4, 3, 5] },
-    { id: 'cy', name: 'Cybersécurité', values: [2, 3, 3, 3, 4, 3, 5, 3] },
-    { id: 'em', name: 'Systèmes embarqués', values: [5, 3, 3, 5, 4, 3, 4, 2] },
-    { id: 'rt', name: 'Réseaux & Télécoms', values: [4, 3, 4, 4, 3, 2, 4, 2] },
-    { id: 'rf', name: 'Radiofréquences', values: [5, 5, 2, 4, 2, 3, 5, 4] },
-    { id: 'lg', name: 'Cloud & Logiciel', values: [1, 2, 4, 2, 5, 5, 3, 2] }
-  ];
+  protected readonly criteres = this.data.criteres.items;
 
-  // Valeurs initiales des 8 curseurs (sur 5)
-  scores = signal<number[]>([3, 3, 3, 3, 3, 3, 3, 3]);
+  /** Valeur de chaque curseur (sur 5), 3 = neutre au départ. */
+  protected readonly scores = signal<number[]>([]);
+  protected readonly saved = signal(false);
 
-  // Classement des domaines recalculé en direct à chaque mouvement de curseur
-  rankedDomaines = computed<DomaineScore[]>(() => {
-    const current = this.scores();
-    return this.domaines
-      .map(domaine => {
-        let diffSum = 0;
-        for (let i = 0; i < 8; i++) {
-          diffSum += Math.abs(current[i] - domaine.values[i]);
-        }
-        const match = Math.round(100 * (1 - diffSum / 40));
-        return { domaine, match };
+  private readonly count = computed(() => this.criteres().length);
+  private readonly valeurs = computed(() => this.criteres().map((_, i) => this.scores()[i] ?? 3));
+
+  /** Classement des domaines, recalculé en direct à chaque mouvement de curseur. */
+  protected readonly rankedDomaines = computed<DomaineScore[]>(() => {
+    const current = this.valeurs();
+    const max = MAX_NOTE * Math.max(this.count(), 1);
+    return this.data.domaines
+      .items()
+      .map((domaine) => {
+        const ecart = current.reduce((sum, note, i) => sum + Math.abs(note - (domaine.profil[i] ?? 0)), 0);
+        return { domaine, match: Math.round(100 * (1 - ecart / max)) };
       })
       .sort((a, b) => b.match - a.match);
   });
 
-  // Domaine arrivé en tête (affiché en pointillés sur le radar)
-  topDomaine = computed<DomaineProfil>(() => this.rankedDomaines()[0].domaine);
+  /** Domaine arrivé en tête (pointillés sur le radar). */
+  protected readonly topDomaine = computed<Domaine | null>(() => this.rankedDomaines()[0]?.domaine ?? null);
 
-  // Polygones de grille du radar (niveaux 1 à 5)
-  readonly gridPolygons: string[] = [1, 2, 3, 4, 5].map(level =>
-    this.buildPolygonPoints([level, level, level, level, level, level, level, level], 105)
+  protected readonly gridPolygons = computed(() =>
+    [1, 2, 3, 4, 5].map((niveau) => this.polygon(this.criteres().map(() => niveau))),
   );
 
-  // Coordonnées des 8 libellés autour du radar
-  readonly axisLabels = this.criteria.map((label, i) => {
-    const angle = -Math.PI / 2 + (i * Math.PI) / 4;
-    return {
-      label,
-      x: +(150 + 130 * Math.cos(angle)).toFixed(1),
-      y: +(153 + 130 * Math.sin(angle)).toFixed(1)
-    };
-  });
-
-  // Polygone orange de l'étudiant
-  userPolygon = computed<string>(() => this.buildPolygonPoints(this.scores(), 105));
-
-  // Polygone pointillé bleu marine du meilleur domaine
-  topDomainePolygon = computed<string>(() =>
-    this.buildPolygonPoints(this.topDomaine().values, 105)
+  protected readonly axisLabels = computed(() =>
+    this.criteres().map((critere, i) => {
+      const angle = this.angle(i);
+      const cos = Math.cos(angle);
+      return {
+        label: critere.label,
+        x: +(CX + LABEL_RADIUS * cos).toFixed(1),
+        y: +(CY + LABEL_RADIUS * Math.sin(angle) + 4).toFixed(1),
+        anchor: cos > 0.3 ? 'start' : cos < -0.3 ? 'end' : 'middle',
+      };
+    }),
   );
 
-  updateScore(index: number, event: Event): void {
-    const value = Number((event.target as HTMLInputElement).value);
-    this.scores.update(prev => {
-      const next = [...prev];
-      next[index] = value;
-      return next;
-    });
+  protected readonly userPolygon = computed(() => this.polygon(this.valeurs()));
+  protected readonly topPolygon = computed(() => this.polygon(this.topDomaine()?.profil ?? []));
+
+  /** Note actuelle du critère n° `index`. */
+  protected note(index: number): number {
+    return this.valeurs()[index];
   }
 
-  private buildPolygonPoints(values: number[], radius: number): string {
+  protected updateScore(index: number, event: Event): void {
+    const next = [...this.valeurs()];
+    next[index] = Number((event.target as HTMLInputElement).value);
+    this.saved.set(false);
+    this.scores.set(next);
+  }
+
+  /** Enregistre le profil dans « Mon profil » (utilisateur connecté). */
+  protected save(): void {
+    const top = this.rankedDomaines().slice(0, 3).map((r) => ({ domaineId: r.domaine.id, match: r.match }));
+    this.profile.saveResultat(this.valeurs(), top);
+    this.saved.set(true);
+  }
+
+  private angle(index: number): number {
+    return -Math.PI / 2 + (index * 2 * Math.PI) / Math.max(this.count(), 1);
+  }
+
+  private polygon(values: number[]): string {
     return values
       .map((val, i) => {
-        const angle = -Math.PI / 2 + (i * Math.PI) / 4;
-        const x = (150 + ((radius * val) / 5) * Math.cos(angle)).toFixed(1);
-        const y = (150 + ((radius * val) / 5) * Math.sin(angle)).toFixed(1);
-        return `${x},${y}`;
+        const r = (RADIUS * val) / MAX_NOTE;
+        return `${(CX + r * Math.cos(this.angle(i))).toFixed(1)},${(CY + r * Math.sin(this.angle(i))).toFixed(1)}`;
       })
       .join(' ');
   }

@@ -1,0 +1,7 @@
+:host { display: block; }
+.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.card-title { font-size: 18px; margin: 0 0 10px; }
+ul.tags-row { list-style: none; padding: 0; margin: 0; }
+[role='tabpanel'] { animation: panel-in 0.2s ease both; }
+@keyframes panel-in { from { opacity: 0; } }
+@media (max-width: 760px) { .two-cols { grid-template-columns: 1fr; } }

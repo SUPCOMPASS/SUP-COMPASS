@@ -1,0 +1,4 @@
+:host { display: block; }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 14px; color: var(--mute); }
+.crumbs li:not(:last-child)::after { content: '›'; margin-left: 6px; }
+.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }

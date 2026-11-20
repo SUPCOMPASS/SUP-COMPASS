@@ -2,40 +2,35 @@
 
     <div class="footer-container">
 
-        <!-- Présentation -->
         <div class="footer-brand">
-            <a routerLink="/" class="footer-logo">
-                <span class="logo-sup">SUP</span>
-                <span class="logo-compass">COMPASS</span>
+            <a routerLink="/" class="footer-logo" aria-label="Accueil SUP'COMPASS">
+                <span class="logo-sup">SUP</span><span class="logo-compass">COMPASS</span>
             </a>
-
             <p>
                 SUP'COMPASS vous accompagne dans votre parcours académique
                 et vous aide à découvrir les opportunités qui s'offrent à vous.
             </p>
         </div>
 
-        <!-- Navigation -->
-        <div class="footer-links">
-            <h3>Navigation</h3>
-
+        <nav class="footer-links" aria-label="Navigation du site">
+            <h2>Navigation</h2>
             <a routerLink="/">Accueil</a>
             <a routerLink="/domaines">Domaines</a>
             <a routerLink="/atlas">Atlas</a>
             <a routerLink="/double-diplome">Double diplôme</a>
-        </div>
+        </nav>
 
-        <!-- Informations -->
-        <div class="footer-info">
-            <h3>À propos</h3>
-
-            <p>Votre guide pour mieux orienter votre avenir académique.</p>
-        </div>
+        <nav class="footer-links" aria-label="Informations légales">
+            <h2>À propos</h2>
+            <a routerLink="/a-propos">Qui sommes-nous</a>
+            <a routerLink="/contact">Contact</a>
+            <a routerLink="/confidentialite">Confidentialité</a>
+        </nav>
 
     </div>
 
     <div class="footer-bottom">
-        <p>© 2026 SUP'COMPASS. Tous droits réservés.</p>
+        <p>© {{ annee }} SUP'COMPASS. Tous droits réservés.</p>
     </div>
 
 </footer>

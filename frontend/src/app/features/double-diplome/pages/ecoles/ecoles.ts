@@ -1,62 +1,55 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { DataService } from '../../../../core/services/data.service';
+import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
+import { PageHeader } from '../../../../shared/components/page-header/page-header';
+import { SchoolCard } from '../../../../shared/components/school-card/school-card';
 
-export interface EcolePartenaire {
-  id: number;
-  name: string;
-  pays: string;
-  langue: string;
-  rangMin: number;
-  rangMax: number;
-  doms: string[];
-  deadline: string;
-}
+const TOUS = 'all';
 
 @Component({
   selector: 'app-ecoles',
-  standalone: true,
-  imports: [],
+  imports: [PageHeader, SchoolCard, EmptyState],
   templateUrl: './ecoles.html',
-  styleUrl: './ecoles.css'
+  styleUrl: './ecoles.css',
 })
 export class Ecoles {
-  readonly paysList: string[] = ['all', 'France', 'Italie', 'Canada', 'Allemagne'];
+  private readonly data = inject(DataService);
 
-  readonly domainesFilter = [
-    { id: 'all', label: 'Tous' },
-    { id: 'ia', label: 'IA & Data' },
-    { id: 'cy', label: 'Cybersécurité' },
-    { id: 'em', label: 'Systèmes embarqués' },
-    { id: 'rt', label: 'Réseaux & Télécoms' }
-  ];
+  protected readonly tous = TOUS;
 
-  readonly ecoles: EcolePartenaire[] = [
-    { id: 0, name: 'Télécom Paris', pays: 'France', langue: 'Français', rangMin: 1, rangMax: 15, doms: ['ia', 'cy', 'rt'], deadline: 'Février 2027' },
-    { id: 1, name: 'IMT Atlantique', pays: 'France', langue: 'Français', rangMin: 15, rangMax: 30, doms: ['ia', 'em', 'rt'], deadline: 'Mars 2027' },
-    { id: 2, name: 'Polytechnique Montréal', pays: 'Canada', langue: 'Français', rangMin: 10, rangMax: 30, doms: ['ia', 'lg', 'rt'], deadline: 'Janvier 2027' },
-    { id: 3, name: 'Politecnico di Torino', pays: 'Italie', langue: 'Anglais', rangMin: 20, rangMax: 40, doms: ['em', 'rf'], deadline: 'Avril 2027' },
-    { id: 4, name: 'TU Munich', pays: 'Allemagne', langue: 'Anglais', rangMin: 1, rangMax: 20, doms: ['cy', 'rf'], deadline: 'Mai 2027' },
-    { id: 5, name: 'INSA Lyon', pays: 'France', langue: 'Français', rangMin: 30, rangMax: 50, doms: ['em', 'lg'], deadline: 'Mars 2027' }
-  ];
+  /** Options de filtre déduites des données (elles suivent les ajouts faits dans l'admin). */
+  protected readonly paysList = computed(() => [...new Set(this.data.ecoles.items().map((e) => e.pays))].sort());
+  protected readonly langues = computed(() => [...new Set(this.data.ecoles.items().map((e) => e.langue))].sort());
+  protected readonly domainesFilter = this.data.domaines.items;
 
-  selectedPays = signal<string>('all');
-  selectedDomaine = signal<string>('all');
-  rangInput = signal<string>('');
+  protected readonly selectedPays = signal<string>(TOUS);
+  protected readonly selectedLangue = signal<string>(TOUS);
+  protected readonly selectedDomaine = signal<string>(TOUS);
+  protected readonly rangInput = signal('');
 
-  filteredEcoles = computed<EcolePartenaire[]>(() => {
+  protected readonly filteredEcoles = computed(() => {
     const pays = this.selectedPays();
+    const langue = this.selectedLangue();
     const dom = this.selectedDomaine();
     const rang = parseInt(this.rangInput(), 10);
 
-    return this.ecoles.filter(ecole => {
-      const matchPays = pays === 'all' || ecole.pays === pays;
-      const matchDom = dom === 'all' || ecole.doms.includes(dom);
+    return this.data.ecoles.items().filter((ecole) => {
+      const matchPays = pays === TOUS || ecole.pays === pays;
+      const matchLangue = langue === TOUS || ecole.langue === langue;
+      const matchDom = dom === TOUS || ecole.domaines.includes(dom);
       const matchRang = isNaN(rang) || (rang >= ecole.rangMin && rang <= ecole.rangMax);
-      return matchPays && matchDom && matchRang;
+      return matchPays && matchLangue && matchDom && matchRang;
     });
   });
 
-  onRangChange(event: Event): void {
-    const val = (event.target as HTMLInputElement).value;
-    this.rangInput.set(val);
+  protected onRangChange(event: Event): void {
+    this.rangInput.set((event.target as HTMLInputElement).value);
+  }
+
+  protected reset(): void {
+    this.selectedPays.set(TOUS);
+    this.selectedLangue.set(TOUS);
+    this.selectedDomaine.set(TOUS);
+    this.rangInput.set('');
   }
 }

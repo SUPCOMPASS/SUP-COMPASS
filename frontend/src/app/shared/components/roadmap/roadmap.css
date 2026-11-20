@@ -1,0 +1,6 @@
+:host { display: block; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+li.card { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: start; }
+.year { display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 12px; background: var(--navy);
+    color: #fff; font: 700 16px 'Poppins', sans-serif; }
+h3 { margin-bottom: 6px; }

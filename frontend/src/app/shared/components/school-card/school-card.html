@@ -1,0 +1,9 @@
+<article class="card hoverable">
+    <h3><a [routerLink]="['/double-diplome', ecole().id]">{{ ecole().nom }}</a></h3>
+    <div class="tags-row">
+        <span class="tag">{{ ecole().pays }}</span>
+        <span class="tag">{{ ecole().langue }}</span>
+        <span class="tag tag-orange">Rang {{ ecole().rangMin }}–{{ ecole().rangMax }}</span>
+    </div>
+    <p class="deadline">Date limite : {{ ecole().deadline }}</p>
+</article>

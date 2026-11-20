@@ -1,0 +1,55 @@
+@if (combinaison(); as c) {
+<section class="page">
+
+    <app-page-header [heading]="c.nom" [subtitle]="c.resume"
+        [crumbs]="[{ label: 'Domaines', link: '/domaines' }, { label: c.nom }]" />
+
+    <p class="composition">
+        Combine :
+        @for (d of domaines(); track d.id; let last = $last) {
+        <a [routerLink]="['/domaines/domaine', d.id]">{{ d.nom }}</a>{{ last ? '' : ' + ' }}
+        }
+    </p>
+
+    <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections de la fiche combinaison" />
+
+    <div role="tabpanel" [id]="'panel-' + activeTab()" [attr.aria-labelledby]="'tab-' + activeTab()" tabindex="0">
+        @switch (activeTab()) {
+
+        @case ('presentation') {
+        <div class="card">
+            <h2 class="card-title">Prérequis</h2>
+            <ul class="plain-list">
+                @for (item of c.prerequis; track item) { <li>{{ item }}</li> }
+            </ul>
+        </div>
+        }
+
+        @case ('roadmap') {
+        <app-roadmap [steps]="parcours()" />
+        }
+
+        @case ('metiers') {
+        <div class="card">
+            <h2 class="card-title">Débouchés</h2>
+            <ul class="tags-row">
+                @for (item of c.debouches; track item) { <li class="tag tag-orange">{{ item }}</li> }
+            </ul>
+            @if (metiers().length) {
+            <h3 class="sous-titre">Métiers de la carte</h3>
+            <ul class="plain-list">
+                @for (m of metiers(); track m.id) { <li><strong>{{ m.nom }}</strong> — {{ m.resume }}</li> }
+            </ul>
+            }
+        </div>
+        }
+
+        }
+    </div>
+</section>
+} @else {
+<section class="page">
+    <app-empty-state heading="Combinaison introuvable" message="Cette fiche n’existe pas ou a été supprimée."
+        actionLabel="Retour à la carte des domaines" actionLink="/domaines" />
+</section>
+}

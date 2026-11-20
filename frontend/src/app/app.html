@@ -1,5 +1,11 @@
-<app-navbar></app-navbar>
+<a class="skip-link" href="#contenu">Aller au contenu principal</a>
 
-<router-outlet></router-outlet>
+<div class="route-progress" role="progressbar" aria-label="Chargement de la page" [hidden]="!navigating()"></div>
 
-<app-footer></app-footer>
+<app-navbar />
+
+<main id="contenu" #main tabindex="-1">
+    <router-outlet />
+</main>
+
+<app-footer />

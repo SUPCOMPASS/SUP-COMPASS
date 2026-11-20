@@ -1,0 +1,79 @@
+<div class="head">
+    <h2>{{ config().titre }}</h2>
+    <button type="button" class="btn btn-sm" (click)="startNew()">+ Ajouter un(e) {{ config().singulier }}</button>
+</div>
+
+@if (editing(); as current) {
+<form class="card edit" (submit)="save($event)" novalidate aria-labelledby="titre-form">
+    <h3 id="titre-form">{{ current === 'new' ? 'Nouveau / nouvelle ' + config().singulier : 'Modifier : ' + current }}</h3>
+
+    @for (f of config().fields; track f.key) {
+    <div class="field">
+        <label [for]="'f-' + f.key">{{ f.label }}</label>
+        @switch (f.kind) {
+        @case ('textarea') {
+        <textarea [id]="'f-' + f.key" [value]="values()[f.key]" (input)="setValue(f.key, $event)"></textarea>
+        }
+        @case ('lines') {
+        <textarea [id]="'f-' + f.key" [value]="values()[f.key]" (input)="setValue(f.key, $event)"></textarea>
+        }
+        @case ('select') {
+        <select [id]="'f-' + f.key" (change)="setValue(f.key, $event)">
+            @for (o of f.options; track o) { <option [value]="o" [selected]="values()[f.key] === o">{{ o }}</option> }
+        </select>
+        }
+        @case ('number') {
+        <input [id]="'f-' + f.key" type="number" [value]="values()[f.key]" (input)="setValue(f.key, $event)" />
+        }
+        @default {
+        <input [id]="'f-' + f.key" type="text" [value]="values()[f.key]" (input)="setValue(f.key, $event)" />
+        }
+        }
+        @if (f.hint) { <span class="hint">{{ f.hint }}</span> }
+    </div>
+    }
+
+    @if (error()) { <p class="feedback is-error" role="alert">{{ error() }}</p> }
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Enregistrer</button>
+        <button type="button" class="btn btn-outline" (click)="cancel()">Annuler</button>
+    </div>
+</form>
+}
+
+@if (rows().length) {
+<div class="table-wrap card">
+    <table>
+        <caption class="sr-only">{{ config().titre }}</caption>
+        <thead>
+            <tr>
+                @for (c of config().colonnes; track c) { <th scope="col">{{ c }}</th> }
+                <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (row of rows(); track row.id) {
+            <tr>
+                @for (c of config().colonnes; track c) { <td>{{ cell(row, c) }}</td> }
+                <td class="actions">
+                    @if (pendingDelete() === row.id) {
+                    <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(row.id)">Confirmer</button>
+                    <button type="button" class="btn btn-outline btn-sm" (click)="pendingDelete.set(null)">Annuler</button>
+                    } @else {
+                    <button type="button" class="btn btn-outline btn-sm" (click)="startEdit(row)">
+                        Modifier<span class="sr-only"> {{ row.id }}</span>
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm" (click)="askDelete(row.id)">
+                        Supprimer<span class="sr-only"> {{ row.id }}</span>
+                    </button>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+} @else {
+<app-empty-state heading="Rien à afficher" message="Aucun élément pour le moment. Utilise le bouton « Ajouter »." />
+}

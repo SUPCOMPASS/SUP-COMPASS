@@ -1,39 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DataService } from '../../../../core/services/data.service';
+import { DomainCard } from '../../../../shared/components/domain-card/domain-card';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DomainCard],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrl: './home.css',
 })
 export class Home {
+  private readonly data = inject(DataService);
 
-  readonly domains = [
-    {
-      name: 'IA & Data',
-      description:
-        'Analyser les données, développer des modèles intelligents et créer des systèmes prédictifs.',
-      jobs: ['Data Scientist', 'Ingénieur ML'],
-      link: '/domaines'
-    },
-
-    {
-      name: 'Cybersécurité',
-      description:
-        'Protéger les réseaux, les applications et les systèmes informatiques contre les cyberattaques.',
-      jobs: ['Analyste SOC', 'Pentester'],
-      link: '/domaines'
-    },
-
-    {
-      name: 'Systèmes embarqués',
-      description:
-        'Concevoir des solutions combinant matériel, logiciel et objets connectés.',
-      jobs: ['Ingénieur embarqué', 'Concepteur IoT'],
-      link: '/domaines'
-    }
-  ];
-
+  /** Les 3 premiers domaines sont mis en avant sur l'accueil. */
+  protected readonly vedettes = computed(() => this.data.domaines.items().slice(0, 3));
 }
