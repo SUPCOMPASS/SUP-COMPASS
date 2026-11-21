@@ -1,5 +1,5 @@
 import { r as __require, t as __commonJSMin } from "./rolldown-runtime-DYf_mQCB.js";
-// node_modules/xhr2/lib/xhr2.js
+// ../node_modules/xhr2/lib/xhr2.js
 var require_xhr2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$1) => {
 	(function() {
 		var InvalidStateError, NetworkError, ProgressEvent, SecurityError, SyntaxError, XMLHttpRequest, XMLHttpRequestEventTarget = (function() {

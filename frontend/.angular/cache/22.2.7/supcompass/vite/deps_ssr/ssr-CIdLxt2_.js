@@ -1,9 +1,12 @@
 import { i as __toESM } from "./rolldown-runtime-DYf_mQCB.js";
-import { M as ActivatedRoute, V as DefaultUrlSerializer, kt as loadChildren, lt as Router, nt as ROUTES } from "./router-jMZWkDTO.js";
-import { A as EVENT_MANAGER_PLUGINS, B as ViewportScroller, G as APP_BASE_HREF, M as EventManagerPlugin, Q as setRootDomAdapter, R as NullViewportScroller, S as BrowserModule, V as XhrFactory, X as PlatformLocation, Z as getDOM, b as BrowserDomAdapter, v as HTTP_FETCH_MAX_RESPONSE_SIZE, y as HTTP_ROOT_INTERCEPTOR_FNS, z as PLATFORM_SERVER_ID } from "./platform-browser-Boe5le2T.js";
-import { Ac as InjectionToken, Bn as LOCALE_ID, E as annotateForHydration, F as createPlatformFactory, Fl as ɵɵinject, Fn as Injectable, Hc as PLATFORM_INITIALIZER, Hl as require_cjs, Ki as setDocument, Li as resetCompiledComponents, Ml as ɵɵdefineInjector, Mn as IS_HYDRATION_DOM_REUSE_ENABLED, Pn as Inject, Sc as EnvironmentInjector, Sl as provideEnvironmentInitializer, Vc as PLATFORM_ID, Wi as setClassMetadata, Yc as TransferState, ao as ɵɵdefineNgModule, b as REQUEST_CONTEXT, cr as SSR_CONTENT_INTEGRITY_MARKER, fl as inject, fn as Console$1, gc as CSP_NONCE, ht as stopMeasuring, ir as Renderer2, jc as Injector, jl as ɵɵdefineInjectable, kc as INTERNAL_APPLICATION_ERROR_HANDLER, mc as APP_ID, mr as TESTABILITY, mt as startMeasuring, on as Compiler, ot as platformCore, qc as RuntimeError, qn as NgModule, qr as createEnvironmentInjector, s as ENABLE_ROOT_COMPONENT_BOOTSTRAP, tn as ApplicationRef, vc as DOCUMENT, vl as makeEnvironmentProviders, wl as runInInjectionContext, x as RESPONSE_INIT, y as REQUEST, yr as Testability } from "./core-DhJ3xqxv.js";
-import { t as index } from "./bundled-domino-BIpWWdja.js";
-// node_modules/@angular/ssr/fesm2022/_validation-chunk.mjs
+import { M as ActivatedRoute, V as DefaultUrlSerializer, kt as loadChildren, lt as Router, nt as ROUTES } from "./router-Bqkmc-Ti.js";
+import { At as APP_BASE_HREF, i as NullViewportScroller, l as ViewportScroller, o as PLATFORM_SERVER_ID } from "./common-DhbqrWG1.js";
+import { c as setRootDomAdapter, o as PlatformLocation, s as getDOM, t as XhrFactory } from "./_xhr-chunk-B0K2LxcW.js";
+import { Ac as InjectionToken, Bn as LOCALE_ID, E as annotateForHydration, F as createPlatformFactory, Fl as ɵɵinject, Fn as Injectable, Hc as PLATFORM_INITIALIZER, Hl as require_cjs, Ki as setDocument, Li as resetCompiledComponents, Ml as ɵɵdefineInjector, Mn as IS_HYDRATION_DOM_REUSE_ENABLED, Pn as Inject, Sc as EnvironmentInjector, Sl as provideEnvironmentInitializer, Vc as PLATFORM_ID, Wi as setClassMetadata, Yc as TransferState, ao as ɵɵdefineNgModule, b as REQUEST_CONTEXT, cr as SSR_CONTENT_INTEGRITY_MARKER, fl as inject, fn as Console$1, gc as CSP_NONCE, ht as stopMeasuring, ir as Renderer2, jc as Injector, jl as ɵɵdefineInjectable, kc as INTERNAL_APPLICATION_ERROR_HANDLER, mc as APP_ID, mr as TESTABILITY, mt as startMeasuring, on as Compiler, ot as platformCore, qc as RuntimeError, qn as NgModule, qr as createEnvironmentInjector, s as ENABLE_ROOT_COMPONENT_BOOTSTRAP, tn as ApplicationRef, vc as DOCUMENT, vl as makeEnvironmentProviders, wl as runInInjectionContext, x as RESPONSE_INIT, y as REQUEST, yr as Testability } from "./core-BGkJbb41.js";
+import { A as EventManagerPlugin, O as EVENT_MANAGER_PLUGINS, b as BrowserModule, v as BrowserDomAdapter } from "./platform-browser-Dkdt8XCY.js";
+import { t as index } from "./bundled-domino-BnSjZNto.js";
+import { a as HTTP_FETCH_MAX_RESPONSE_SIZE, s as HTTP_ROOT_INTERCEPTOR_FNS } from "./http-B4x5AfNl.js";
+// ../node_modules/@angular/ssr/fesm2022/_validation-chunk.mjs
 var TRUST_ALL_PROXY_HEADERS = "*";
 var HOST_HEADERS_TO_VALIDATE = ["host", "x-forwarded-host"];
 var VALID_PORT_REGEX = /^\d+$/;
@@ -153,7 +156,7 @@ function addParam(key, value, hasValue, params) {
 	const trimmedKey = key.trim().toLowerCase();
 	if (trimmedKey) params[trimmedKey] = value;
 }
-// node_modules/@angular/platform-server/fesm2022/_server-chunk.mjs
+// ../node_modules/@angular/platform-server/fesm2022/_server-chunk.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/
@@ -301,7 +304,7 @@ var ServerXhr = class ServerXhr {
 	async ɵloadImpl() {
 		if (!this.xhrImpl) {
 			if (typeof ngDevMode === "undefined" || ngDevMode) console.warn("XHR support in `@angular/platform-server` is deprecated and will be removed in Angular 23. It has known security and performance issues in server environments, such as forwarding `Authorization` headers on cross-origin redirects and susceptibility to denial-of-service (DoS) via redirect loops. Please use the HttpClient fetch backend instead, which is the default since Angular 22.");
-			const { default: xhr } = await import("./xhr2-Z3iAOjXs.js").then((m) => /* @__PURE__ */ __toESM(m.default, 1));
+			const { default: xhr } = await import("./xhr2-UDRiujHH.js").then((m) => /* @__PURE__ */ __toESM(m.default, 1));
 			this.xhrImpl = xhr;
 		}
 	}
@@ -574,7 +577,7 @@ function _document() {
 function platformServer(extraProviders) {
 	return createPlatformFactory(platformCore, "server", INTERNAL_SERVER_PLATFORM_PROVIDERS)(extraProviders);
 }
-// node_modules/@angular/platform-server/fesm2022/platform-server.mjs
+// ../node_modules/@angular/platform-server/fesm2022/platform-server.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/
@@ -746,7 +749,7 @@ function isHostAllowed(hostname, allowedHosts) {
 	}
 	return false;
 }
-// node_modules/beasties/dist/plan-DLQRCYVX.mjs
+// ../node_modules/beasties/dist/plan-DLQRCYVX.mjs
 var HEX_ESCAPE_RE = /\\([0-9a-f]{1,6})[\t\n\f\r ]?/gi;
 var CHAR_ESCAPE_RE = /\\(.)/g;
 var WHITESPACE_RE$1 = /\s+/g;
@@ -842,7 +845,7 @@ var ATTR_ACTIONS = [
 function isCompactPlan(plan) {
 	return Array.isArray(plan) && plan[0] === 1;
 }
-// node_modules/beasties/dist/runtime.mjs
+// ../node_modules/beasties/dist/runtime.mjs
 /**
 * Conservative allowlist for re-emitting a `media` attribute value into
 * generated JavaScript. `validateMediaQuery()` parses the query but tolerates
@@ -1676,7 +1679,7 @@ function lastIndexOfRe(html, re) {
 	for (const match of html.matchAll(re)) last = match.index;
 	return last;
 }
-// node_modules/@angular/ssr/fesm2022/ssr.mjs
+// ../node_modules/@angular/ssr/fesm2022/ssr.mjs
 var ServerAssets = class {
 	manifest;
 	constructor(manifest) {

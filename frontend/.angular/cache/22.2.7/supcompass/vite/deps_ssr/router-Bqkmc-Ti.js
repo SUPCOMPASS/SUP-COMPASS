@@ -1,6 +1,8 @@
-import { B as ViewportScroller, H as PRECOMMIT_HANDLER_SUPPORTED, J as PathLocationStrategy, K as Location, L as NavigationAdapterForLocation, U as PlatformNavigation, W as HashLocationStrategy, X as PlatformLocation, Y as LOCATION_INITIALIZED, q as LocationStrategy, s as Title } from "./platform-browser-Boe5le2T.js";
-import { $n as Output, $o as ɵɵloadQuery, Ac as InjectionToken, Bo as ɵɵinjectAttribute, Bt as computed, Di as provideAppInitializer, Ei as performanceMarkFeature, El as signal, En as ElementRef, Er as ViewContainerRef, Fl as ɵɵinject, Fn as Injectable, Gc as PendingTasksInternal, Hl as require_cjs, In as Input, Ls as ɵɵsanitizeUrlOrResourceUrl, Mi as publishNonCoreGlobalUtil, Ml as ɵɵdefineInjector, Mn as IS_HYDRATION_DOM_REUSE_ENABLED, Mr as afterNextRender, O as booleanAttribute, Oa as ɵɵcontentQuery, Qo as ɵɵlistener, Sc as EnvironmentInjector, Sl as provideEnvironmentInitializer, Wi as setClassMetadata, Wt as linkedSignal, X as input, Yn as NgModuleFactory$1, Yt as APP_BOOTSTRAP_LISTENER, Zc as Version, Zo as ɵɵinvalidFactory, a as ContentChildren, al as effect, an as ChangeDetectionStrategy, ao as ɵɵdefineNgModule, bc as ENVIRONMENT_INITIALIZER, bl as promiseWithResolvers, cn as Component, co as ɵɵdirectiveInject, dr as Service, et as maybeUnwrapDefaultExport, f as HostAttributeToken, fc as require_operators, fl as inject, fn as Console, ft as reflectComponentType, gl as isStandalone, io as ɵɵdefineDirective, ir as Renderer2, jc as Injector, jl as ɵɵdefineInjectable, jn as IS_ENABLED_BLOCKING_INITIAL_NAVIGATION, kc as INTERNAL_APPLICATION_ERROR_HANDLER, kn as HostListener, la as ɵɵNgOnChangesFeature, ml as isInjectable, nn as Attribute, ol as formatRuntimeError, on as Compiler, pt as resourceFromSnapshots, qc as RuntimeError, qn as NgModule, qr as createEnvironmentInjector, qt as untracked, r as ChangeDetectorRef, ro as ɵɵdefineComponent, so as ɵɵdefineService, tl as assertInInjectionContext, tn as ApplicationRef, vc as DOCUMENT, vi as isNgModule, vl as makeEnvironmentProviders, vo as ɵɵelement, wc as EventEmitter, wl as runInInjectionContext, wn as Directive, xs as ɵɵqueryRefresh, ya as ɵɵattribute, yc as DestroyRef, yi as isPromise, zc as NgZone } from "./core-DhJ3xqxv.js";
-// node_modules/@angular/router/fesm2022/_router-chunk.mjs
+import { $n as Output, $o as ɵɵloadQuery, Ac as InjectionToken, Bo as ɵɵinjectAttribute, Bt as computed, Di as provideAppInitializer, Ei as performanceMarkFeature, El as signal, En as ElementRef, Er as ViewContainerRef, Fl as ɵɵinject, Fn as Injectable, Gc as PendingTasksInternal, Hl as require_cjs, In as Input, Ls as ɵɵsanitizeUrlOrResourceUrl, Mi as publishNonCoreGlobalUtil, Ml as ɵɵdefineInjector, Mn as IS_HYDRATION_DOM_REUSE_ENABLED, Mr as afterNextRender, O as booleanAttribute, Oa as ɵɵcontentQuery, Qo as ɵɵlistener, Sc as EnvironmentInjector, Sl as provideEnvironmentInitializer, Wi as setClassMetadata, Wt as linkedSignal, X as input, Yn as NgModuleFactory$1, Yt as APP_BOOTSTRAP_LISTENER, Zc as Version, Zo as ɵɵinvalidFactory, a as ContentChildren, al as effect, an as ChangeDetectionStrategy, ao as ɵɵdefineNgModule, bc as ENVIRONMENT_INITIALIZER, bl as promiseWithResolvers, cn as Component, co as ɵɵdirectiveInject, dr as Service, et as maybeUnwrapDefaultExport, f as HostAttributeToken, fc as require_operators, fl as inject, fn as Console, ft as reflectComponentType, gl as isStandalone, io as ɵɵdefineDirective, ir as Renderer2, jc as Injector, jl as ɵɵdefineInjectable, jn as IS_ENABLED_BLOCKING_INITIAL_NAVIGATION, kc as INTERNAL_APPLICATION_ERROR_HANDLER, kn as HostListener, la as ɵɵNgOnChangesFeature, ml as isInjectable, nn as Attribute, ol as formatRuntimeError, on as Compiler, pt as resourceFromSnapshots, qc as RuntimeError, qn as NgModule, qr as createEnvironmentInjector, qt as untracked, r as ChangeDetectorRef, ro as ɵɵdefineComponent, so as ɵɵdefineService, tl as assertInInjectionContext, tn as ApplicationRef, vc as DOCUMENT, vi as isNgModule, vl as makeEnvironmentProviders, vo as ɵɵelement, wc as EventEmitter, wl as runInInjectionContext, wn as Directive, xs as ɵɵqueryRefresh, ya as ɵɵattribute, yc as DestroyRef, yi as isPromise, zc as NgZone } from "./core-BGkJbb41.js";
+import { a as LOCATION_INITIALIZED, o as PlatformLocation } from "./_xhr-chunk-B0K2LxcW.js";
+import { Mt as LocationStrategy, Pt as PathLocationStrategy, jt as Location, k as HashLocationStrategy, l as ViewportScroller, n as NavigationAdapterForLocation, v as PRECOMMIT_HANDLER_SUPPORTED, y as PlatformNavigation } from "./common-DhbqrWG1.js";
+import { s as Title } from "./platform-browser-Dkdt8XCY.js";
+// ../node_modules/@angular/router/fesm2022/_router-chunk.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/
@@ -3790,7 +3792,7 @@ function validateCommands(commands) {
 		if (cmd == null) throw new RuntimeError(4008, (typeof ngDevMode === "undefined" || ngDevMode) && `The requested path contains ${cmd} segment at index ${i}`);
 	}
 }
-// node_modules/@angular/router/fesm2022/_router_module-chunk.mjs
+// ../node_modules/@angular/router/fesm2022/_router_module-chunk.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/
@@ -5234,7 +5236,7 @@ function provideRouterInitializer() {
 		useExisting: ROUTER_INITIALIZER
 	}];
 }
-// node_modules/@angular/router/fesm2022/router.mjs
+// ../node_modules/@angular/router/fesm2022/router.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/

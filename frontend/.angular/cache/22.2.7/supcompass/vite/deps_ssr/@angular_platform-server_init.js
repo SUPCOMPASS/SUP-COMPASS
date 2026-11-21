@@ -1,5 +1,5 @@
-import { t as index } from "./bundled-domino-BIpWWdja.js";
-// node_modules/@angular/platform-server/fesm2022/init.mjs
+import { t as index } from "./bundled-domino-BnSjZNto.js";
+// ../node_modules/@angular/platform-server/fesm2022/init.mjs
 /**
 * @license Angular v22.2.6
 * (c) 2010-2026 Google LLC. https://angular.dev/

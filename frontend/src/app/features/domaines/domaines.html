@@ -1,0 +1,85 @@
+<div class="domaines-container">
+
+    <header class="page-header">
+        <h1>Nos domaines</h1>
+
+        <p>
+            Découvrez les différents domaines d'ingénierie
+            proposés par SUPCOMPASS.
+        </p>
+    </header>
+
+    <!-- Messages -->
+    <div class="message error" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <div class="message success" *ngIf="successMessage">
+        {{ successMessage }}
+    </div>
+
+    <!-- Chargement -->
+    <div *ngIf="loading" class="loading">
+        Chargement des domaines...
+    </div>
+
+    <!-- Liste des domaines -->
+    <section class="domaines-grid">
+
+        <article class="domaine-card" *ngFor="let domaine of domaines">
+
+            <div class="domaine-icon">
+                🎓
+            </div>
+
+            <h2>{{ domaine.nom }}</h2>
+
+            <p>{{ domaine.description }}</p>
+
+            <div class="actions">
+
+                <button class="edit-btn" (click)="modifierDomaine(domaine)">
+                    Modifier
+                </button>
+
+                <button class="delete-btn" (click)="supprimerDomaine(domaine.id)">
+                    Supprimer
+                </button>
+
+            </div>
+
+            <small>ID : {{ domaine.id }}</small>
+
+        </article>
+
+    </section>
+
+    <!-- Aucun domaine -->
+    <div *ngIf="!loading && domaines.length === 0" class="empty-message">
+
+        Aucun domaine disponible.
+
+    </div>
+
+    <!-- Ajouter un domaine -->
+    <section class="add-section">
+
+        <h2>Ajouter un domaine</h2>
+
+        <form (ngSubmit)="ajouterDomaine()">
+
+            <input type="text" name="nom" [(ngModel)]="nouveauDomaine.nom" placeholder="Nom du domaine" required>
+
+            <textarea name="description" [(ngModel)]="nouveauDomaine.description" placeholder="Description du domaine"
+                required>
+      </textarea>
+
+            <button type="submit">
+                Ajouter le domaine
+            </button>
+
+        </form>
+
+    </section>
+
+</div>

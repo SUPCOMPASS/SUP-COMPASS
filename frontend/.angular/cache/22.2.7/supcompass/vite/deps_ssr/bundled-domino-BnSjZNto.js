@@ -1,4 +1,4 @@
-// node_modules/@angular/platform-server/third_party/domino/bundled-domino.mjs
+// ../node_modules/@angular/platform-server/third_party/domino/bundled-domino.mjs
 function getDefaultExportFromCjs(x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }

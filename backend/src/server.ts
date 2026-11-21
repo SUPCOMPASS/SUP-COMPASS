@@ -12,6 +12,7 @@ import {
 } from './middleware/error.middleware.js';
 
 import authRoutes from './modules/auth/routes/auth.routes.js';
+import domainesRoutes from './modules/domaines/routes/domaines.routes.js';
 
 const app = express();
 
@@ -63,10 +64,12 @@ app.get('/health', async (_request, response) => {
 });
 
 // ========================================
-// 5. AUTHENTICATION ROUTES
+// 5. AUTHENTICATION ROUTES et // DOMAINES ROUTES
 // ========================================
 
 app.use('/api/auth', authRoutes);
+
+app.use('/api/domaines', domainesRoutes);
 
 // ========================================
 // 6. ROUTE 404
