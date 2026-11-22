@@ -100,6 +100,7 @@
 
           @case ('double-diplome') {
             @if (ecoles().length) {
+              <h2 class="sr-only">Écoles partenaires pour ce domaine</h2>
               <div class="grid-cards">
                 @for (ecole of ecoles(); track ecole.id) {
                   <app-school-card [ecole]="ecole" />

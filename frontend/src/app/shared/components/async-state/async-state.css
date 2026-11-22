@@ -7,10 +7,13 @@
   border-color: #f4c7c3;
   background: #fff8f7;
 }
-.async-error h3 {
+.async-error .async-title {
   color: var(--danger);
 }
 .async-error p {
   color: var(--mute);
   margin: 0 0 18px;
+}
+.async-title {
+  font-size: 18px;
 }

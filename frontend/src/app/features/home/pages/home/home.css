@@ -187,7 +187,14 @@
 @media (max-width: 800px) {
   .hero,
   .atlas-section {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Petits écrans : les bulles restent dans le cercle (pas de défilement horizontal) */
+  .domain-two {
+    right: 0;
+  }
+  .domain-four {
+    left: 0;
   }
   .hero {
     padding: 40px 20px;

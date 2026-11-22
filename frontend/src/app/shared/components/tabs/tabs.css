@@ -30,3 +30,14 @@ button.on {
   color: var(--navy);
   border-bottom-color: var(--org);
 }
+@media (max-width: 600px) {
+  /* Mobile : les onglets passent à la ligne au lieu d'être cachés hors de l'écran */
+  .tablist {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}

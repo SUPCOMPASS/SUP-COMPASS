@@ -9,6 +9,7 @@
     [error]="data.error()"
     (retry)="data.load()"
     label="Chargement des écoles…"
+    reserve="75vh"
     [lines]="5"
   >
     <div class="filters-grid" role="search" aria-label="Filtres des écoles">
@@ -106,6 +107,7 @@
       </div>
     </div>
 
+    <h2 class="sr-only">Écoles correspondant aux filtres</h2>
     <p class="count" role="status">
       {{ filteredEcoles().length }} école{{ filteredEcoles().length > 1 ? 's' : '' }} trouvée{{
         filteredEcoles().length > 1 ? 's' : ''
