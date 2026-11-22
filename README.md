@@ -111,6 +111,10 @@ SUPCOMPASS/
 │
 ├── frontend/              # Angular application
 │
+├── mock-api/              # Mock REST API (json-server) used by the frontend — Objectif 4
+│   ├── db.seed.json       # Initial data (domains, schools, demo accounts…)
+│   └── server.js          # json-server + simulated auth, access rules, cascade deletes
+│
 ├── backend/
 │   ├── src/
 │   │   ├── config/        # Database configuration
@@ -247,13 +251,90 @@ cd frontend
 npm install
 ```
 
+### 5. Install the Mock API (Objectif 4)
+
+Until the Express/PostgreSQL backend is complete, the frontend reads and writes all its data
+through a **mock REST API** built with [json-server](https://github.com/typicode/json-server).
+
+```bash
+cd mock-api
+npm install
+```
+
 ---
 
 ## ▶️ Running the Application
 
-The frontend and backend run separately during development.
+### Frontend + Mock API (current version — Objectif 4)
 
-**Backend:**
+Two terminals:
+
+```bash
+# Terminal 1 — mock API on http://localhost:3001
+cd mock-api
+npm start
+
+# Terminal 2 — Angular app on http://localhost:4200
+cd frontend
+npm start
+```
+
+Demo accounts:
+
+| Email | Password | Role |
+|---|---|---|
+| `etudiant@supcom.tn` | `etudiant1234` | user (favorites, saved atlas results) |
+| `admin@supcom.tn` | `admin1234` | admin (admin area: CRUD on all contents) |
+
+Useful commands:
+
+| Command (in `mock-api/`) | Description |
+|---|---|
+| `npm start` | Start the mock API (port `3001`, ~400 ms simulated latency) |
+| `npm run reset` | Restore the initial data (`db.json` ← `db.seed.json`) |
+| `MOCK_DELAY=0 npm start` | Start without simulated latency |
+
+If the mock API is not running, every page shows an error message with a **Retry** button.
+
+#### Mock API endpoints
+
+| Route | Access | Description |
+|---|---|---|
+| `GET /criteres`, `/domaines`, `/combinaisons`, `/metiers`, `/parcours`, `/ecoles` (+ `/:id`) | Public | Site contents (json-server filters work, e.g. `/ecoles?pays=France`) |
+| `POST` / `PUT` / `PATCH` / `DELETE` on the routes above | Admin | Admin area. Deleting a domain or combination also deletes what depends on it |
+| `POST /auth/register`, `POST /auth/login` | Public | Returns `{ token, user }`; passwords are stored hashed (scrypt) |
+| `POST /auth/forgot` | Public | Simulated reset email (same answer whether the account exists or not) |
+| `GET /auth/me`, `PATCH /auth/password`, `POST /auth/logout`, `DELETE /auth/me` | Logged in | Session, password change, logout, account deletion |
+| `GET` / `POST` / `DELETE /favoris`, `/resultats` | Logged in | Favorites and saved atlas results — each user only sees their own |
+| `POST /messages` | Public | Contact form (`GET` is admin only) |
+
+The token is sent in the `Authorization: Bearer <token>` header by an Angular HTTP interceptor.
+To switch to the real backend later, change `API_URL` in `frontend/src/app/core/config/api.config.ts`.
+
+### Frontend commands
+
+| Command (in `frontend/`) | Description |
+|---|---|
+| `npm start` | Development server (`http://localhost:4200`) |
+| `npm run build` | Production build (lazy-loaded pages, SSR + prerendering) |
+| `npm test` | Unit tests (Vitest) |
+| `npm run format` / `npm run format:check` | Format / check the code with Prettier |
+
+### Frontend features (Objectif 4)
+
+- All sitemap pages: home, domains map, domain and combination pages (tabs), atlas (radar + sliders), quiz,
+  double degree list + school page, login / register / forgot password, profile, admin area, about, contact,
+  privacy, 404.
+- Reusable components (`shared/components`): navbar, footer, page header, tabs, cards, roadmap, empty state,
+  loader, async state (loading skeleton / error + retry).
+- Complete routing with lazy loading, route guards (logged-in user, admin) and page titles.
+- Dynamic data from the mock API: display, creation, update and deletion (admin area, favorites, saved results,
+  contact messages).
+- UX: loading skeletons and spinners, error messages, light CSS transitions, responsive menu (mobile / tablet).
+- Accessibility: skip link, focus management after navigation, ARIA labels and live regions, keyboard-usable
+  map and tabs, `prefers-reduced-motion` support.
+
+### Backend (Express + PostgreSQL — in progress)
 
 From the `backend` directory:
 
@@ -265,20 +346,6 @@ Backend address:
 
 ```text
 http://localhost:3000
-```
-
-**Frontend:**
-
-From the `frontend` directory:
-
-```bash
-npx ng serve
-```
-
-Open:
-
-```text
-http://localhost:4200
 ```
 
 ### Backend Commands
