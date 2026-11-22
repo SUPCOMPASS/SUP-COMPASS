@@ -1,3 +1,4 @@
+@if (data.status() === 'ready') {
 @if (ecole(); as e) {
 <section class="page">
 
@@ -49,5 +50,10 @@
 <section class="page">
     <app-empty-state heading="École introuvable" message="Cette fiche n’existe pas ou a été supprimée."
         actionLabel="Retour à la liste des écoles" actionLink="/double-diplome" />
+</section>
+}
+} @else {
+<section class="page">
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la fiche…" [lines]="6" />
 </section>
 }

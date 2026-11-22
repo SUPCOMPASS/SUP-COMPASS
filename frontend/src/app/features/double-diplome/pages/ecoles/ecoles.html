@@ -2,6 +2,7 @@
     <app-page-header heading="Double diplôme"
         subtitle="Trouve les écoles selon ton domaine, ton pays, la langue et ton rang." />
 
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement des écoles…" [lines]="5">
     <div class="filters-grid" role="search" aria-label="Filtres des écoles">
 
         <fieldset>
@@ -62,4 +63,5 @@
     <app-empty-state heading="Aucune école trouvée" message="Élargis tes filtres : change de pays, de domaine ou de rang." />
     <p class="reset"><button type="button" class="btn btn-outline btn-sm" (click)="reset()">Réinitialiser les filtres</button></p>
     }
+    </app-async-state>
 </section>

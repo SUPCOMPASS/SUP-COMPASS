@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { DataService } from '../../../../core/services/data.service';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 import { SchoolCard } from '../../../../shared/components/school-card/school-card';
@@ -8,12 +9,12 @@ const TOUS = 'all';
 
 @Component({
   selector: 'app-ecoles',
-  imports: [PageHeader, SchoolCard, EmptyState],
+  imports: [PageHeader, SchoolCard, EmptyState, AsyncState],
   templateUrl: './ecoles.html',
   styleUrl: './ecoles.css',
 })
 export class Ecoles {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
 
   protected readonly tous = TOUS;
 

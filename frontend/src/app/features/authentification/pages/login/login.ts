@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { ADMIN_DEMO_EMAIL, AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 export type AuthMode = 'login' | 'register' | 'forgot';
 type FieldErrors = { nom?: string; email?: string; password?: string };
@@ -22,7 +22,6 @@ export class Login {
   /** Page à rejoindre après connexion (?returnUrl=…). */
   readonly returnUrl = input<string>();
 
-  protected readonly adminEmail = ADMIN_DEMO_EMAIL;
   protected readonly fullName = signal('');
   protected readonly email = signal('');
   protected readonly password = signal('');

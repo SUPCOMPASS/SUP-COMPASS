@@ -2,8 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import { DataService } from '../../../../core/services/data.service';
+import { DataService, LoadStatus } from '../../../../core/services/data.service';
 import { ProfileService } from '../../../../core/services/profile.service';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { DomainCard } from '../../../../shared/components/domain-card/domain-card';
 import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
@@ -11,13 +12,13 @@ import { TabDef, Tabs } from '../../../../shared/components/tabs/tabs';
 
 @Component({
   selector: 'app-profil',
-  imports: [DatePipe, RouterLink, PageHeader, Tabs, DomainCard, EmptyState],
+  imports: [DatePipe, RouterLink, PageHeader, Tabs, DomainCard, EmptyState, AsyncState],
   templateUrl: './profil.html',
   styleUrl: './profil.css',
 })
 export class Profil {
   private readonly router = inject(Router);
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
   protected readonly auth = inject(AuthService);
   protected readonly profile = inject(ProfileService);
 
@@ -28,6 +29,15 @@ export class Profil {
   ];
   protected readonly activeTab = signal('resultats');
 
+  /** Les onglets Résultats / Favoris attendent les contenus ET les données personnelles. */
+  protected readonly status = computed<LoadStatus>(() => {
+    const statuts = [this.data.status(), this.profile.status()];
+    return statuts.includes('error') ? 'error' : statuts.includes('loading') ? 'loading' : 'ready';
+  });
+  protected readonly erreur = computed(() => this.data.error() || this.profile.error());
+  /** Message d'erreur d'une action (suppression d'un résultat, retrait d'un favori…). */
+  protected readonly actionErreur = signal('');
+
   /** Domaines favoris (ceux qui existent encore). */
   protected readonly favoris = computed(() =>
     this.profile.favoris().flatMap((id) => {
@@ -36,7 +46,21 @@ export class Profil {
     }),
   );
 
-  // Changement de mot de passe (simulé)
+  protected recharger(): void {
+    if (this.data.status() === 'error') void this.data.load();
+    if (this.profile.status() === 'error') void this.profile.load();
+  }
+
+  protected async action(appel: () => Promise<void>): Promise<void> {
+    this.actionErreur.set('');
+    try {
+      await appel();
+    } catch (e) {
+      this.actionErreur.set(e instanceof Error ? e.message : 'Une erreur est survenue.');
+    }
+  }
+
+  // Changement de mot de passe
   protected readonly newPassword = signal('');
   protected readonly confirmPassword = signal('');
   protected readonly pwdStatus = signal<{ text: string; error: boolean } | null>(null);
@@ -59,7 +83,7 @@ export class Profil {
     this.pwdLoading.set(true);
     try {
       await this.auth.changePassword(this.newPassword());
-      this.pwdStatus.set({ text: 'Mot de passe modifié (simulation).', error: false });
+      this.pwdStatus.set({ text: 'Mot de passe modifié.', error: false });
       this.newPassword.set('');
       this.confirmPassword.set('');
     } catch (e) {
@@ -69,9 +93,18 @@ export class Profil {
     }
   }
 
+  protected readonly deleteError = signal('');
+
   protected async deleteAccount(): Promise<void> {
     this.deleteLoading.set(true);
-    await this.auth.deleteAccount();
-    await this.router.navigateByUrl('/');
+    this.deleteError.set('');
+    try {
+      await this.auth.deleteAccount();
+      await this.router.navigateByUrl('/');
+    } catch (e) {
+      this.deleteError.set(e instanceof Error ? e.message : 'La suppression a échoué.');
+    } finally {
+      this.deleteLoading.set(false);
+    }
   }
 }

@@ -2,6 +2,7 @@
     <app-page-header heading="Carte des domaines"
         subtitle="Clique sur un domaine pour voir ses combinaisons et ses métiers. Clique sur « Voir la fiche » pour les détails." />
 
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la carte…" [lines]="6">
     <div class="map-layout">
         <div class="card map-card">
             <svg [attr.viewBox]="'0 0 800 ' + viewHeight()" role="group" aria-label="Carte des domaines">
@@ -51,4 +52,5 @@
             }
         </div>
     </div>
+    </app-async-state>
 </section>

@@ -6,6 +6,7 @@ import { ProfileService } from '../../../../core/services/profile.service';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { Domaine } from '../../../../core/models/models';
 import { DomaineScore, MAX_NOTE, NOTE_NEUTRE, classerDomaines } from '../../../../core/utils/matching';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
 /** Géométrie du radar (repère SVG) */
@@ -16,12 +17,12 @@ const LABEL_RADIUS = 125;
 
 @Component({
   selector: 'app-atlas',
-  imports: [RouterLink, PageHeader],
+  imports: [RouterLink, PageHeader, AsyncState],
   templateUrl: './atlas.html',
   styleUrl: './atlas.css',
 })
 export class Atlas {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
   private readonly profile = inject(ProfileService);
   private readonly quiz = inject(QuizService);
   protected readonly auth = inject(AuthService);
@@ -33,6 +34,8 @@ export class Atlas {
   /** Vrai si l'atlas est pré-rempli par le quiz et que l'utilisateur n'a encore rien modifié. */
   protected readonly depuisQuiz = computed(() => this.quiz.aResultat() && this.scores().length === 0);
   protected readonly saved = signal(false);
+  protected readonly saving = signal(false);
+  protected readonly saveError = signal('');
 
   private readonly count = computed(() => this.criteres().length);
   private readonly valeurs = computed(() => {
@@ -86,10 +89,18 @@ export class Atlas {
   }
 
   /** Enregistre le profil dans « Mon profil » (utilisateur connecté). */
-  protected save(): void {
+  protected async save(): Promise<void> {
     const top = this.rankedDomaines().slice(0, 3).map((r) => ({ domaineId: r.domaine.id, match: r.match }));
-    this.profile.saveResultat(this.valeurs(), top);
-    this.saved.set(true);
+    this.saving.set(true);
+    this.saveError.set('');
+    try {
+      await this.profile.saveResultat(this.valeurs(), top);
+      this.saved.set(true);
+    } catch (e) {
+      this.saveError.set(e instanceof Error ? e.message : 'La sauvegarde a échoué.');
+    } finally {
+      this.saving.set(false);
+    }
   }
 
   private angle(index: number): number {

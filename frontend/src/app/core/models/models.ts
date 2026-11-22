@@ -59,5 +59,8 @@ export type ResultatAtlas = {
   top: { domaineId: string; match: number }[];
 };
 
-/** Données personnelles d'un utilisateur connecté. */
-export type ProfilState = { favoris: string[]; resultats: ResultatAtlas[] };
+/** Domaine mis en favori par l'utilisateur connecté (ressource /favoris de l'API). */
+export type Favori = { id: string; domaineId: string };
+
+/** Message envoyé depuis la page Contact (ressource /messages de l'API). */
+export type MessageContact = { nom: string; email: string; message: string };

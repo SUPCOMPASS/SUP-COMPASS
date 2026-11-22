@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+.async-error {
+  text-align: center;
+  padding: 32px 20px;
+  border-color: #f4c7c3;
+  background: #fff8f7;
+}
+.async-error h3 {
+  color: var(--danger);
+}
+.async-error p {
+  color: var(--mute);
+  margin: 0 0 18px;
+}

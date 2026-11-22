@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { Collection } from '../../../../core/services/collection';
-import { DataService } from '../../../../core/services/data.service';
+import { DataService, Ressource } from '../../../../core/services/data.service';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
 
 type Row = { id: string } & Record<string, unknown>;
@@ -81,15 +82,18 @@ const CONFIGS: Record<string, SectionConfig> = {
   },
 };
 
-/** Gestion générique (liste + ajout / modification / suppression) pilotée par la route `data.section`. */
+/**
+ * Gestion générique (liste + ajout / modification / suppression) pilotée par la route `data.section`.
+ * Chaque action appelle l'API (POST / PUT / DELETE) ; l'API vérifie que l'utilisateur est admin.
+ */
 @Component({
   selector: 'app-admin-section',
-  imports: [EmptyState],
+  imports: [EmptyState, AsyncState],
   templateUrl: './admin-section.html',
   styleUrl: './admin-section.css',
 })
 export class AdminSection {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
 
   readonly section = input<string>('domaines');
 
@@ -101,13 +105,18 @@ export class AdminSection {
   protected readonly values = signal<Record<string, string>>({});
   protected readonly error = signal('');
   protected readonly pendingDelete = signal<string | null>(null);
+  /** Vrai pendant un appel à l'API (boutons désactivés). */
+  protected readonly busy = signal(false);
+  /** Erreur d'une suppression (affichée au-dessus du tableau). */
+  protected readonly listError = signal('');
+  protected readonly notice = signal('');
+
+  private ressource(): Ressource {
+    return (this.section() in CONFIGS ? this.section() : 'domaines') as Ressource;
+  }
 
   private collection(): Collection<Row> {
-    const d = this.data;
-    const map: Record<string, unknown> = {
-      domaines: d.domaines, combinaisons: d.combinaisons, parcours: d.parcours, ecoles: d.ecoles, criteres: d.criteres,
-    };
-    return (map[this.section()] ?? d.domaines) as Collection<Row>;
+    return this.data.collection(this.ressource()) as Collection<Row>;
   }
 
   /** Valeur d'une cellule du tableau (tableaux joints par des virgules). */
@@ -143,8 +152,9 @@ export class AdminSection {
     this.values.update((v) => ({ ...v, [key]: value }));
   }
 
-  protected save(event: Event): void {
+  protected async save(event: Event): Promise<void> {
     event.preventDefault();
+    if (this.busy()) return;
     const v = this.values();
     const cfg = this.config();
     const vide = cfg.fields.find((f) => f.kind !== 'list' && f.kind !== 'lines' && f.kind !== 'numbers' && !v[f.key]?.trim());
@@ -163,28 +173,49 @@ export class AdminSection {
       return;
     }
 
-    const row: Row = { id };
+    // On part de l'élément existant pour conserver les champs non éditables (ex. miseAJour d'une école).
+    const row: Row = { ...(this.collection().get(id) ?? {}), id };
     for (const f of cfg.fields) row[f.key] = this.convert(f, v[f.key] ?? '');
     if (this.section() === 'domaines') row['profil'] = this.padProfil(row['profil'] as number[]);
+    if (this.section() === 'ecoles') row['miseAJour'] = new Date().toISOString().slice(0, 10);
 
-    this.collection().upsert(row);
-    this.cancel();
+    const creation = this.editing() === 'new';
+    this.busy.set(true);
+    this.error.set('');
+    try {
+      await this.data.save(this.ressource(), row, creation);
+      this.cancel();
+      this.notice.set(creation ? `« ${id} » a été ajouté.` : `« ${id} » a été modifié.`);
+    } catch (e) {
+      this.error.set(e instanceof Error ? e.message : 'L’enregistrement a échoué.');
+    } finally {
+      this.busy.set(false);
+    }
   }
 
   protected askDelete(id: string): void {
     this.pendingDelete.set(id);
   }
 
-  protected confirmDelete(id: string): void {
-    // Suppression en cascade pour les domaines / combinaisons (parcours, métiers, écoles liés).
-    if (this.section() === 'domaines') this.data.removeDomaine(id);
-    else if (this.section() === 'combinaisons') this.data.removeCombinaison(id);
-    else this.collection().remove(id);
-    this.pendingDelete.set(null);
+  protected async confirmDelete(id: string): Promise<void> {
+    // Pour les domaines / combinaisons, l'API supprime aussi en cascade (parcours, métiers, liens des écoles).
+    this.busy.set(true);
+    this.listError.set('');
+    try {
+      await this.data.remove(this.ressource(), id);
+      this.pendingDelete.set(null);
+      this.notice.set(`« ${id} » a été supprimé.`);
+    } catch (e) {
+      this.listError.set(e instanceof Error ? e.message : 'La suppression a échoué.');
+    } finally {
+      this.busy.set(false);
+    }
   }
 
   private reset(): void {
     this.error.set('');
+    this.listError.set('');
+    this.notice.set('');
     this.pendingDelete.set(null);
   }
 

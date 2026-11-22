@@ -28,9 +28,11 @@ export class QuizService {
   /** Moyenne des réponses par critère ; un critère sans question reste neutre. */
   calculer(reponses: Record<string, number>, criteres: Critere[]): Record<string, number> {
     const resultat: Record<string, number> = {};
-    for (const critere of criteres) {
-      const valeurs = QUESTIONS_QUIZ.filter((q) => q.critere === critere.id && q.id in reponses).map((q) => reponses[q.id]);
-      resultat[critere.id] = valeurs.length
+    // Si les critères ne sont pas encore chargés depuis l'API, on se base sur ceux des questions.
+    const ids = criteres.length ? criteres.map((c) => c.id) : [...new Set(QUESTIONS_QUIZ.map((q) => q.critere))];
+    for (const id of ids) {
+      const valeurs = QUESTIONS_QUIZ.filter((q) => q.critere === id && q.id in reponses).map((q) => reponses[q.id]);
+      resultat[id] = valeurs.length
         ? Math.round(valeurs.reduce((a, b) => a + b, 0) / valeurs.length)
         : NOTE_NEUTRE;
     }

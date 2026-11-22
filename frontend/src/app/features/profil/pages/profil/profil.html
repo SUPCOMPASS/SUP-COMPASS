@@ -9,10 +9,13 @@
 
     <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections du profil" />
 
+    @if (actionErreur()) { <p class="feedback is-error" role="alert">{{ actionErreur() }}</p> }
+
     <div role="tabpanel" [id]="'panel-' + activeTab()" [attr.aria-labelledby]="'tab-' + activeTab()" tabindex="0">
         @switch (activeTab()) {
 
         @case ('resultats') {
+        <app-async-state [status]="status()" [error]="erreur()" (retry)="recharger()" label="Chargement de tes résultats…">
         @if (profile.resultats().length) {
         <ul class="results">
             @for (r of profile.resultats(); track r.id) {
@@ -25,7 +28,7 @@
                         }
                     </ol>
                 </div>
-                <button type="button" class="btn btn-outline btn-sm" (click)="profile.removeResultat(r.id)">
+                <button type="button" class="btn btn-outline btn-sm" (click)="action(() => profile.removeResultat(r.id))">
                     Supprimer<span class="sr-only"> ce résultat</span>
                 </button>
             </li>
@@ -36,16 +39,18 @@
             message="Passe l’atlas d’orientation puis sauvegarde ton profil pour le retrouver ici."
             actionLabel="Ouvrir l’atlas" actionLink="/atlas" />
         }
+        </app-async-state>
         }
 
         @case ('favoris') {
+        <app-async-state [status]="status()" [error]="erreur()" (retry)="recharger()" label="Chargement de tes favoris…">
         @if (favoris().length) {
         <div class="grid-cards">
             @for (d of favoris(); track d.id) {
             <div class="fav">
                 <app-domain-card [nom]="d.nom" [resume]="d.resume" [tags]="d.debouches.slice(0, 2)"
                     [link]="'/domaines/domaine/' + d.id" />
-                <button type="button" class="btn btn-outline btn-sm" (click)="profile.toggleFavori(d.id)">
+                <button type="button" class="btn btn-outline btn-sm" (click)="action(() => profile.toggleFavori(d.id))">
                     Retirer<span class="sr-only"> {{ d.nom }} des favoris</span>
                 </button>
             </div>
@@ -55,6 +60,7 @@
         <app-empty-state heading="Aucun favori pour l’instant" message="Ajoute un domaine à tes favoris depuis sa fiche."
             actionLabel="Explorer les domaines" actionLink="/domaines" />
         }
+        </app-async-state>
         }
 
         @case ('parametres') {
@@ -94,6 +100,7 @@
                     </button>
                     <button type="button" class="btn btn-outline" (click)="confirmDelete.set(false)">Annuler</button>
                 </div>
+                @if (deleteError()) { <p class="feedback is-error" role="alert">{{ deleteError() }}</p> }
                 }
             </div>
         </div>

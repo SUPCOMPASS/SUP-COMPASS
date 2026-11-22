@@ -1,24 +1,27 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Utilisateur } from '../models/models';
+import { ApiService } from './api.service';
 import { StorageService } from './storage.service';
 
 const SESSION_KEY = 'session';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-/** Seul ce compte obtient le rôle administrateur (mode démo). */
-export const ADMIN_DEMO_EMAIL = 'admin@supcom.tn';
 
-const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+type Session = { token: string; user: Utilisateur };
 
 /**
- * Authentification SIMULÉE (mode démo, sans backend) : e-mail valide + mot de passe de 8 caractères
- * minimum ouvrent une session stockée dans le navigateur. À remplacer par /api/auth (JWT) plus tard.
+ * Authentification via le mock API (/auth/*) : l'API vérifie le mot de passe et renvoie un jeton
+ * de session, gardé dans le navigateur et ajouté à chaque requête par l'intercepteur.
+ * Le rôle (user / admin) vient de l'API, plus du front.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly api = inject(ApiService);
   private readonly storage = inject(StorageService);
+  private readonly session = signal<Session | null>(null);
   private restored = false;
 
-  readonly user = signal<Utilisateur | null>(null);
+  readonly user = computed(() => this.session()?.user ?? null);
+  readonly token = computed(() => this.session()?.token ?? null);
   readonly isLoggedIn = computed(() => this.user() !== null);
   readonly isAdmin = computed(() => this.user()?.role === 'admin');
 
@@ -26,57 +29,69 @@ export class AuthService {
   restore(): void {
     if (this.restored) return;
     this.restored = true;
-    this.user.set(this.storage.get<Utilisateur>(SESSION_KEY));
+    const saved = this.storage.get<Session>(SESSION_KEY);
+    if (!saved?.token) return;
+    this.session.set(saved);
+    // Vérifie en arrière-plan que le jeton est toujours valide (sinon l'intercepteur ferme la session).
+    this.api.get<Utilisateur>('/auth/me').then(
+      (user) => this.ouvrirSession({ token: saved.token, user }),
+      () => undefined,
+    );
   }
 
   async login(email: string, password: string): Promise<Utilisateur> {
     this.valider(email, password);
-    await wait(600);
-    return this.ouvrirSession(email.split('@')[0].replace(/[._-]+/g, ' '), email);
+    const session = await this.api.post<Session>('/auth/login', { email: email.trim(), password });
+    return this.ouvrirSession(session);
   }
 
   async register(nom: string, email: string, password: string): Promise<Utilisateur> {
     this.valider(email, password);
-    await wait(700);
-    return this.ouvrirSession(nom.trim(), email);
+    const session = await this.api.post<Session>('/auth/register', {
+      nom: nom.trim(),
+      email: email.trim(),
+      password,
+    });
+    return this.ouvrirSession(session);
   }
 
   async requestReset(email: string): Promise<void> {
     if (!EMAIL_RE.test(email)) throw new Error('Adresse e-mail invalide.');
-    await wait(600);
+    await this.api.post('/auth/forgot', { email: email.trim() });
   }
 
-  async changePassword(newPassword: string): Promise<void> {
-    if (newPassword.length < 8) throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
-    await wait(600);
+  async changePassword(password: string): Promise<void> {
+    if (password.length < 8)
+      throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
+    await this.api.patch('/auth/password', { password });
   }
 
+  /** Déconnexion : le jeton est invalidé côté API, la session locale est effacée tout de suite. */
   logout(): void {
-    this.storage.remove(SESSION_KEY);
-    this.user.set(null);
+    if (this.token()) this.api.post('/auth/logout', {}).catch(() => undefined);
+    this.clearSession();
   }
 
   async deleteAccount(): Promise<void> {
-    const current = this.user();
-    await wait(600);
-    if (current) this.storage.remove(`profil.${current.email}`);
-    this.logout();
+    await this.api.delete('/auth/me');
+    this.clearSession();
+  }
+
+  /** Efface la session locale (déconnexion, ou jeton refusé par l'API). */
+  clearSession(): void {
+    this.storage.remove(SESSION_KEY);
+    this.session.set(null);
   }
 
   private valider(email: string, password: string): void {
     if (!EMAIL_RE.test(email)) throw new Error('Adresse e-mail invalide.');
-    if (password.length < 8) throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
+    if (password.length < 8)
+      throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
   }
 
-  private ouvrirSession(nom: string, email: string): Utilisateur {
-    const user: Utilisateur = {
-      id: email.toLowerCase(),
-      nom: nom || email,
-      email: email.toLowerCase(),
-      role: email.toLowerCase() === ADMIN_DEMO_EMAIL ? 'admin' : 'user',
-    };
-    this.storage.set(SESSION_KEY, user);
-    this.user.set(user);
-    return user;
+  private ouvrirSession(session: Session): Utilisateur {
+    this.storage.set(SESSION_KEY, session);
+    this.session.set(session);
+    return session.user;
   }
 }

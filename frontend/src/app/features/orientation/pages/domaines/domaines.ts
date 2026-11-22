@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../../../core/services/data.service';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
 export type NodeType = 'd' | 'c' | 'm'; // Domaine, Combinaison, Métier
@@ -15,12 +16,12 @@ const TOP = 60;
 
 @Component({
   selector: 'app-domaines',
-  imports: [RouterLink, PageHeader],
+  imports: [RouterLink, PageHeader, AsyncState],
   templateUrl: './domaines.html',
   styleUrl: './domaines.css',
 })
 export class Domaines {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
 
   protected readonly halfWidth = HALF_WIDTH;
   protected readonly selectedId = signal<string | null>(null);

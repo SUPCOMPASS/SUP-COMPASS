@@ -67,10 +67,11 @@
             }
         </p>
 
-        @if (mode() !== 'forgot') {
+        @if (mode() === 'login') {
         <p class="hint demo">
-            Mode démo : tout e-mail valide + mot de passe de 8 caractères minimum.
-            Utilise <strong>{{ adminEmail }}</strong> pour accéder à l’espace admin.
+            Comptes de démonstration (mock API) :
+            <strong>etudiant&#64;supcom.tn</strong> / etudiant1234 ·
+            <strong>admin&#64;supcom.tn</strong> / admin1234 (espace admin).
         </p>
         }
     </div>

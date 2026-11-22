@@ -6,16 +6,17 @@ import { DataService } from '../../../../core/services/data.service';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { NOTE_NEUTRE, classerDomaines } from '../../../../core/utils/matching';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
 @Component({
   selector: 'app-quiz',
-  imports: [RouterLink, PageHeader],
+  imports: [RouterLink, PageHeader, AsyncState],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css',
 })
 export class Quiz {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
   private readonly quiz = inject(QuizService);
   private readonly profile = inject(ProfileService);
   protected readonly auth = inject(AuthService);
@@ -27,6 +28,8 @@ export class Quiz {
   protected readonly reponses = signal<Record<string, number>>({});
   protected readonly termine = signal(false);
   protected readonly sauvegarde = signal(false);
+  protected readonly sauvegardeEnCours = signal(false);
+  protected readonly erreur = signal('');
 
   protected readonly question = computed(() => this.questions[this.etape()]);
   protected readonly progression = computed(() => Math.round((this.etape() / this.questions.length) * 100));
@@ -64,6 +67,7 @@ export class Quiz {
     this.etape.set(0);
     this.termine.set(false);
     this.sauvegarde.set(false);
+    this.erreur.set('');
   }
 
   /** Remplit l'atlas automatiquement avec les notes calculées. */
@@ -72,9 +76,17 @@ export class Quiz {
     this.termine.set(true);
   }
 
-  protected sauvegarder(): void {
+  protected async sauvegarder(): Promise<void> {
     const top = this.podium().map((r) => ({ domaineId: r.domaine.id, match: r.match }));
-    this.profile.saveResultat(this.notes(), top);
-    this.sauvegarde.set(true);
+    this.sauvegardeEnCours.set(true);
+    this.erreur.set('');
+    try {
+      await this.profile.saveResultat(this.notes(), top);
+      this.sauvegarde.set(true);
+    } catch (e) {
+      this.erreur.set(e instanceof Error ? e.message : 'La sauvegarde a échoué.');
+    } finally {
+      this.sauvegardeEnCours.set(false);
+    }
   }
 }

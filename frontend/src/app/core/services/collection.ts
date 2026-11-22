@@ -1,13 +1,18 @@
 import { Signal, WritableSignal, signal } from '@angular/core';
 
-/** Petite collection réactive (signal) avec CRUD. Remplaçable plus tard par des appels HTTP. */
+/** Petite collection réactive (signal) : copie locale d'une ressource de l'API, mise à jour après chaque appel. */
 export class Collection<T extends { id: string }> {
   private readonly _items: WritableSignal<T[]>;
   readonly items: Signal<T[]>;
 
-  constructor(seed: T[]) {
+  constructor(seed: T[] = []) {
     this._items = signal(seed);
     this.items = this._items.asReadonly();
+  }
+
+  /** Remplace tout le contenu (après un chargement depuis l'API). */
+  set(items: T[]): void {
+    this._items.set(items);
   }
 
   get(id: string): T | undefined {

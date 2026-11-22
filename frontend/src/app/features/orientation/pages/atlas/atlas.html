@@ -12,6 +12,7 @@
     </p>
     }
 
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de l’atlas…" [lines]="8">
     <div class="atlas-layout">
         <div class="card">
             <h2 class="card-title">Ton profil</h2>
@@ -70,10 +71,14 @@
 
             <div class="save-box">
                 @if (auth.user()) {
-                <button type="button" class="btn" (click)="save()">Sauvegarder mon profil</button>
+                <button type="button" class="btn" (click)="save()" [disabled]="saving()">
+                    @if (saving()) { <span class="spinner" aria-hidden="true"></span> }
+                    Sauvegarder mon profil
+                </button>
                 @if (saved()) {
                 <p class="feedback" role="status">Profil sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a></p>
                 }
+                @if (saveError()) { <p class="feedback is-error" role="alert">{{ saveError() }}</p> }
                 } @else {
                 <a class="btn" routerLink="/connexion" [queryParams]="{ returnUrl: '/atlas' }">Sauvegarder mon profil</a>
                 <p class="legend">Connexion requise pour sauvegarder.</p>
@@ -81,4 +86,5 @@
             </div>
         </div>
     </div>
+    </app-async-state>
 </section>

@@ -1,3 +1,4 @@
+@if (data.status() === 'ready') {
 @if (domaine(); as d) {
 <section class="page">
 
@@ -12,6 +13,8 @@
         </a>
         }
     </app-page-header>
+
+    @if (favoriErreur()) { <p class="feedback is-error" role="alert">{{ favoriErreur() }}</p> }
 
     <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections de la fiche domaine" />
 
@@ -86,5 +89,10 @@
 <section class="page">
     <app-empty-state heading="Domaine introuvable" message="Cette fiche n’existe pas ou a été supprimée."
         actionLabel="Retour à la carte des domaines" actionLink="/domaines" />
+</section>
+}
+} @else {
+<section class="page">
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la fiche…" [lines]="6" />
 </section>
 }

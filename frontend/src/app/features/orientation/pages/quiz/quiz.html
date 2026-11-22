@@ -38,6 +38,7 @@
         <h2>Ton orientation</h2>
         <p class="sub">Ton atlas a été rempli avec tes réponses. Voici les domaines qui te correspondent le mieux :</p>
 
+        <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Calcul de ton résultat…" [lines]="3">
         <ol class="podium">
             @for (item of podium(); track item.domaine.id; let i = $index) {
             <li class="podium-row">
@@ -53,16 +54,20 @@
             </li>
             }
         </ol>
+        </app-async-state>
 
         <div class="nav-btns">
             <a class="btn" routerLink="/atlas">Voir mon atlas</a>
             <button type="button" class="btn btn-outline" (click)="recommencer()">Refaire le quiz</button>
             @if (auth.user()) {
-            <button type="button" class="btn btn-outline" (click)="sauvegarder()" [disabled]="sauvegarde()">
+            <button type="button" class="btn btn-outline" (click)="sauvegarder()"
+                [disabled]="sauvegarde() || sauvegardeEnCours() || data.status() !== 'ready'">
+                @if (sauvegardeEnCours()) { <span class="spinner" aria-hidden="true"></span> }
                 Sauvegarder dans Mon profil
             </button>
             }
         </div>
+        @if (erreur()) { <p class="feedback is-error" role="alert">{{ erreur() }}</p> }
         @if (sauvegarde()) {
         <p class="feedback" role="status">Résultat sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a></p>
         } @else if (!auth.user()) {

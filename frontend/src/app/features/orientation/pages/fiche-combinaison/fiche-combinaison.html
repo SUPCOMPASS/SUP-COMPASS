@@ -1,3 +1,4 @@
+@if (data.status() === 'ready') {
 @if (combinaison(); as c) {
 <section class="page">
 
@@ -51,5 +52,10 @@
 <section class="page">
     <app-empty-state heading="Combinaison introuvable" message="Cette fiche n’existe pas ou a été supprimée."
         actionLabel="Retour à la carte des domaines" actionLink="/domaines" />
+</section>
+}
+} @else {
+<section class="page">
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la fiche…" [lines]="6" />
 </section>
 }

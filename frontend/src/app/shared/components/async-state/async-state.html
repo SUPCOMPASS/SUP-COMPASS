@@ -1,0 +1,15 @@
+@switch (status()) {
+  @case ('ready') {
+    <ng-content />
+  }
+  @case ('error') {
+    <div class="card async-error" role="alert">
+      <h3>Impossible de charger les données</h3>
+      <p>{{ error() || 'Une erreur est survenue.' }}</p>
+      <button type="button" class="btn btn-outline" (click)="retry.emit()">Réessayer</button>
+    </div>
+  }
+  @default {
+    <app-loader [variant]="variant()" [label]="label()" [lines]="lines()" />
+  }
+}

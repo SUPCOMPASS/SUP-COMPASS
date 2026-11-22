@@ -36,12 +36,21 @@
     @if (error()) { <p class="feedback is-error" role="alert">{{ error() }}</p> }
 
     <div class="form-actions">
-        <button type="submit" class="btn">Enregistrer</button>
+        <button type="submit" class="btn" [disabled]="busy()">
+            @if (busy()) { <span class="spinner" aria-hidden="true"></span> }
+            Enregistrer
+        </button>
         <button type="button" class="btn btn-outline" (click)="cancel()">Annuler</button>
     </div>
 </form>
 }
 
+<div aria-live="polite">
+    @if (notice()) { <p class="feedback" role="status">{{ notice() }}</p> }
+    @if (listError()) { <p class="feedback is-error" role="alert">{{ listError() }}</p> }
+</div>
+
+<app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" [label]="'Chargement : ' + config().titre">
 @if (rows().length) {
 <div class="table-wrap card">
     <table>
@@ -58,7 +67,7 @@
                 @for (c of config().colonnes; track c) { <td>{{ cell(row, c) }}</td> }
                 <td class="actions">
                     @if (pendingDelete() === row.id) {
-                    <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(row.id)">Confirmer</button>
+                    <button type="button" class="btn btn-danger btn-sm" [disabled]="busy()" (click)="confirmDelete(row.id)">Confirmer</button>
                     <button type="button" class="btn btn-outline btn-sm" (click)="pendingDelete.set(null)">Annuler</button>
                     } @else {
                     <button type="button" class="btn btn-outline btn-sm" (click)="startEdit(row)">
@@ -77,3 +86,4 @@
 } @else {
 <app-empty-state heading="Rien à afficher" message="Aucun élément pour le moment. Utilise le bouton « Ajouter »." />
 }
+</app-async-state>

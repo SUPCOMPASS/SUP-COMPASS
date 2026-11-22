@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DataService } from '../../../../core/services/data.service';
 import { ProfileService } from '../../../../core/services/profile.service';
+import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 import { Roadmap } from '../../../../shared/components/roadmap/roadmap';
@@ -12,12 +13,12 @@ import { TabDef, Tabs } from '../../../../shared/components/tabs/tabs';
 
 @Component({
   selector: 'app-fiche-domaine',
-  imports: [RouterLink, PageHeader, Tabs, Roadmap, SchoolCard, EmptyState],
+  imports: [RouterLink, PageHeader, Tabs, Roadmap, SchoolCard, EmptyState, AsyncState],
   templateUrl: './fiche-domaine.html',
   styleUrl: './fiche-domaine.css',
 })
 export class FicheDomaine {
-  private readonly data = inject(DataService);
+  protected readonly data = inject(DataService);
   private readonly title = inject(Title);
   protected readonly auth = inject(AuthService);
   protected readonly profile = inject(ProfileService);
@@ -40,10 +41,20 @@ export class FicheDomaine {
   protected readonly estFavori = computed(() => this.profile.favoris().includes(this.id()));
 
   constructor() {
-    effect(() => this.title.setTitle(`${this.domaine()?.nom ?? 'Domaine introuvable'} | SUP'COMPASS`));
+    effect(() => {
+      if (this.data.status() !== 'ready') return;
+      this.title.setTitle(`${this.domaine()?.nom ?? 'Domaine introuvable'} | SUP'COMPASS`);
+    });
   }
 
-  protected toggleFavori(): void {
-    this.profile.toggleFavori(this.id());
+  protected readonly favoriErreur = signal('');
+
+  protected async toggleFavori(): Promise<void> {
+    this.favoriErreur.set('');
+    try {
+      await this.profile.toggleFavori(this.id());
+    } catch (e) {
+      this.favoriErreur.set(e instanceof Error ? e.message : 'Impossible de mettre à jour tes favoris.');
+    }
   }
 }

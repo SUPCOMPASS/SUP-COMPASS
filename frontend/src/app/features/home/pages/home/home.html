@@ -33,12 +33,14 @@
         <p>Découvre les principales spécialités technologiques enseignées à SUP'COM.</p>
     </div>
 
-    <div class="domains-grid">
-        @for (domaine of vedettes(); track domaine.id) {
-        <app-domain-card [nom]="domaine.nom" [resume]="domaine.resume" [tags]="domaine.debouches.slice(0, 2)"
-            [link]="'/domaines/domaine/' + domaine.id" />
-        }
-    </div>
+    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement des domaines…" [lines]="3">
+        <div class="domains-grid">
+            @for (domaine of vedettes(); track domaine.id) {
+            <app-domain-card [nom]="domaine.nom" [resume]="domaine.resume" [tags]="domaine.debouches.slice(0, 2)"
+                [link]="'/domaines/domaine/' + domaine.id" />
+            }
+        </div>
+    </app-async-state>
 
     <div class="section-action">
         <a routerLink="/domaines" class="btn btn-outline">Voir tous les domaines</a>
