@@ -5,6 +5,8 @@ import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
+  // Échap ferme le menu mobile, où que soit le focus.
+  host: { '(document:keydown.escape)': 'closeMenu()' },
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

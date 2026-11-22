@@ -19,7 +19,7 @@ export class Tabs {
 
   protected onKeydown(event: KeyboardEvent, index: number): void {
     const count = this.tabs().length;
-    let next = index;
+    let next: number;
     if (event.key === 'ArrowRight') next = (index + 1) % count;
     else if (event.key === 'ArrowLeft') next = (index - 1 + count) % count;
     else if (event.key === 'Home') next = 0;

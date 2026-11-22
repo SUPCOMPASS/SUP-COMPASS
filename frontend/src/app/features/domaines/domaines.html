@@ -1,85 +1,71 @@
 <div class="domaines-container">
+  <header class="page-header">
+    <h1>Nos domaines</h1>
 
-    <header class="page-header">
-        <h1>Nos domaines</h1>
+    <p>Découvrez les différents domaines d'ingénierie proposés par SUPCOMPASS.</p>
+  </header>
 
-        <p>
-            Découvrez les différents domaines d'ingénierie
-            proposés par SUPCOMPASS.
-        </p>
-    </header>
-
-    <!-- Messages -->
-    <div class="message error" *ngIf="errorMessage">
-        {{ errorMessage }}
+  <!-- Messages -->
+  @if (errorMessage) {
+    <div class="message error">
+      {{ errorMessage }}
     </div>
+  }
 
-    <div class="message success" *ngIf="successMessage">
-        {{ successMessage }}
+  @if (successMessage) {
+    <div class="message success">
+      {{ successMessage }}
     </div>
+  }
 
-    <!-- Chargement -->
-    <div *ngIf="loading" class="loading">
-        Chargement des domaines...
-    </div>
+  <!-- Chargement -->
+  @if (loading) {
+    <div class="loading">Chargement des domaines...</div>
+  }
 
-    <!-- Liste des domaines -->
-    <section class="domaines-grid">
+  <!-- Liste des domaines -->
+  <section class="domaines-grid">
+    @for (domaine of domaines; track domaine) {
+      <article class="domaine-card">
+        <div class="domaine-icon">🎓</div>
+        <h2>{{ domaine.nom }}</h2>
+        <p>{{ domaine.description }}</p>
+        <div class="actions">
+          <button class="edit-btn" (click)="modifierDomaine(domaine)">Modifier</button>
+          <button class="delete-btn" (click)="supprimerDomaine(domaine.id)">Supprimer</button>
+        </div>
+        <small>ID : {{ domaine.id }}</small>
+      </article>
+    }
+  </section>
 
-        <article class="domaine-card" *ngFor="let domaine of domaines">
+  <!-- Aucun domaine -->
+  @if (!loading && domaines.length === 0) {
+    <div class="empty-message">Aucun domaine disponible.</div>
+  }
 
-            <div class="domaine-icon">
-                🎓
-            </div>
+  <!-- Ajouter un domaine -->
+  <section class="add-section">
+    <h2>Ajouter un domaine</h2>
 
-            <h2>{{ domaine.nom }}</h2>
+    <form (ngSubmit)="ajouterDomaine()">
+      <input
+        type="text"
+        name="nom"
+        [(ngModel)]="nouveauDomaine.nom"
+        placeholder="Nom du domaine"
+        required
+      />
 
-            <p>{{ domaine.description }}</p>
-
-            <div class="actions">
-
-                <button class="edit-btn" (click)="modifierDomaine(domaine)">
-                    Modifier
-                </button>
-
-                <button class="delete-btn" (click)="supprimerDomaine(domaine.id)">
-                    Supprimer
-                </button>
-
-            </div>
-
-            <small>ID : {{ domaine.id }}</small>
-
-        </article>
-
-    </section>
-
-    <!-- Aucun domaine -->
-    <div *ngIf="!loading && domaines.length === 0" class="empty-message">
-
-        Aucun domaine disponible.
-
-    </div>
-
-    <!-- Ajouter un domaine -->
-    <section class="add-section">
-
-        <h2>Ajouter un domaine</h2>
-
-        <form (ngSubmit)="ajouterDomaine()">
-
-            <input type="text" name="nom" [(ngModel)]="nouveauDomaine.nom" placeholder="Nom du domaine" required>
-
-            <textarea name="description" [(ngModel)]="nouveauDomaine.description" placeholder="Description du domaine"
-                required>
+      <textarea
+        name="description"
+        [(ngModel)]="nouveauDomaine.description"
+        placeholder="Description du domaine"
+        required
+      >
       </textarea>
 
-            <button type="submit">
-                Ajouter le domaine
-            </button>
-
-        </form>
-
-    </section>
-
+      <button type="submit">Ajouter le domaine</button>
+    </form>
+  </section>
 </div>

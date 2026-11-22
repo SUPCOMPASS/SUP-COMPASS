@@ -9,7 +9,8 @@
     "test": "ng test",
     "format": "prettier --write \"src/**/*.{ts,html,css,scss}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,scss}\"",
-    "serve:ssr:supcompass": "node dist/supcompass/server/server.mjs"
+    "serve:ssr:supcompass": "node dist/supcompass/server/server.mjs",
+    "lint": "ng lint"
   },
   "private": true,
   "packageManager": "npm@11.20.0",
@@ -32,11 +33,15 @@
     "@angular/build": "^22.2.7",
     "@angular/cli": "^22.2.7",
     "@angular/compiler-cli": "^22.2.0",
+    "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.1",
     "@types/node": "^22.12.0",
+    "angular-eslint": "22.8.0",
+    "eslint": "^10.14.0",
     "jsdom": "^30.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
+    "typescript-eslint": "8.72.2",
     "vitest": "^5.0.0"
   }
 }
