@@ -54,7 +54,9 @@ export class FicheDomaine {
     try {
       await this.profile.toggleFavori(this.id());
     } catch (e) {
-      this.favoriErreur.set(e instanceof Error ? e.message : 'Impossible de mettre à jour tes favoris.');
+      this.favoriErreur.set(
+        e instanceof Error ? e.message : 'Impossible de mettre à jour tes favoris.',
+      );
     }
   }
 }

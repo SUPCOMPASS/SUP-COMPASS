@@ -1,9 +1,9 @@
 <div class="card empty">
-    <h3>{{ heading() }}</h3>
-    @if (message()) {
+  <h3>{{ heading() }}</h3>
+  @if (message()) {
     <p>{{ message() }}</p>
-    }
-    @if (actionLabel()) {
+  }
+  @if (actionLabel()) {
     <a class="btn btn-outline" [routerLink]="actionLink()">{{ actionLabel() }}</a>
-    }
+  }
 </div>

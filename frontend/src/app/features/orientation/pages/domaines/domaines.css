@@ -1,28 +1,101 @@
-:host { display: block; }
-.map-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
-.preview-card .tag { margin-bottom: 10px; }
-.preview-card .hint { font-size: 14px; margin: 12px 0 16px; }
-svg { width: 100%; height: auto; display: block; }
-.col-title { font-size: 12px; fill: var(--mute); font-weight: 500; }
+:host {
+  display: block;
+}
+.map-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.preview-card .tag {
+  margin-bottom: 10px;
+}
+.preview-card .hint {
+  font-size: 14px;
+  margin: 12px 0 16px;
+}
+svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.col-title {
+  font-size: 12px;
+  fill: var(--mute);
+  font-weight: 500;
+}
 
-.node { cursor: pointer; transition: opacity 0.2s ease; outline: none; }
-.node rect { fill: var(--bg); stroke: var(--blue); stroke-width: 2; transition: fill 0.2s ease, stroke 0.2s ease; }
-.node text { fill: var(--navy); font-family: 'Poppins', system-ui, sans-serif; font-weight: 600; font-size: 12.5px; pointer-events: none; }
-.node:hover rect, .node:focus-visible rect { fill: var(--tint); }
-.node:focus-visible rect { stroke: var(--org); stroke-width: 3.5; }
-.node.type-c rect { fill: var(--tint); }
-.node.type-m rect { stroke: var(--org); }
-.node.on rect { fill: var(--navy); stroke: var(--navy); }
-.node.on text { fill: #fff; }
-.node.dim { opacity: 0.28; }
+.node {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  outline: none;
+}
+.node rect {
+  fill: var(--bg);
+  stroke: var(--blue);
+  stroke-width: 2;
+  transition:
+    fill 0.2s ease,
+    stroke 0.2s ease;
+}
+.node text {
+  fill: var(--navy);
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  pointer-events: none;
+}
+.node:hover rect,
+.node:focus-visible rect {
+  fill: var(--tint);
+}
+.node:focus-visible rect {
+  stroke: var(--org);
+  stroke-width: 3.5;
+}
+.node.type-c rect {
+  fill: var(--tint);
+}
+.node.type-m rect {
+  stroke: var(--org);
+}
+.node.on rect {
+  fill: var(--navy);
+  stroke: var(--navy);
+}
+.node.on text {
+  fill: #fff;
+}
+.node.dim {
+  opacity: 0.28;
+}
 
-.edge { fill: none; stroke: var(--blue); stroke-width: 2; transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease; }
-.edge.dim { opacity: 0.15; }
-.edge.on { stroke: var(--org); stroke-width: 3; }
+.edge {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2;
+  transition:
+    opacity 0.2s ease,
+    stroke 0.2s ease,
+    stroke-width 0.2s ease;
+}
+.edge.dim {
+  opacity: 0.15;
+}
+.edge.on {
+  stroke: var(--org);
+  stroke-width: 3;
+}
 
 @media (max-width: 760px) {
-    .map-layout { grid-template-columns: 1fr; }
-    /* La carte garde une taille lisible et défile horizontalement sur petit écran */
-    .map-card { overflow-x: auto; }
-    .map-card svg { min-width: 620px; }
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+  /* La carte garde une taille lisible et défile horizontalement sur petit écran */
+  .map-card {
+    overflow-x: auto;
+  }
+  .map-card svg {
+    min-width: 620px;
+  }
 }

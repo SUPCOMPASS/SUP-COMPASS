@@ -1,78 +1,123 @@
 <section class="page login-page">
-    <div class="login-card card">
-
-        <h1>
-            @switch (mode()) {
-            @case ('login') { Connexion }
-            @case ('register') { Créer un compte }
-            @case ('forgot') { Mot de passe oublié }
-            }
-        </h1>
-
-        <form (submit)="onSubmit($event)" novalidate>
-            @if (mode() === 'register') {
-            <div class="field">
-                <label for="fullname">Nom complet</label>
-                <input id="fullname" type="text" autocomplete="name" placeholder="Ex. Yassine Affes" [value]="fullName()"
-                    (input)="fullName.set($any($event.target).value)" [attr.aria-invalid]="errors().nom ? 'true' : null"
-                    aria-describedby="err-nom" />
-                @if (errors().nom) { <p id="err-nom" class="error" role="alert">{{ errors().nom }}</p> }
-            </div>
-            }
-
-            <div class="field">
-                <label for="email">Adresse e-mail</label>
-                <input id="email" type="email" autocomplete="email" placeholder="prenom.nom@supcom.tn" [value]="email()"
-                    (input)="email.set($any($event.target).value)" [attr.aria-invalid]="errors().email ? 'true' : null"
-                    aria-describedby="err-email" />
-                @if (errors().email) { <p id="err-email" class="error" role="alert">{{ errors().email }}</p> }
-            </div>
-
-            @if (mode() !== 'forgot') {
-            <div class="field">
-                <label for="password">Mot de passe</label>
-                <input id="password" type="password" [attr.autocomplete]="mode() === 'login' ? 'current-password' : 'new-password'"
-                    placeholder="8 caractères minimum" [value]="password()" (input)="password.set($any($event.target).value)"
-                    [attr.aria-invalid]="errors().password ? 'true' : null" aria-describedby="err-password" />
-                @if (errors().password) { <p id="err-password" class="error" role="alert">{{ errors().password }}</p> }
-            </div>
-            }
-
-            <button type="submit" class="btn btn-submit" [disabled]="loading()">
-                @if (loading()) {
-                <span class="spinner" aria-hidden="true"></span> Veuillez patienter…
-                } @else {
-                @switch (mode()) {
-                @case ('login') { Se connecter }
-                @case ('register') { S’inscrire }
-                @case ('forgot') { Envoyer le lien }
-                }
-                }
-            </button>
-        </form>
-
-        <div aria-live="polite">
-            @if (status(); as s) {
-            <p class="feedback" [class.is-error]="s.error" [attr.role]="s.error ? 'alert' : 'status'">{{ s.text }}</p>
-            }
-        </div>
-
-        <p class="switch-links">
-            @if (mode() === 'login') {
-            <a routerLink="/mot-de-passe-oublie">Mot de passe oublié ?</a>
-            <span aria-hidden="true">·</span>
-            <a routerLink="/inscription" class="strong">Créer un compte</a>
-            } @else {
-            <a routerLink="/connexion" [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : null" class="strong">← Retour à la connexion</a>
-            }
-        </p>
-
-        @if (mode() === 'login') {
-        <p class="hint demo">
-            Comptes de démonstration (mock API) :
-            <strong>etudiant&#64;supcom.tn</strong> / etudiant1234 ·
-            <strong>admin&#64;supcom.tn</strong> / admin1234 (espace admin).
-        </p>
+  <div class="login-card card">
+    <h1>
+      @switch (mode()) {
+        @case ('login') {
+          Connexion
         }
+        @case ('register') {
+          Créer un compte
+        }
+        @case ('forgot') {
+          Mot de passe oublié
+        }
+      }
+    </h1>
+
+    <form (submit)="onSubmit($event)" novalidate>
+      @if (mode() === 'register') {
+        <div class="field">
+          <label for="fullname">Nom complet</label>
+          <input
+            id="fullname"
+            type="text"
+            autocomplete="name"
+            placeholder="Ex. Yassine Affes"
+            [value]="fullName()"
+            (input)="fullName.set($any($event.target).value)"
+            [attr.aria-invalid]="errors().nom ? 'true' : null"
+            aria-describedby="err-nom"
+          />
+          @if (errors().nom) {
+            <p id="err-nom" class="error" role="alert">{{ errors().nom }}</p>
+          }
+        </div>
+      }
+
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          placeholder="prenom.nom@supcom.tn"
+          [value]="email()"
+          (input)="email.set($any($event.target).value)"
+          [attr.aria-invalid]="errors().email ? 'true' : null"
+          aria-describedby="err-email"
+        />
+        @if (errors().email) {
+          <p id="err-email" class="error" role="alert">{{ errors().email }}</p>
+        }
+      </div>
+
+      @if (mode() !== 'forgot') {
+        <div class="field">
+          <label for="password">Mot de passe</label>
+          <input
+            id="password"
+            type="password"
+            [attr.autocomplete]="mode() === 'login' ? 'current-password' : 'new-password'"
+            placeholder="8 caractères minimum"
+            [value]="password()"
+            (input)="password.set($any($event.target).value)"
+            [attr.aria-invalid]="errors().password ? 'true' : null"
+            aria-describedby="err-password"
+          />
+          @if (errors().password) {
+            <p id="err-password" class="error" role="alert">{{ errors().password }}</p>
+          }
+        </div>
+      }
+
+      <button type="submit" class="btn btn-submit" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner" aria-hidden="true"></span> Veuillez patienter…
+        } @else {
+          @switch (mode()) {
+            @case ('login') {
+              Se connecter
+            }
+            @case ('register') {
+              S’inscrire
+            }
+            @case ('forgot') {
+              Envoyer le lien
+            }
+          }
+        }
+      </button>
+    </form>
+
+    <div aria-live="polite">
+      @if (status(); as s) {
+        <p class="feedback" [class.is-error]="s.error" [attr.role]="s.error ? 'alert' : 'status'">
+          {{ s.text }}
+        </p>
+      }
     </div>
+
+    <p class="switch-links">
+      @if (mode() === 'login') {
+        <a routerLink="/mot-de-passe-oublie">Mot de passe oublié ?</a>
+        <span aria-hidden="true">·</span>
+        <a routerLink="/inscription" class="strong">Créer un compte</a>
+      } @else {
+        <a
+          routerLink="/connexion"
+          [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : null"
+          class="strong"
+          >← Retour à la connexion</a
+        >
+      }
+    </p>
+
+    @if (mode() === 'login') {
+      <p class="hint demo">
+        Comptes de démonstration (mock API) :
+        <strong>etudiant&#64;supcom.tn</strong> / etudiant1234 ·
+        <strong>admin&#64;supcom.tn</strong> / admin1234 (espace admin).
+      </p>
+    }
+  </div>
 </section>

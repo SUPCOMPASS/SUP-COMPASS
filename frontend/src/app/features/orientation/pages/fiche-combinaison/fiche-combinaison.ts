@@ -37,7 +37,9 @@ export class FicheCombinaison {
       return domaine ? [domaine] : [];
     }),
   );
-  protected readonly metiers = computed(() => this.data.metiers.items().filter((m) => m.sources.includes(this.id())));
+  protected readonly metiers = computed(() =>
+    this.data.metiers.items().filter((m) => m.sources.includes(this.id())),
+  );
 
   constructor() {
     effect(() => {

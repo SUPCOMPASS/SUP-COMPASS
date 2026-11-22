@@ -1,79 +1,126 @@
 <section class="page">
-    <app-page-header heading="Quiz d’orientation"
-        subtitle="16 affirmations, environ 3 minutes. À la fin, ton atlas est rempli automatiquement." />
+  <app-page-header
+    heading="Quiz d’orientation"
+    subtitle="16 affirmations, environ 3 minutes. À la fin, ton atlas est rempli automatiquement."
+  />
 
-    @if (!termine()) {
+  @if (!termine()) {
     <div class="card quiz-card">
-        <div class="progress-head">
-            <span>Question {{ etape() + 1 }} sur {{ questions.length }}</span>
-            <span>{{ progression() }} %</span>
-        </div>
-        <div class="progress-bar" role="progressbar" aria-label="Progression du quiz" [attr.aria-valuenow]="progression()"
-            aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-fill" [style.width.%]="progression()"></div>
-        </div>
+      <div class="progress-head">
+        <span>Question {{ etape() + 1 }} sur {{ questions.length }}</span>
+        <span>{{ progression() }} %</span>
+      </div>
+      <div
+        class="progress-bar"
+        role="progressbar"
+        aria-label="Progression du quiz"
+        [attr.aria-valuenow]="progression()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <div class="progress-fill" [style.width.%]="progression()"></div>
+      </div>
 
-        <fieldset class="question">
-            <legend>{{ question().texte }}</legend>
-            <div class="choix">
-                @for (c of choix; track c.valeur) {
-                <label class="choix-item" [class.on]="reponseCourante() === c.valeur">
-                    <input type="radio" name="reponse" [value]="c.valeur" [checked]="reponseCourante() === c.valeur"
-                        (change)="repondre(c.valeur)" />
-                    <span>{{ c.label }}</span>
-                </label>
-                }
-            </div>
-        </fieldset>
-
-        <div class="nav-btns">
-            <button type="button" class="btn btn-outline" (click)="precedent()" [disabled]="etape() === 0">Précédent</button>
-            <button type="button" class="btn" (click)="suivant()" [disabled]="reponseCourante() === undefined">
-                {{ etape() === questions.length - 1 ? 'Voir mon résultat' : 'Suivant' }}
-            </button>
+      <fieldset class="question">
+        <legend>{{ question().texte }}</legend>
+        <div class="choix">
+          @for (c of choix; track c.valeur) {
+            <label class="choix-item" [class.on]="reponseCourante() === c.valeur">
+              <input
+                type="radio"
+                name="reponse"
+                [value]="c.valeur"
+                [checked]="reponseCourante() === c.valeur"
+                (change)="repondre(c.valeur)"
+              />
+              <span>{{ c.label }}</span>
+            </label>
+          }
         </div>
+      </fieldset>
+
+      <div class="nav-btns">
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="precedent()"
+          [disabled]="etape() === 0"
+        >
+          Précédent
+        </button>
+        <button
+          type="button"
+          class="btn"
+          (click)="suivant()"
+          [disabled]="reponseCourante() === undefined"
+        >
+          {{ etape() === questions.length - 1 ? 'Voir mon résultat' : 'Suivant' }}
+        </button>
+      </div>
     </div>
-    } @else {
+  } @else {
     <div class="card resultat" aria-live="polite">
-        <h2>Ton orientation</h2>
-        <p class="sub">Ton atlas a été rempli avec tes réponses. Voici les domaines qui te correspondent le mieux :</p>
+      <h2>Ton orientation</h2>
+      <p class="sub">
+        Ton atlas a été rempli avec tes réponses. Voici les domaines qui te correspondent le mieux :
+      </p>
 
-        <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Calcul de ton résultat…" [lines]="3">
+      <app-async-state
+        [status]="data.status()"
+        [error]="data.error()"
+        (retry)="data.load()"
+        label="Calcul de ton résultat…"
+        [lines]="3"
+      >
         <ol class="podium">
-            @for (item of podium(); track item.domaine.id; let i = $index) {
+          @for (item of podium(); track item.domaine.id; let i = $index) {
             <li class="podium-row">
-                <span class="rank-num">{{ i + 1 }}</span>
-                <div>
-                    <a [routerLink]="['/domaines/domaine', item.domaine.id]" class="domaine-link">{{ item.domaine.nom }}</a>
-                    <p class="resume">{{ item.domaine.resume }}</p>
-                    <div class="progress-bar" aria-hidden="true">
-                        <div class="progress-fill" [style.width.%]="item.match"></div>
-                    </div>
+              <span class="rank-num">{{ i + 1 }}</span>
+              <div>
+                <a [routerLink]="['/domaines/domaine', item.domaine.id]" class="domaine-link">{{
+                  item.domaine.nom
+                }}</a>
+                <p class="resume">{{ item.domaine.resume }}</p>
+                <div class="progress-bar" aria-hidden="true">
+                  <div class="progress-fill" [style.width.%]="item.match"></div>
                 </div>
-                <span class="rank-pct">{{ item.match }} %</span>
+              </div>
+              <span class="rank-pct">{{ item.match }} %</span>
             </li>
-            }
+          }
         </ol>
-        </app-async-state>
+      </app-async-state>
 
-        <div class="nav-btns">
-            <a class="btn" routerLink="/atlas">Voir mon atlas</a>
-            <button type="button" class="btn btn-outline" (click)="recommencer()">Refaire le quiz</button>
-            @if (auth.user()) {
-            <button type="button" class="btn btn-outline" (click)="sauvegarder()"
-                [disabled]="sauvegarde() || sauvegardeEnCours() || data.status() !== 'ready'">
-                @if (sauvegardeEnCours()) { <span class="spinner" aria-hidden="true"></span> }
-                Sauvegarder dans Mon profil
-            </button>
+      <div class="nav-btns">
+        <a class="btn" routerLink="/atlas">Voir mon atlas</a>
+        <button type="button" class="btn btn-outline" (click)="recommencer()">
+          Refaire le quiz
+        </button>
+        @if (auth.user()) {
+          <button
+            type="button"
+            class="btn btn-outline"
+            (click)="sauvegarder()"
+            [disabled]="sauvegarde() || sauvegardeEnCours() || data.status() !== 'ready'"
+          >
+            @if (sauvegardeEnCours()) {
+              <span class="spinner" aria-hidden="true"></span>
             }
-        </div>
-        @if (erreur()) { <p class="feedback is-error" role="alert">{{ erreur() }}</p> }
-        @if (sauvegarde()) {
-        <p class="feedback" role="status">Résultat sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a></p>
-        } @else if (!auth.user()) {
-        <p class="hint">Connecte-toi pour sauvegarder ce résultat dans ton profil.</p>
+            Sauvegarder dans Mon profil
+          </button>
         }
-        <p class="hint">Outil d’aide à la réflexion, pas un test scientifique.</p>
+      </div>
+      @if (erreur()) {
+        <p class="feedback is-error" role="alert">{{ erreur() }}</p>
+      }
+      @if (sauvegarde()) {
+        <p class="feedback" role="status">
+          Résultat sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a>
+        </p>
+      } @else if (!auth.user()) {
+        <p class="hint">Connecte-toi pour sauvegarder ce résultat dans ton profil.</p>
+      }
+      <p class="hint">Outil d’aide à la réflexion, pas un test scientifique.</p>
     </div>
-    }
+  }
 </section>

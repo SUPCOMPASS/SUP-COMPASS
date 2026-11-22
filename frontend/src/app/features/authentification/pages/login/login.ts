@@ -47,11 +47,17 @@ export class Login {
           break;
         case 'forgot':
           await this.auth.requestReset(this.email());
-          this.status.set({ text: `Un lien de réinitialisation a été envoyé à ${this.email()}.`, error: false });
+          this.status.set({
+            text: `Un lien de réinitialisation a été envoyé à ${this.email()}.`,
+            error: false,
+          });
           break;
       }
     } catch (e) {
-      this.status.set({ text: e instanceof Error ? e.message : 'Une erreur est survenue.', error: true });
+      this.status.set({
+        text: e instanceof Error ? e.message : 'Une erreur est survenue.',
+        error: true,
+      });
     } finally {
       this.loading.set(false);
     }
@@ -60,7 +66,8 @@ export class Login {
   /** Validation côté client avec messages par champ. */
   private validate(): boolean {
     const errors: FieldErrors = {};
-    if (this.mode() === 'register' && !this.fullName().trim()) errors.nom = 'Indique ton nom complet.';
+    if (this.mode() === 'register' && !this.fullName().trim())
+      errors.nom = 'Indique ton nom complet.';
     if (!EMAIL_RE.test(this.email())) errors.email = 'Saisis une adresse e-mail valide.';
     if (this.mode() !== 'forgot' && this.password().length < 8) {
       errors.password = 'Le mot de passe doit contenir au moins 8 caractères.';

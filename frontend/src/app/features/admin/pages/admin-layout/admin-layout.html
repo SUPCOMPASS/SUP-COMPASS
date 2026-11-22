@@ -1,12 +1,16 @@
 <section class="page">
-    <app-page-header heading="Espace admin"
-        subtitle="Ajoute, modifie et supprime les contenus sans toucher au code (enregistré dans le mock API)." />
+  <app-page-header
+    heading="Espace admin"
+    subtitle="Ajoute, modifie et supprime les contenus sans toucher au code (enregistré dans le mock API)."
+  />
 
-    <nav class="admin-nav" aria-label="Sections de l’espace admin">
-        @for (s of sections; track s.path) {
-        <a [routerLink]="s.path" routerLinkActive="on" ariaCurrentWhenActive="page" class="chip">{{ s.label }}</a>
-        }
-    </nav>
+  <nav class="admin-nav" aria-label="Sections de l’espace admin">
+    @for (s of sections; track s.path) {
+      <a [routerLink]="s.path" routerLinkActive="on" ariaCurrentWhenActive="page" class="chip">{{
+        s.label
+      }}</a>
+    }
+  </nav>
 
-    <router-outlet />
+  <router-outlet />
 </section>

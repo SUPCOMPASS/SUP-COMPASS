@@ -1,11 +1,11 @@
 <div class="loader" role="status" aria-live="polite">
-    @if (variant() === 'spinner') {
+  @if (variant() === 'spinner') {
     <span class="spinner" aria-hidden="true"></span>
     <span>{{ label() }}</span>
-    } @else {
+  } @else {
     <span class="sr-only">{{ label() }}</span>
     @for (row of rows(); track row) {
-    <span class="line" aria-hidden="true" [style.width.%]="100 - row * 12"></span>
+      <span class="line" aria-hidden="true" [style.width.%]="100 - row * 12"></span>
     }
-    }
+  }
 </div>

@@ -5,7 +5,15 @@ import { AsyncState } from '../../../../shared/components/async-state/async-stat
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
 export type NodeType = 'd' | 'c' | 'm'; // Domaine, Combinaison, Métier
-export type MapNode = { id: string; type: NodeType; label: string; x: number; y: number; link: string; summary: string };
+export type MapNode = {
+  id: string;
+  type: NodeType;
+  label: string;
+  x: number;
+  y: number;
+  link: string;
+  summary: string;
+};
 export type MapEdge = { from: string; to: string };
 
 /** Géométrie de la carte SVG */
@@ -32,23 +40,49 @@ export class Domaines {
     const combos = this.data.combinaisons.items();
     const metiers = this.data.metiers.items();
     const rows = Math.max(domaines.length, combos.length, metiers.length, 1);
-    const y = (index: number, count: number) => TOP + index * ROW_STEP + ((rows - count) * ROW_STEP) / 2;
+    const y = (index: number, count: number) =>
+      TOP + index * ROW_STEP + ((rows - count) * ROW_STEP) / 2;
 
     return [
-      ...domaines.map((d, i) => ({ id: d.id, type: 'd' as const, label: d.nom, x: COL_X.d, y: y(i, domaines.length),
-        link: `/domaines/domaine/${d.id}`, summary: d.resume })),
-      ...combos.map((c, i) => ({ id: c.id, type: 'c' as const, label: c.nom, x: COL_X.c, y: y(i, combos.length),
-        link: `/domaines/combo/${c.id}`, summary: c.resume })),
+      ...domaines.map((d, i) => ({
+        id: d.id,
+        type: 'd' as const,
+        label: d.nom,
+        x: COL_X.d,
+        y: y(i, domaines.length),
+        link: `/domaines/domaine/${d.id}`,
+        summary: d.resume,
+      })),
+      ...combos.map((c, i) => ({
+        id: c.id,
+        type: 'c' as const,
+        label: c.nom,
+        x: COL_X.c,
+        y: y(i, combos.length),
+        link: `/domaines/combo/${c.id}`,
+        summary: c.resume,
+      })),
       // Un métier renvoie vers la fiche du domaine / de la combinaison dont il est issu.
-      ...metiers.map((m, i) => ({ id: m.id, type: 'm' as const, label: m.nom, x: COL_X.m, y: y(i, metiers.length),
-        link: this.data.lienCible(m.sources[0] ?? ''), summary: m.resume })),
+      ...metiers.map((m, i) => ({
+        id: m.id,
+        type: 'm' as const,
+        label: m.nom,
+        x: COL_X.m,
+        y: y(i, metiers.length),
+        link: this.data.lienCible(m.sources[0] ?? ''),
+        summary: m.resume,
+      })),
     ];
   });
 
-  protected readonly viewHeight = computed(() => Math.max(...this.nodes().map((n) => n.y), TOP) + 50);
+  protected readonly viewHeight = computed(
+    () => Math.max(...this.nodes().map((n) => n.y), TOP) + 50,
+  );
 
   protected readonly edges = computed<MapEdge[]>(() => [
-    ...this.data.combinaisons.items().flatMap((c) => c.domaines.map((d) => ({ from: d, to: c.id }))),
+    ...this.data.combinaisons
+      .items()
+      .flatMap((c) => c.domaines.map((d) => ({ from: d, to: c.id }))),
     ...this.data.metiers.items().flatMap((m) => m.sources.map((s) => ({ from: s, to: m.id }))),
   ]);
 

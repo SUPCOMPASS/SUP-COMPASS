@@ -1,98 +1,140 @@
 @if (data.status() === 'ready') {
-@if (domaine(); as d) {
-<section class="page">
-
-    <app-page-header [heading]="d.nom" [subtitle]="d.resume"
-        [crumbs]="[{ label: 'Domaines', link: '/domaines' }, { label: d.nom }]">
+  @if (domaine(); as d) {
+    <section class="page">
+      <app-page-header
+        [heading]="d.nom"
+        [subtitle]="d.resume"
+        [crumbs]="[{ label: 'Domaines', link: '/domaines' }, { label: d.nom }]"
+      >
         @if (auth.user()) {
-        <button type="button" class="btn" [class.btn-outline]="estFavori()" [attr.aria-pressed]="estFavori()"
-            (click)="toggleFavori()">{{ estFavori() ? '★ Dans mes favoris' : '☆ Ajouter aux favoris' }}</button>
+          <button
+            type="button"
+            class="btn"
+            [class.btn-outline]="estFavori()"
+            [attr.aria-pressed]="estFavori()"
+            (click)="toggleFavori()"
+          >
+            {{ estFavori() ? '★ Dans mes favoris' : '☆ Ajouter aux favoris' }}
+          </button>
         } @else {
-        <a class="btn btn-outline" routerLink="/connexion" [queryParams]="{ returnUrl: '/domaines/domaine/' + d.id }">
+          <a
+            class="btn btn-outline"
+            routerLink="/connexion"
+            [queryParams]="{ returnUrl: '/domaines/domaine/' + d.id }"
+          >
             ☆ Connecte-toi pour ajouter aux favoris
-        </a>
+          </a>
         }
-    </app-page-header>
+      </app-page-header>
 
-    @if (favoriErreur()) { <p class="feedback is-error" role="alert">{{ favoriErreur() }}</p> }
+      @if (favoriErreur()) {
+        <p class="feedback is-error" role="alert">{{ favoriErreur() }}</p>
+      }
 
-    <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections de la fiche domaine" />
+      <app-tabs [tabs]="tabs" [(active)]="activeTab" label="Sections de la fiche domaine" />
 
-    <div role="tabpanel" [id]="'panel-' + activeTab()" [attr.aria-labelledby]="'tab-' + activeTab()" tabindex="0">
+      <div
+        role="tabpanel"
+        [id]="'panel-' + activeTab()"
+        [attr.aria-labelledby]="'tab-' + activeTab()"
+        tabindex="0"
+      >
         @switch (activeTab()) {
-
-        @case ('presentation') {
-        <div class="two-cols">
-            <div class="card">
+          @case ('presentation') {
+            <div class="two-cols">
+              <div class="card">
                 <h2 class="card-title">Description</h2>
                 <p>{{ d.description }}</p>
-            </div>
-            <div class="stack">
+              </div>
+              <div class="stack">
                 <div class="card">
-                    <h2 class="card-title">Prérequis</h2>
-                    <ul class="plain-list">
-                        @for (item of d.prerequis; track item) { <li>{{ item }}</li> }
-                    </ul>
+                  <h2 class="card-title">Prérequis</h2>
+                  <ul class="plain-list">
+                    @for (item of d.prerequis; track item) {
+                      <li>{{ item }}</li>
+                    }
+                  </ul>
                 </div>
                 <div class="card">
-                    <h2 class="card-title">Compétences</h2>
-                    <ul class="tags-row">
-                        @for (item of d.competences; track item) { <li class="tag">{{ item }}</li> }
-                    </ul>
+                  <h2 class="card-title">Compétences</h2>
+                  <ul class="tags-row">
+                    @for (item of d.competences; track item) {
+                      <li class="tag">{{ item }}</li>
+                    }
+                  </ul>
                 </div>
+              </div>
             </div>
-        </div>
-        }
+          }
 
-        @case ('roadmap') {
-        <app-roadmap [steps]="parcours()" />
-        }
+          @case ('roadmap') {
+            <app-roadmap [steps]="parcours()" />
+          }
 
-        @case ('debouches') {
-        <div class="two-cols">
-            <div class="card">
+          @case ('debouches') {
+            <div class="two-cols">
+              <div class="card">
                 <h2 class="card-title">Débouchés</h2>
                 <ul class="tags-row">
-                    @for (item of d.debouches; track item) { <li class="tag tag-orange">{{ item }}</li> }
+                  @for (item of d.debouches; track item) {
+                    <li class="tag tag-orange">{{ item }}</li>
+                  }
                 </ul>
-            </div>
-            <div class="card">
+              </div>
+              <div class="card">
                 <h2 class="card-title">Combinaisons possibles</h2>
                 @if (combinaisons().length) {
-                <ul class="plain-list">
+                  <ul class="plain-list">
                     @for (c of combinaisons(); track c.id) {
-                    <li><a [routerLink]="['/domaines/combo', c.id]">{{ c.nom }}</a> — {{ c.resume }}</li>
+                      <li>
+                        <a [routerLink]="['/domaines/combo', c.id]">{{ c.nom }}</a> — {{ c.resume }}
+                      </li>
                     }
-                </ul>
+                  </ul>
                 } @else {
-                <p class="hint">Aucune combinaison renseignée pour ce domaine.</p>
+                  <p class="hint">Aucune combinaison renseignée pour ce domaine.</p>
                 }
+              </div>
             </div>
-        </div>
-        }
+          }
 
-        @case ('double-diplome') {
-        @if (ecoles().length) {
-        <div class="grid-cards">
-            @for (ecole of ecoles(); track ecole.id) { <app-school-card [ecole]="ecole" /> }
-        </div>
-        } @else {
-        <app-empty-state heading="Aucune école pour ce domaine" message="Les écoles partenaires seront ajoutées bientôt."
-            actionLabel="Voir toutes les écoles" actionLink="/double-diplome" />
+          @case ('double-diplome') {
+            @if (ecoles().length) {
+              <div class="grid-cards">
+                @for (ecole of ecoles(); track ecole.id) {
+                  <app-school-card [ecole]="ecole" />
+                }
+              </div>
+            } @else {
+              <app-empty-state
+                heading="Aucune école pour ce domaine"
+                message="Les écoles partenaires seront ajoutées bientôt."
+                actionLabel="Voir toutes les écoles"
+                actionLink="/double-diplome"
+              />
+            }
+          }
         }
-        }
-
-        }
-    </div>
-</section>
+      </div>
+    </section>
+  } @else {
+    <section class="page">
+      <app-empty-state
+        heading="Domaine introuvable"
+        message="Cette fiche n’existe pas ou a été supprimée."
+        actionLabel="Retour à la carte des domaines"
+        actionLink="/domaines"
+      />
+    </section>
+  }
 } @else {
-<section class="page">
-    <app-empty-state heading="Domaine introuvable" message="Cette fiche n’existe pas ou a été supprimée."
-        actionLabel="Retour à la carte des domaines" actionLink="/domaines" />
-</section>
-}
-} @else {
-<section class="page">
-    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la fiche…" [lines]="6" />
-</section>
+  <section class="page">
+    <app-async-state
+      [status]="data.status()"
+      [error]="data.error()"
+      (retry)="data.load()"
+      label="Chargement de la fiche…"
+      [lines]="6"
+    />
+  </section>
 }

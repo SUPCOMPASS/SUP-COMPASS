@@ -19,8 +19,12 @@ export class Ecoles {
   protected readonly tous = TOUS;
 
   /** Options de filtre déduites des données (elles suivent les ajouts faits dans l'admin). */
-  protected readonly paysList = computed(() => [...new Set(this.data.ecoles.items().map((e) => e.pays))].sort());
-  protected readonly langues = computed(() => [...new Set(this.data.ecoles.items().map((e) => e.langue))].sort());
+  protected readonly paysList = computed(() =>
+    [...new Set(this.data.ecoles.items().map((e) => e.pays))].sort(),
+  );
+  protected readonly langues = computed(() =>
+    [...new Set(this.data.ecoles.items().map((e) => e.langue))].sort(),
+  );
   protected readonly domainesFilter = this.data.domaines.items;
 
   protected readonly selectedPays = signal<string>(TOUS);

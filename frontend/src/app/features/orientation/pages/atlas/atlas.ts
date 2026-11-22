@@ -5,7 +5,12 @@ import { DataService } from '../../../../core/services/data.service';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { Domaine } from '../../../../core/models/models';
-import { DomaineScore, MAX_NOTE, NOTE_NEUTRE, classerDomaines } from '../../../../core/utils/matching';
+import {
+  DomaineScore,
+  MAX_NOTE,
+  NOTE_NEUTRE,
+  classerDomaines,
+} from '../../../../core/utils/matching';
 import { AsyncState } from '../../../../shared/components/async-state/async-state';
 import { PageHeader } from '../../../../shared/components/page-header/page-header';
 
@@ -32,7 +37,9 @@ export class Atlas {
   /** Curseurs déplacés à la main (sur 5) ; tant qu'ils ne le sont pas, on part du quiz, sinon du neutre. */
   protected readonly scores = signal<number[]>([]);
   /** Vrai si l'atlas est pré-rempli par le quiz et que l'utilisateur n'a encore rien modifié. */
-  protected readonly depuisQuiz = computed(() => this.quiz.aResultat() && this.scores().length === 0);
+  protected readonly depuisQuiz = computed(
+    () => this.quiz.aResultat() && this.scores().length === 0,
+  );
   protected readonly saved = signal(false);
   protected readonly saving = signal(false);
   protected readonly saveError = signal('');
@@ -44,10 +51,14 @@ export class Atlas {
   });
 
   /** Classement des domaines, recalculé en direct à chaque mouvement de curseur. */
-  protected readonly rankedDomaines = computed<DomaineScore[]>(() => classerDomaines(this.valeurs(), this.data.domaines.items()));
+  protected readonly rankedDomaines = computed<DomaineScore[]>(() =>
+    classerDomaines(this.valeurs(), this.data.domaines.items()),
+  );
 
   /** Domaine arrivé en tête (pointillés sur le radar). */
-  protected readonly topDomaine = computed<Domaine | null>(() => this.rankedDomaines()[0]?.domaine ?? null);
+  protected readonly topDomaine = computed<Domaine | null>(
+    () => this.rankedDomaines()[0]?.domaine ?? null,
+  );
 
   protected readonly gridPolygons = computed(() =>
     [1, 2, 3, 4, 5].map((niveau) => this.polygon(this.criteres().map(() => niveau))),
@@ -90,7 +101,9 @@ export class Atlas {
 
   /** Enregistre le profil dans « Mon profil » (utilisateur connecté). */
   protected async save(): Promise<void> {
-    const top = this.rankedDomaines().slice(0, 3).map((r) => ({ domaineId: r.domaine.id, match: r.match }));
+    const top = this.rankedDomaines()
+      .slice(0, 3)
+      .map((r) => ({ domaineId: r.domaine.id, match: r.match }));
     this.saving.set(true);
     this.saveError.set('');
     try {

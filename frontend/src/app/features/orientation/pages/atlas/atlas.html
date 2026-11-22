@@ -1,90 +1,145 @@
 <section class="page">
-    <app-page-header heading="Atlas d’orientation" subtitle="Règle les curseurs : le classement change en direct." />
+  <app-page-header
+    heading="Atlas d’orientation"
+    subtitle="Règle les curseurs : le classement change en direct."
+  />
 
-    @if (depuisQuiz()) {
+  @if (depuisQuiz()) {
     <p class="feedback quiz-banner" role="status">
-        Atlas rempli automatiquement avec les résultats de ton quiz. Tu peux encore ajuster les curseurs.
-        <a routerLink="/quiz">Refaire le quiz</a>
+      Atlas rempli automatiquement avec les résultats de ton quiz. Tu peux encore ajuster les
+      curseurs.
+      <a routerLink="/quiz">Refaire le quiz</a>
     </p>
-    } @else {
+  } @else {
     <p class="feedback quiz-banner">
-        Pas envie de régler les curseurs ? <a routerLink="/quiz">Passe le quiz</a> : l’atlas se remplit tout seul.
+      Pas envie de régler les curseurs ? <a routerLink="/quiz">Passe le quiz</a> : l’atlas se
+      remplit tout seul.
     </p>
-    }
+  }
 
-    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de l’atlas…" [lines]="8">
+  <app-async-state
+    [status]="data.status()"
+    [error]="data.error()"
+    (retry)="data.load()"
+    label="Chargement de l’atlas…"
+    [lines]="8"
+  >
     <div class="atlas-layout">
-        <div class="card">
-            <h2 class="card-title">Ton profil</h2>
+      <div class="card">
+        <h2 class="card-title">Ton profil</h2>
 
-            <div class="radar-wrapper">
-                <svg viewBox="-40 -5 380 320" role="img"
-                    [attr.aria-label]="'Radar de ton profil. Domaine le plus proche : ' + (topDomaine()?.nom ?? 'aucun')">
-                    @for (points of gridPolygons(); track $index) {
-                    <polygon [attr.points]="points" fill="none" stroke="#DCE3EC" />
-                    }
-                    @for (axis of axisLabels(); track axis.label) {
-                    <text [attr.x]="axis.x" [attr.y]="axis.y" [attr.text-anchor]="axis.anchor" class="radar-label">{{ axis.label }}</text>
-                    }
-                    <polygon [attr.points]="topPolygon()" fill="none" stroke="#14325C" stroke-width="2" stroke-dasharray="5 4" />
-                    <polygon [attr.points]="userPolygon()" fill="rgba(242, 140, 40, 0.3)" stroke="#F28C28" stroke-width="2.5" />
-                </svg>
-            </div>
-
-            <p class="legend">Orange : toi. Pointillés : <strong>{{ topDomaine()?.nom }}</strong>.</p>
-
-            @for (critere of criteres(); track critere.id; let i = $index) {
-            <div class="slider-group">
-                <label [for]="'critere-' + critere.id">
-                    <span>{{ critere.label }}</span>
-                    <span>{{ note(i) }}/5</span>
-                </label>
-                <input [id]="'critere-' + critere.id" type="range" min="0" max="5"
-                    [class.disposition]="critere.type === 'disposition'" [value]="note(i)"
-                    [attr.aria-valuetext]="note(i) + ' sur 5'" (input)="updateScore(i, $event)" />
-            </div>
+        <div class="radar-wrapper">
+          <svg
+            viewBox="-40 -5 380 320"
+            role="img"
+            [attr.aria-label]="
+              'Radar de ton profil. Domaine le plus proche : ' + (topDomaine()?.nom ?? 'aucun')
+            "
+          >
+            @for (points of gridPolygons(); track $index) {
+              <polygon [attr.points]="points" fill="none" stroke="#DCE3EC" />
             }
-
-            <p class="legend">Bleu : centres d’intérêt. Orange : dispositions.</p>
-            <button type="button" class="btn btn-outline btn-sm" (click)="reset()">Réinitialiser l’atlas</button>
+            @for (axis of axisLabels(); track axis.label) {
+              <text
+                [attr.x]="axis.x"
+                [attr.y]="axis.y"
+                [attr.text-anchor]="axis.anchor"
+                class="radar-label"
+              >
+                {{ axis.label }}
+              </text>
+            }
+            <polygon
+              [attr.points]="topPolygon()"
+              fill="none"
+              stroke="#14325C"
+              stroke-width="2"
+              stroke-dasharray="5 4"
+            />
+            <polygon
+              [attr.points]="userPolygon()"
+              fill="rgba(242, 140, 40, 0.3)"
+              stroke="#F28C28"
+              stroke-width="2.5"
+            />
+          </svg>
         </div>
 
-        <div class="card">
-            <h2 class="card-title">Domaines proches</h2>
+        <p class="legend">
+          Orange : toi. Pointillés : <strong>{{ topDomaine()?.nom }}</strong>.
+        </p>
 
-            <ol class="ranking" aria-live="polite">
-                @for (item of rankedDomaines(); track item.domaine.id; let i = $index) {
-                <li class="rank-row">
-                    <span class="rank-num">{{ i + 1 }}</span>
-                    <div>
-                        <a [routerLink]="['/domaines/domaine', item.domaine.id]" class="domaine-link">{{ item.domaine.nom }}</a>
-                        <div class="progress-bar" aria-hidden="true">
-                            <div class="progress-fill" [style.width.%]="item.match"></div>
-                        </div>
-                    </div>
-                    <span class="rank-pct">{{ item.match }} %</span>
-                </li>
-                }
-            </ol>
+        @for (critere of criteres(); track critere.id; let i = $index) {
+          <div class="slider-group">
+            <label [for]="'critere-' + critere.id">
+              <span>{{ critere.label }}</span>
+              <span>{{ note(i) }}/5</span>
+            </label>
+            <input
+              [id]="'critere-' + critere.id"
+              type="range"
+              min="0"
+              max="5"
+              [class.disposition]="critere.type === 'disposition'"
+              [value]="note(i)"
+              [attr.aria-valuetext]="note(i) + ' sur 5'"
+              (input)="updateScore(i, $event)"
+            />
+          </div>
+        }
 
-            <p class="legend">Outil d’aide à la réflexion, pas un test scientifique.</p>
+        <p class="legend">Bleu : centres d’intérêt. Orange : dispositions.</p>
+        <button type="button" class="btn btn-outline btn-sm" (click)="reset()">
+          Réinitialiser l’atlas
+        </button>
+      </div>
 
-            <div class="save-box">
-                @if (auth.user()) {
-                <button type="button" class="btn" (click)="save()" [disabled]="saving()">
-                    @if (saving()) { <span class="spinner" aria-hidden="true"></span> }
-                    Sauvegarder mon profil
-                </button>
-                @if (saved()) {
-                <p class="feedback" role="status">Profil sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a></p>
-                }
-                @if (saveError()) { <p class="feedback is-error" role="alert">{{ saveError() }}</p> }
-                } @else {
-                <a class="btn" routerLink="/connexion" [queryParams]="{ returnUrl: '/atlas' }">Sauvegarder mon profil</a>
-                <p class="legend">Connexion requise pour sauvegarder.</p>
-                }
-            </div>
+      <div class="card">
+        <h2 class="card-title">Domaines proches</h2>
+
+        <ol class="ranking" aria-live="polite">
+          @for (item of rankedDomaines(); track item.domaine.id; let i = $index) {
+            <li class="rank-row">
+              <span class="rank-num">{{ i + 1 }}</span>
+              <div>
+                <a [routerLink]="['/domaines/domaine', item.domaine.id]" class="domaine-link">{{
+                  item.domaine.nom
+                }}</a>
+                <div class="progress-bar" aria-hidden="true">
+                  <div class="progress-fill" [style.width.%]="item.match"></div>
+                </div>
+              </div>
+              <span class="rank-pct">{{ item.match }} %</span>
+            </li>
+          }
+        </ol>
+
+        <p class="legend">Outil d’aide à la réflexion, pas un test scientifique.</p>
+
+        <div class="save-box">
+          @if (auth.user()) {
+            <button type="button" class="btn" (click)="save()" [disabled]="saving()">
+              @if (saving()) {
+                <span class="spinner" aria-hidden="true"></span>
+              }
+              Sauvegarder mon profil
+            </button>
+            @if (saved()) {
+              <p class="feedback" role="status">
+                Profil sauvegardé. <a routerLink="/profil">Le retrouver dans Mon profil</a>
+              </p>
+            }
+            @if (saveError()) {
+              <p class="feedback is-error" role="alert">{{ saveError() }}</p>
+            }
+          } @else {
+            <a class="btn" routerLink="/connexion" [queryParams]="{ returnUrl: '/atlas' }"
+              >Sauvegarder mon profil</a
+            >
+            <p class="legend">Connexion requise pour sauvegarder.</p>
+          }
         </div>
+      </div>
     </div>
-    </app-async-state>
+  </app-async-state>
 </section>

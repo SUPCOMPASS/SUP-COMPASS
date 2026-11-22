@@ -1,6 +1,25 @@
-:host { display: block; }
-.two-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; align-items: start; }
-.card-title { font-size: 18px; margin: 0 0 10px; }
-dt { font-weight: 600; color: var(--navy); margin-top: 10px; }
-dd { margin: 2px 0 0; color: var(--mute); }
-.maj { margin-top: 24px; }
+:host {
+  display: block;
+}
+.two-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.card-title {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+dt {
+  font-weight: 600;
+  color: var(--navy);
+  margin-top: 10px;
+}
+dd {
+  margin: 2px 0 0;
+  color: var(--mute);
+}
+.maj {
+  margin-top: 24px;
+}

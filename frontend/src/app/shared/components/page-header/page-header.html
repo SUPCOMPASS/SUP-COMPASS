@@ -1,27 +1,27 @@
 @if (crumbs().length) {
-<nav class="crumbs" aria-label="Fil d’Ariane">
+  <nav class="crumbs" aria-label="Fil d’Ariane">
     <ol>
-        @for (crumb of crumbs(); track crumb.label; let last = $last) {
+      @for (crumb of crumbs(); track crumb.label; let last = $last) {
         <li>
-            @if (crumb.link && !last) {
+          @if (crumb.link && !last) {
             <a [routerLink]="crumb.link">{{ crumb.label }}</a>
-            } @else {
+          } @else {
             <span [attr.aria-current]="last ? 'page' : null">{{ crumb.label }}</span>
-            }
+          }
         </li>
-        }
+      }
     </ol>
-</nav>
+  </nav>
 }
 
 <div class="head">
-    <div>
-        <h1>{{ heading() }}</h1>
-        @if (subtitle()) {
-        <p class="sub">{{ subtitle() }}</p>
-        }
-    </div>
-    <div class="actions">
-        <ng-content />
-    </div>
+  <div>
+    <h1>{{ heading() }}</h1>
+    @if (subtitle()) {
+      <p class="sub">{{ subtitle() }}</p>
+    }
+  </div>
+  <div class="actions">
+    <ng-content />
+  </div>
 </div>

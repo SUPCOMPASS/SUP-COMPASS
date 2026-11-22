@@ -1,6 +1,25 @@
-:host { display: block; }
-.loader { display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 32px 0; color: var(--mute); }
-.line { display: block; height: 16px; align-self: flex-start; border-radius: 8px;
-    background: linear-gradient(90deg, var(--line) 25%, var(--soft) 50%, var(--line) 75%); background-size: 200% 100%;
-    animation: shimmer 1.2s ease-in-out infinite; }
-@keyframes shimmer { to { background-position: -200% 0; } }
+:host {
+  display: block;
+}
+.loader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 32px 0;
+  color: var(--mute);
+}
+.line {
+  display: block;
+  height: 16px;
+  align-self: flex-start;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--line) 25%, var(--soft) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}

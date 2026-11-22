@@ -1,3 +1,11 @@
-:host { display: block; }
-.empty { text-align: center; padding: 36px 20px; }
-.empty p { color: var(--mute); margin: 0 0 18px; }
+:host {
+  display: block;
+}
+.empty {
+  text-align: center;
+  padding: 36px 20px;
+}
+.empty p {
+  color: var(--mute);
+  margin: 0 0 18px;
+}

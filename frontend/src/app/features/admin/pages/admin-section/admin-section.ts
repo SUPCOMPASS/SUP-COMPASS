@@ -18,11 +18,18 @@ type SectionConfig = {
 };
 
 const slug = (text: string) =>
-  text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const CONFIGS: Record<string, SectionConfig> = {
   domaines: {
-    titre: 'Domaines', singulier: 'domaine', colonnes: ['nom', 'resume'],
+    titre: 'Domaines',
+    singulier: 'domaine',
+    colonnes: ['nom', 'resume'],
     idFrom: (v) => slug(v['nom']),
     fields: [
       { key: 'nom', label: 'Nom', kind: 'text' },
@@ -31,11 +38,18 @@ const CONFIGS: Record<string, SectionConfig> = {
       { key: 'prerequis', label: 'Prérequis', kind: 'list', hint: 'Séparés par des virgules' },
       { key: 'competences', label: 'Compétences', kind: 'list', hint: 'Séparées par des virgules' },
       { key: 'debouches', label: 'Débouchés', kind: 'list', hint: 'Séparés par des virgules' },
-      { key: 'profil', label: 'Profil atlas', kind: 'numbers', hint: 'Une note de 0 à 5 par critère, séparées par des virgules' },
+      {
+        key: 'profil',
+        label: 'Profil atlas',
+        kind: 'numbers',
+        hint: 'Une note de 0 à 5 par critère, séparées par des virgules',
+      },
     ],
   },
   combinaisons: {
-    titre: 'Combinaisons', singulier: 'combinaison', colonnes: ['nom', 'domaines'],
+    titre: 'Combinaisons',
+    singulier: 'combinaison',
+    colonnes: ['nom', 'domaines'],
     idFrom: (v) => slug(v['nom']),
     fields: [
       { key: 'nom', label: 'Nom', kind: 'text' },
@@ -46,7 +60,9 @@ const CONFIGS: Record<string, SectionConfig> = {
     ],
   },
   parcours: {
-    titre: 'Parcours', singulier: 'étape de parcours', colonnes: ['cible', 'annee', 'titre'],
+    titre: 'Parcours',
+    singulier: 'étape de parcours',
+    colonnes: ['cible', 'annee', 'titre'],
     idFrom: (v) => `${slug(v['cible'])}-${v['annee'].toLowerCase()}`,
     fields: [
       { key: 'cible', label: 'Domaine ou combinaison (identifiant)', kind: 'text' },
@@ -56,7 +72,9 @@ const CONFIGS: Record<string, SectionConfig> = {
     ],
   },
   ecoles: {
-    titre: 'Écoles', singulier: 'école', colonnes: ['nom', 'pays', 'langue', 'deadline'],
+    titre: 'Écoles',
+    singulier: 'école',
+    colonnes: ['nom', 'pays', 'langue', 'deadline'],
     idFrom: (v) => slug(v['nom']),
     fields: [
       { key: 'nom', label: 'Nom', kind: 'text' },
@@ -68,12 +86,19 @@ const CONFIGS: Record<string, SectionConfig> = {
       { key: 'deadline', label: 'Date limite', kind: 'text' },
       { key: 'programme', label: 'Programme', kind: 'text' },
       { key: 'duree', label: 'Durée', kind: 'text' },
-      { key: 'conditions', label: 'Conditions d’admission', kind: 'lines', hint: 'Une condition par ligne' },
+      {
+        key: 'conditions',
+        label: 'Conditions d’admission',
+        kind: 'lines',
+        hint: 'Une condition par ligne',
+      },
       { key: 'siteWeb', label: 'Site officiel', kind: 'text' },
     ],
   },
   criteres: {
-    titre: 'Critères atlas', singulier: 'critère', colonnes: ['label', 'type'],
+    titre: 'Critères atlas',
+    singulier: 'critère',
+    colonnes: ['label', 'type'],
     idFrom: (v) => slug(v['label']),
     fields: [
       { key: 'label', label: 'Libellé', kind: 'text' },
@@ -137,7 +162,9 @@ export class AdminSection {
     const v: Record<string, string> = {};
     for (const f of this.config().fields) {
       const raw = row[f.key];
-      v[f.key] = Array.isArray(raw) ? raw.join(f.kind === 'lines' ? '\n' : ', ') : String(raw ?? '');
+      v[f.key] = Array.isArray(raw)
+        ? raw.join(f.kind === 'lines' ? '\n' : ', ')
+        : String(raw ?? '');
     }
     this.values.set(v);
   }
@@ -157,7 +184,9 @@ export class AdminSection {
     if (this.busy()) return;
     const v = this.values();
     const cfg = this.config();
-    const vide = cfg.fields.find((f) => f.kind !== 'list' && f.kind !== 'lines' && f.kind !== 'numbers' && !v[f.key]?.trim());
+    const vide = cfg.fields.find(
+      (f) => f.kind !== 'list' && f.kind !== 'lines' && f.kind !== 'numbers' && !v[f.key]?.trim(),
+    );
     if (vide) {
       this.error.set(`Le champ « ${vide.label} » est obligatoire.`);
       return;
@@ -221,7 +250,8 @@ export class AdminSection {
 
   private defaults(): Record<string, string> {
     const v: Record<string, string> = {};
-    for (const f of this.config().fields) v[f.key] = f.kind === 'select' ? (f.options?.[0] ?? '') : '';
+    for (const f of this.config().fields)
+      v[f.key] = f.kind === 'select' ? (f.options?.[0] ?? '') : '';
     return v;
   }
 
@@ -230,9 +260,15 @@ export class AdminSection {
       case 'number':
         return Number(raw) || 0;
       case 'list':
-        return raw.split(',').map((s) => s.trim()).filter(Boolean);
+        return raw
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
       case 'lines':
-        return raw.split('\n').map((s) => s.trim()).filter(Boolean);
+        return raw
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean);
       case 'numbers':
         return raw.split(',').map((s) => Math.min(5, Math.max(0, Number(s.trim()) || 0)));
       default:

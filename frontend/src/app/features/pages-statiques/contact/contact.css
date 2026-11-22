@@ -1,2 +1,6 @@
-:host { display: block; }
-.contact-form { max-width: 560px; }
+:host {
+  display: block;
+}
+.contact-form {
+  max-width: 560px;
+}

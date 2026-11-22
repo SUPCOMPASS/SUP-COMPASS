@@ -29,9 +29,13 @@ export class QuizService {
   calculer(reponses: Record<string, number>, criteres: Critere[]): Record<string, number> {
     const resultat: Record<string, number> = {};
     // Si les critères ne sont pas encore chargés depuis l'API, on se base sur ceux des questions.
-    const ids = criteres.length ? criteres.map((c) => c.id) : [...new Set(QUESTIONS_QUIZ.map((q) => q.critere))];
+    const ids = criteres.length
+      ? criteres.map((c) => c.id)
+      : [...new Set(QUESTIONS_QUIZ.map((q) => q.critere))];
     for (const id of ids) {
-      const valeurs = QUESTIONS_QUIZ.filter((q) => q.critere === id && q.id in reponses).map((q) => reponses[q.id]);
+      const valeurs = QUESTIONS_QUIZ.filter((q) => q.critere === id && q.id in reponses).map(
+        (q) => reponses[q.id],
+      );
       resultat[id] = valeurs.length
         ? Math.round(valeurs.reduce((a, b) => a + b, 0) / valeurs.length)
         : NOTE_NEUTRE;

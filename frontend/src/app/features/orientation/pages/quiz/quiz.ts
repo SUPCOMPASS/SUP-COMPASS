@@ -32,7 +32,9 @@ export class Quiz {
   protected readonly erreur = signal('');
 
   protected readonly question = computed(() => this.questions[this.etape()]);
-  protected readonly progression = computed(() => Math.round((this.etape() / this.questions.length) * 100));
+  protected readonly progression = computed(() =>
+    Math.round((this.etape() / this.questions.length) * 100),
+  );
   protected readonly reponseCourante = computed(() => this.reponses()[this.question().id]);
 
   /** Notes calculées dans l'ordre des critères de l'atlas. */
@@ -42,7 +44,9 @@ export class Quiz {
     return criteres.map((c) => parCritere[c.id] ?? NOTE_NEUTRE);
   });
 
-  protected readonly classement = computed(() => classerDomaines(this.notes(), this.data.domaines.items()));
+  protected readonly classement = computed(() =>
+    classerDomaines(this.notes(), this.data.domaines.items()),
+  );
   protected readonly podium = computed(() => this.classement().slice(0, 3));
 
   protected repondre(valeur: number): void {

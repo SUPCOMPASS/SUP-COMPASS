@@ -7,8 +7,7 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [App],
       providers: testProviders,
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   it('should create the app', () => {

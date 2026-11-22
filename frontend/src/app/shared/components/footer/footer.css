@@ -1,18 +1,76 @@
-.footer { background-color: var(--navy); color: white; padding: 50px 8% 20px; margin-top: 60px; }
-.footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; max-width: 1200px; margin: auto; }
-.footer-logo { display: inline-block; text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700;
-    margin-bottom: 18px; }
-.logo-sup { color: white; }
-.logo-compass { color: var(--org); }
-.footer-brand p { color: #D5DFEB; line-height: 1.7; font-size: 14px; max-width: 350px; }
-.footer-links h2 { margin: 0 0 20px; font-size: 17px; color: white; }
-.footer-links { display: flex; flex-direction: column; gap: 12px; }
-.footer-links a { color: #D5DFEB; text-decoration: none; font-size: 14px; transition: color 0.2s ease, padding-left 0.2s ease; }
-.footer-links a:hover { color: var(--org); padding-left: 5px; }
-.footer-links a:focus-visible, .footer-logo:focus-visible { outline-color: #fff; }
-.footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 40px; padding-top: 20px; text-align: center;
-    color: #D5DFEB; font-size: 13px; }
+.footer {
+  background-color: var(--navy);
+  color: white;
+  padding: 50px 8% 20px;
+  margin-top: 60px;
+}
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 50px;
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-logo {
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.logo-sup {
+  color: white;
+}
+.logo-compass {
+  color: var(--org);
+}
+.footer-brand p {
+  color: #d5dfeb;
+  line-height: 1.7;
+  font-size: 14px;
+  max-width: 350px;
+}
+.footer-links h2 {
+  margin: 0 0 20px;
+  font-size: 17px;
+  color: white;
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer-links a {
+  color: #d5dfeb;
+  text-decoration: none;
+  font-size: 14px;
+  transition:
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+.footer-links a:hover {
+  color: var(--org);
+  padding-left: 5px;
+}
+.footer-links a:focus-visible,
+.footer-logo:focus-visible {
+  outline-color: #fff;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+  color: #d5dfeb;
+  font-size: 13px;
+}
 @media (max-width: 768px) {
-    .footer { padding: 40px 6% 20px; }
-    .footer-container { grid-template-columns: 1fr; gap: 30px; }
+  .footer {
+    padding: 40px 6% 20px;
+  }
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
 }

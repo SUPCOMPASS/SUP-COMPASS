@@ -29,7 +29,8 @@ export class Contact {
     const errors: FieldErrors = {};
     if (!this.nom().trim()) errors.nom = 'Indique ton nom.';
     if (!EMAIL_RE.test(this.email())) errors.email = 'Saisis une adresse e-mail valide.';
-    if (this.message().trim().length < 10) errors.message = 'Ton message doit contenir au moins 10 caractères.';
+    if (this.message().trim().length < 10)
+      errors.message = 'Ton message doit contenir au moins 10 caractères.';
     this.errors.set(errors);
     if (Object.keys(errors).length) return;
 
@@ -37,7 +38,11 @@ export class Contact {
     this.sent.set(false);
     this.sendError.set('');
     try {
-      const message: MessageContact = { nom: this.nom().trim(), email: this.email().trim(), message: this.message().trim() };
+      const message: MessageContact = {
+        nom: this.nom().trim(),
+        email: this.email().trim(),
+        message: this.message().trim(),
+      };
       await this.api.post('/messages', message);
       this.sent.set(true);
       this.nom.set('');

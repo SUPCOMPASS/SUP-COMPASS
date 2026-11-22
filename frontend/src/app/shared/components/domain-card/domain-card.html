@@ -1,15 +1,17 @@
 <article class="card hoverable">
-    <div class="card-icon" aria-hidden="true">✦</div>
-    <h3>{{ nom() }}</h3>
-    <p>{{ resume() }}</p>
+  <div class="card-icon" aria-hidden="true">✦</div>
+  <h3>{{ nom() }}</h3>
+  <p>{{ resume() }}</p>
 
-    @if (tags().length) {
+  @if (tags().length) {
     <ul class="tags-row" aria-label="Métiers associés">
-        @for (tag of tags(); track tag) {
+      @for (tag of tags(); track tag) {
         <li class="tag tag-orange">{{ tag }}</li>
-        }
+      }
     </ul>
-    }
+  }
 
-    <a [routerLink]="link()" class="card-link">Découvrir le domaine<span class="sr-only"> {{ nom() }}</span> →</a>
+  <a [routerLink]="link()" class="card-link"
+    >Découvrir le domaine<span class="sr-only"> {{ nom() }}</span> →</a
+  >
 </article>

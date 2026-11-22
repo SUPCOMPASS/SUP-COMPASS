@@ -1,40 +1,70 @@
 <header class="navbar">
+  <a routerLink="/" class="logo" aria-label="Accueil SUP'COMPASS" (click)="closeMenu()">
+    <span class="logo-sup">SUP</span><span class="logo-compass">COMPASS</span>
+  </a>
 
-    <a routerLink="/" class="logo" aria-label="Accueil SUP'COMPASS" (click)="closeMenu()">
-        <span class="logo-sup">SUP</span><span class="logo-compass">COMPASS</span>
-    </a>
+  <!-- Burger : visible uniquement sur mobile / tablette -->
+  <button
+    type="button"
+    class="burger"
+    aria-controls="menu-principal"
+    [attr.aria-expanded]="menuOpen()"
+    (click)="toggleMenu()"
+  >
+    <span class="sr-only">{{ menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu' }}</span>
+    <span class="bar" aria-hidden="true"></span>
+  </button>
 
-    <!-- Burger : visible uniquement sur mobile / tablette -->
-    <button type="button" class="burger" aria-controls="menu-principal" [attr.aria-expanded]="menuOpen()"
-        (click)="toggleMenu()">
-        <span class="sr-only">{{ menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu' }}</span>
-        <span class="bar" aria-hidden="true"></span>
-    </button>
+  <div id="menu-principal" class="menu" [class.open]="menuOpen()">
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a
+        routerLink="/"
+        routerLinkActive="on"
+        ariaCurrentWhenActive="page"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMenu()"
+        >Accueil</a
+      >
+      <a
+        routerLink="/domaines"
+        routerLinkActive="on"
+        ariaCurrentWhenActive="page"
+        (click)="closeMenu()"
+        >Domaines</a
+      >
+      <a
+        routerLink="/atlas"
+        routerLinkActive="on"
+        ariaCurrentWhenActive="page"
+        (click)="closeMenu()"
+        >Atlas</a
+      >
+      <a routerLink="/quiz" routerLinkActive="on" ariaCurrentWhenActive="page" (click)="closeMenu()"
+        >Quiz</a
+      >
+      <a
+        routerLink="/double-diplome"
+        routerLinkActive="on"
+        ariaCurrentWhenActive="page"
+        (click)="closeMenu()"
+        >Double diplôme</a
+      >
+    </nav>
 
-    <div id="menu-principal" class="menu" [class.open]="menuOpen()">
-
-        <nav class="nav-links" aria-label="Navigation principale">
-            <a routerLink="/" routerLinkActive="on" ariaCurrentWhenActive="page"
-                [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Accueil</a>
-            <a routerLink="/domaines" routerLinkActive="on" ariaCurrentWhenActive="page" (click)="closeMenu()">Domaines</a>
-            <a routerLink="/atlas" routerLinkActive="on" ariaCurrentWhenActive="page" (click)="closeMenu()">Atlas</a>
-            <a routerLink="/quiz" routerLinkActive="on" ariaCurrentWhenActive="page" (click)="closeMenu()">Quiz</a>
-            <a routerLink="/double-diplome" routerLinkActive="on" ariaCurrentWhenActive="page"
-                (click)="closeMenu()">Double diplôme</a>
-        </nav>
-
-        <div class="actions">
-            @if (auth.user()) {
-            @if (auth.isAdmin()) {
-            <a routerLink="/admin" routerLinkActive="on" class="link-action" (click)="closeMenu()">Admin</a>
-            }
-            <a routerLink="/profil" routerLinkActive="on" class="link-action" (click)="closeMenu()">Mon profil</a>
-            <button type="button" class="btn-login outline" (click)="logout()">Se déconnecter</button>
-            } @else {
-            <a routerLink="/connexion" class="btn-login" (click)="closeMenu()">Se connecter</a>
-            }
-        </div>
-
+    <div class="actions">
+      @if (auth.user()) {
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" routerLinkActive="on" class="link-action" (click)="closeMenu()"
+            >Admin</a
+          >
+        }
+        <a routerLink="/profil" routerLinkActive="on" class="link-action" (click)="closeMenu()"
+          >Mon profil</a
+        >
+        <button type="button" class="btn-login outline" (click)="logout()">Se déconnecter</button>
+      } @else {
+        <a routerLink="/connexion" class="btn-login" (click)="closeMenu()">Se connecter</a>
+      }
     </div>
-
+  </div>
 </header>

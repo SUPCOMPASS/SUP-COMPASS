@@ -1,9 +1,43 @@
-:host { display: block; }
-article { height: 100%; padding: 25px; }
-.card-icon { width: 45px; height: 45px; background: var(--tint); color: var(--navy); border-radius: 12px; display: flex;
-    align-items: center; justify-content: center; font-size: 22px; }
-h3 { margin-top: 18px; }
-p { color: var(--mute); font-size: 14px; line-height: 1.7; min-height: 72px; }
-ul { list-style: none; padding: 0; margin: 0; }
-.card-link { display: inline-block; margin-top: 16px; color: var(--blue); font-size: 14px; font-weight: 600; text-decoration: none; }
-.card-link:hover { text-decoration: underline; }
+:host {
+  display: block;
+}
+article {
+  height: 100%;
+  padding: 25px;
+}
+.card-icon {
+  width: 45px;
+  height: 45px;
+  background: var(--tint);
+  color: var(--navy);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+h3 {
+  margin-top: 18px;
+}
+p {
+  color: var(--mute);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 72px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.card-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.card-link:hover {
+  text-decoration: underline;
+}

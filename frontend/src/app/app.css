@@ -1,7 +1,20 @@
-main { min-height: 70vh; outline: none; }
+main {
+  min-height: 70vh;
+  outline: none;
+}
 
 /* Barre de progression pendant le chargement d'une page (lazy loading) */
-.route-progress { position: fixed; inset: 0 0 auto 0; z-index: 2000; height: 3px;
-    background: linear-gradient(90deg, var(--blue), var(--org), var(--blue)); background-size: 200% 100%;
-    animation: progress 1s linear infinite; }
-@keyframes progress { to { background-position: -200% 0; } }
+.route-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 2000;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--org), var(--blue));
+  background-size: 200% 100%;
+  animation: progress 1s linear infinite;
+}
+@keyframes progress {
+  to {
+    background-position: -200% 0;
+  }
+}

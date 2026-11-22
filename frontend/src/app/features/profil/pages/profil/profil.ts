@@ -87,7 +87,10 @@ export class Profil {
       this.newPassword.set('');
       this.confirmPassword.set('');
     } catch (e) {
-      this.pwdStatus.set({ text: e instanceof Error ? e.message : 'Une erreur est survenue.', error: true });
+      this.pwdStatus.set({
+        text: e instanceof Error ? e.message : 'Une erreur est survenue.',
+        error: true,
+      });
     } finally {
       this.pwdLoading.set(false);
     }

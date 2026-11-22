@@ -1,24 +1,122 @@
-:host { display: block; }
-.quiz-card, .resultat { max-width: 720px; margin: 0 auto; }
-.progress-head { display: flex; justify-content: space-between; font-size: 13px; color: var(--mute); margin-bottom: 6px; }
-.progress-bar { height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; }
-.progress-fill { height: 100%; background: var(--blue); transition: width 0.2s ease; }
-.question { border: 0; margin: 24px 0; padding: 0; }
-.question legend { font: 600 20px/1.4 'Poppins', sans-serif; color: var(--navy); margin-bottom: 18px; padding: 0; }
-.choix { display: grid; gap: 10px; }
-.choix-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid var(--line);
-    border-radius: 12px; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease; }
-.choix-item:hover { border-color: var(--navy); }
-.choix-item.on { border-color: var(--navy); background: var(--tint); font-weight: 600; }
-.choix-item input { accent-color: var(--navy); width: 18px; height: 18px; }
-.choix-item:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
-.nav-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-top: 8px; }
-.resultat h2 { margin-top: 0; }
-.podium { list-style: none; margin: 0 0 20px; padding: 0; }
-.podium-row { display: grid; grid-template-columns: 28px 1fr 56px; gap: 10px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line); }
-.rank-num, .rank-pct { font-weight: 700; color: var(--navy); }
-.rank-pct { text-align: right; }
-.domaine-link { font-weight: 600; color: var(--ink); text-decoration: none; }
-.domaine-link:hover { color: var(--blue); text-decoration: underline; }
-.resume { margin: 4px 0 8px; font-size: 14px; color: var(--mute); }
-@media (max-width: 520px) { .nav-btns .btn { width: 100%; } }
+:host {
+  display: block;
+}
+.quiz-card,
+.resultat {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+.progress-bar {
+  height: 8px;
+  border-radius: 8px;
+  background: var(--line);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--blue);
+  transition: width 0.2s ease;
+}
+.question {
+  border: 0;
+  margin: 24px 0;
+  padding: 0;
+}
+.question legend {
+  font:
+    600 20px/1.4 'Poppins',
+    sans-serif;
+  color: var(--navy);
+  margin-bottom: 18px;
+  padding: 0;
+}
+.choix {
+  display: grid;
+  gap: 10px;
+}
+.choix-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.choix-item:hover {
+  border-color: var(--navy);
+}
+.choix-item.on {
+  border-color: var(--navy);
+  background: var(--tint);
+  font-weight: 600;
+}
+.choix-item input {
+  accent-color: var(--navy);
+  width: 18px;
+  height: 18px;
+}
+.choix-item:has(input:focus-visible) {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+.nav-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.resultat h2 {
+  margin-top: 0;
+}
+.podium {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.podium-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 56px;
+  gap: 10px;
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.rank-num,
+.rank-pct {
+  font-weight: 700;
+  color: var(--navy);
+}
+.rank-pct {
+  text-align: right;
+}
+.domaine-link {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.domaine-link:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+.resume {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  color: var(--mute);
+}
+@media (max-width: 520px) {
+  .nav-btns .btn {
+    width: 100%;
+  }
+}

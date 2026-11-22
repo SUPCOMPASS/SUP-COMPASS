@@ -1,59 +1,83 @@
 @if (data.status() === 'ready') {
-@if (ecole(); as e) {
-<section class="page">
-
-    <app-page-header [heading]="e.nom" [subtitle]="e.programme"
-        [crumbs]="[{ label: 'Double diplôme', link: '/double-diplome' }, { label: e.nom }]">
+  @if (ecole(); as e) {
+    <section class="page">
+      <app-page-header
+        [heading]="e.nom"
+        [subtitle]="e.programme"
+        [crumbs]="[{ label: 'Double diplôme', link: '/double-diplome' }, { label: e.nom }]"
+      >
         <a class="btn" [href]="e.siteWeb" target="_blank" rel="noopener noreferrer">
-            Site officiel<span class="sr-only"> (s’ouvre dans un nouvel onglet)</span> ↗
+          Site officiel<span class="sr-only"> (s’ouvre dans un nouvel onglet)</span> ↗
         </a>
-    </app-page-header>
+      </app-page-header>
 
-    <div class="tags-row">
+      <div class="tags-row">
         <span class="tag">{{ e.pays }}</span>
         <span class="tag">{{ e.langue }}</span>
         <span class="tag tag-orange">Rang {{ e.rangMin }}–{{ e.rangMax }}</span>
-    </div>
+      </div>
 
-    <div class="two-cols">
+      <div class="two-cols">
         <div class="card">
-            <h2 class="card-title">Programme et durée</h2>
-            <dl>
-                <dt>Programme</dt><dd>{{ e.programme }}</dd>
-                <dt>Durée</dt><dd>{{ e.duree }}</dd>
-                <dt>Date limite de candidature</dt><dd>{{ e.deadline }}</dd>
-            </dl>
+          <h2 class="card-title">Programme et durée</h2>
+          <dl>
+            <dt>Programme</dt>
+            <dd>{{ e.programme }}</dd>
+            <dt>Durée</dt>
+            <dd>{{ e.duree }}</dd>
+            <dt>Date limite de candidature</dt>
+            <dd>{{ e.deadline }}</dd>
+          </dl>
         </div>
 
         <div class="card">
-            <h2 class="card-title">Conditions d’admission</h2>
-            <ul class="plain-list">
-                @for (item of e.conditions; track item) { <li>{{ item }}</li> }
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2 class="card-title">Domaines liés</h2>
-            @if (domaines().length) {
-            <ul class="plain-list">
-                @for (d of domaines(); track d.id) { <li><a [routerLink]="['/domaines/domaine', d.id]">{{ d.nom }}</a></li> }
-            </ul>
-            } @else {
-            <p class="hint">Aucun domaine lié pour le moment.</p>
+          <h2 class="card-title">Conditions d’admission</h2>
+          <ul class="plain-list">
+            @for (item of e.conditions; track item) {
+              <li>{{ item }}</li>
             }
+          </ul>
         </div>
-    </div>
 
-    <p class="maj hint">Dernière mise à jour : {{ e.miseAJour }}. Vérifie toujours les informations sur le site officiel.</p>
-</section>
+        <div class="card">
+          <h2 class="card-title">Domaines liés</h2>
+          @if (domaines().length) {
+            <ul class="plain-list">
+              @for (d of domaines(); track d.id) {
+                <li>
+                  <a [routerLink]="['/domaines/domaine', d.id]">{{ d.nom }}</a>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="hint">Aucun domaine lié pour le moment.</p>
+          }
+        </div>
+      </div>
+
+      <p class="maj hint">
+        Dernière mise à jour : {{ e.miseAJour }}. Vérifie toujours les informations sur le site
+        officiel.
+      </p>
+    </section>
+  } @else {
+    <section class="page">
+      <app-empty-state
+        heading="École introuvable"
+        message="Cette fiche n’existe pas ou a été supprimée."
+        actionLabel="Retour à la liste des écoles"
+        actionLink="/double-diplome"
+      />
+    </section>
+  }
 } @else {
-<section class="page">
-    <app-empty-state heading="École introuvable" message="Cette fiche n’existe pas ou a été supprimée."
-        actionLabel="Retour à la liste des écoles" actionLink="/double-diplome" />
-</section>
-}
-} @else {
-<section class="page">
-    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement de la fiche…" [lines]="6" />
-</section>
+  <section class="page">
+    <app-async-state
+      [status]="data.status()"
+      [error]="data.error()"
+      (retry)="data.load()"
+      label="Chargement de la fiche…"
+      [lines]="6"
+    />
+  </section>
 }

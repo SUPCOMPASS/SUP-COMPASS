@@ -22,7 +22,9 @@ export class Collection<T extends { id: string }> {
   /** Crée l'élément ou le remplace s'il existe déjà. */
   upsert(item: T): void {
     this._items.update((list) =>
-      list.some((i) => i.id === item.id) ? list.map((i) => (i.id === item.id ? item : i)) : [...list, item],
+      list.some((i) => i.id === item.id)
+        ? list.map((i) => (i.id === item.id ? item : i))
+        : [...list, item],
     );
   }
 

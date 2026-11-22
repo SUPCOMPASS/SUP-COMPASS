@@ -1,9 +1,17 @@
 <div class="tablist" role="tablist" [attr.aria-label]="label()">
-    @for (tab of tabs(); track tab.id; let i = $index) {
-    <button type="button" role="tab" [id]="'tab-' + tab.id" [class.on]="active() === tab.id"
-        [attr.aria-selected]="active() === tab.id" [attr.aria-controls]="'panel-' + tab.id"
-        [attr.tabindex]="active() === tab.id ? 0 : -1" (click)="active.set(tab.id)" (keydown)="onKeydown($event, i)">
-        {{ tab.label }}
+  @for (tab of tabs(); track tab.id; let i = $index) {
+    <button
+      type="button"
+      role="tab"
+      [id]="'tab-' + tab.id"
+      [class.on]="active() === tab.id"
+      [attr.aria-selected]="active() === tab.id"
+      [attr.aria-controls]="'panel-' + tab.id"
+      [attr.tabindex]="active() === tab.id ? 0 : -1"
+      (click)="active.set(tab.id)"
+      (keydown)="onKeydown($event, i)"
+    >
+      {{ tab.label }}
     </button>
-    }
+  }
 </div>

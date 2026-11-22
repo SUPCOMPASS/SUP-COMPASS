@@ -32,7 +32,13 @@ export type Combinaison = {
 export type Metier = { id: string; nom: string; resume: string; sources: string[] };
 
 /** Étape de roadmap (1A, 2A ou 3A) d'un domaine ou d'une combinaison. */
-export type Parcours = { id: string; cible: string; annee: Annee; titre: string; contenu: string[] };
+export type Parcours = {
+  id: string;
+  cible: string;
+  annee: Annee;
+  titre: string;
+  contenu: string[];
+};
 
 export type Ecole = {
   id: string;

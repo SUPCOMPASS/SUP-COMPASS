@@ -1,4 +1,16 @@
-:host { display: block; }
-h2 { font-size: 20px; margin: 0 0 8px; }
-p { color: var(--mute); line-height: 1.7; margin: 0 0 8px; }
-.note { font-size: 13px; margin-top: 12px; }
+:host {
+  display: block;
+}
+h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+p {
+  color: var(--mute);
+  line-height: 1.7;
+  margin: 0 0 8px;
+}
+.note {
+  font-size: 13px;
+  margin-top: 12px;
+}

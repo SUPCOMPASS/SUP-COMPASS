@@ -1,24 +1,34 @@
 <section class="page">
-    <app-page-header heading="Confidentialité" subtitle="Quelles données sont stockées et comment les supprimer."
-        [crumbs]="[{ label: 'Accueil', link: '/' }, { label: 'Confidentialité' }]" />
+  <app-page-header
+    heading="Confidentialité"
+    subtitle="Quelles données sont stockées et comment les supprimer."
+    [crumbs]="[{ label: 'Accueil', link: '/' }, { label: 'Confidentialité' }]"
+  />
 
-    <div class="stack">
-        <div class="card">
-            <h2>Données stockées</h2>
-            <ul class="plain-list">
-                <li>Compte : nom, adresse e-mail et mot de passe (jamais stocké en clair : seule une empreinte chiffrée est conservée).</li>
-                <li>Profil : résultats de l'atlas que tu sauvegardes et domaines que tu ajoutes en favoris.</li>
-                <li>Quiz : tes réponses restent dans ton navigateur tant que tu n'es pas connecté·e.</li>
-            </ul>
-            <p class="note">Texte symbolique : la version finale sera rédigée avec l'administration de l'école.</p>
-        </div>
-
-        <div class="card">
-            <h2>Suppression du compte</h2>
-            <p>
-                Tu peux supprimer ton compte et toutes tes données à tout moment depuis la page
-                <a routerLink="/profil">Mon profil</a>, onglet « Paramètres ».
-            </p>
-        </div>
+  <div class="stack">
+    <div class="card">
+      <h2>Données stockées</h2>
+      <ul class="plain-list">
+        <li>
+          Compte : nom, adresse e-mail et mot de passe (jamais stocké en clair : seule une empreinte
+          chiffrée est conservée).
+        </li>
+        <li>
+          Profil : résultats de l'atlas que tu sauvegardes et domaines que tu ajoutes en favoris.
+        </li>
+        <li>Quiz : tes réponses restent dans ton navigateur tant que tu n'es pas connecté·e.</li>
+      </ul>
+      <p class="note">
+        Texte symbolique : la version finale sera rédigée avec l'administration de l'école.
+      </p>
     </div>
+
+    <div class="card">
+      <h2>Suppression du compte</h2>
+      <p>
+        Tu peux supprimer ton compte et toutes tes données à tout moment depuis la page
+        <a routerLink="/profil">Mon profil</a>, onglet « Paramètres ».
+      </p>
+    </div>
+  </div>
 </section>

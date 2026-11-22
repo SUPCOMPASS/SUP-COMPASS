@@ -28,7 +28,9 @@ export class Tabs {
 
     event.preventDefault();
     this.active.set(this.tabs()[next].id);
-    const boutons = (event.currentTarget as HTMLElement).parentElement?.querySelectorAll<HTMLElement>('[role="tab"]');
+    const boutons = (
+      event.currentTarget as HTMLElement
+    ).parentElement?.querySelectorAll<HTMLElement>('[role="tab"]');
     boutons?.[next]?.focus();
   }
 }

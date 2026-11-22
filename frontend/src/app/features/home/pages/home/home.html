@@ -1,77 +1,87 @@
 <section class="hero" aria-labelledby="titre-hero">
-    <div class="hero-content">
-        <span class="welcome-tag">Bienvenue sur SUP'COMPASS</span>
-        <h1 id="titre-hero">
-            Par où commencer ?
-            <span>Trouve ton domaine à SUP'COM.</span>
-        </h1>
-        <p class="hero-description">
-            Explore les domaines technologiques, découvre les différentes spécialités et identifie
-            les parcours qui correspondent à tes ambitions professionnelles.
-        </p>
-        <div class="hero-actions">
-            <a routerLink="/atlas" class="btn">Essayer l'atlas</a>
-            <a routerLink="/domaines" class="btn btn-outline">Explorer les domaines</a>
-        </div>
+  <div class="hero-content">
+    <span class="welcome-tag">Bienvenue sur SUP'COMPASS</span>
+    <h1 id="titre-hero">
+      Par où commencer ?
+      <span>Trouve ton domaine à SUP'COM.</span>
+    </h1>
+    <p class="hero-description">
+      Explore les domaines technologiques, découvre les différentes spécialités et identifie les
+      parcours qui correspondent à tes ambitions professionnelles.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/atlas" class="btn">Essayer l'atlas</a>
+      <a routerLink="/domaines" class="btn btn-outline">Explorer les domaines</a>
     </div>
+  </div>
 
-    <!-- Illustration décorative -->
-    <div class="hero-visual" aria-hidden="true">
-        <div class="visual-circle">
-            <div class="center-circle">SUP'COM</div>
-            <div class="domain-circle domain-one">IA & Data</div>
-            <div class="domain-circle domain-two">Cyber</div>
-            <div class="domain-circle domain-three">Embarqué</div>
-            <div class="domain-circle domain-four">Réseaux</div>
-        </div>
+  <!-- Illustration décorative -->
+  <div class="hero-visual" aria-hidden="true">
+    <div class="visual-circle">
+      <div class="center-circle">SUP'COM</div>
+      <div class="domain-circle domain-one">IA & Data</div>
+      <div class="domain-circle domain-two">Cyber</div>
+      <div class="domain-circle domain-three">Embarqué</div>
+      <div class="domain-circle domain-four">Réseaux</div>
     </div>
+  </div>
 </section>
 
 <section class="domains-section" aria-labelledby="titre-domaines">
-    <div class="section-heading">
-        <h2 id="titre-domaines">Explore les domaines</h2>
-        <p>Découvre les principales spécialités technologiques enseignées à SUP'COM.</p>
-    </div>
+  <div class="section-heading">
+    <h2 id="titre-domaines">Explore les domaines</h2>
+    <p>Découvre les principales spécialités technologiques enseignées à SUP'COM.</p>
+  </div>
 
-    <app-async-state [status]="data.status()" [error]="data.error()" (retry)="data.load()" label="Chargement des domaines…" [lines]="3">
-        <div class="domains-grid">
-            @for (domaine of vedettes(); track domaine.id) {
-            <app-domain-card [nom]="domaine.nom" [resume]="domaine.resume" [tags]="domaine.debouches.slice(0, 2)"
-                [link]="'/domaines/domaine/' + domaine.id" />
-            }
-        </div>
-    </app-async-state>
-
-    <div class="section-action">
-        <a routerLink="/domaines" class="btn btn-outline">Voir tous les domaines</a>
+  <app-async-state
+    [status]="data.status()"
+    [error]="data.error()"
+    (retry)="data.load()"
+    label="Chargement des domaines…"
+    [lines]="3"
+  >
+    <div class="domains-grid">
+      @for (domaine of vedettes(); track domaine.id) {
+        <app-domain-card
+          [nom]="domaine.nom"
+          [resume]="domaine.resume"
+          [tags]="domaine.debouches.slice(0, 2)"
+          [link]="'/domaines/domaine/' + domaine.id"
+        />
+      }
     </div>
+  </app-async-state>
+
+  <div class="section-action">
+    <a routerLink="/domaines" class="btn btn-outline">Voir tous les domaines</a>
+  </div>
 </section>
 
 <section class="atlas-section" aria-labelledby="titre-atlas">
-    <div class="atlas-content">
-        <span class="welcome-tag">Outil d'orientation</span>
-        <h2 id="titre-atlas">Découvre le domaine qui te correspond.</h2>
-        <p>
-            Évalue tes préférences, explore tes centres d'intérêt et découvre les domaines
-            technologiques qui correspondent le mieux à ton profil.
-        </p>
-        <a routerLink="/quiz" class="btn">Commencer le quiz</a>
-    </div>
-    <div class="atlas-visual" aria-hidden="true">
-        <div class="radar-placeholder"><span>ATLAS</span></div>
-    </div>
+  <div class="atlas-content">
+    <span class="welcome-tag">Outil d'orientation</span>
+    <h2 id="titre-atlas">Découvre le domaine qui te correspond.</h2>
+    <p>
+      Évalue tes préférences, explore tes centres d'intérêt et découvre les domaines technologiques
+      qui correspondent le mieux à ton profil.
+    </p>
+    <a routerLink="/quiz" class="btn">Commencer le quiz</a>
+  </div>
+  <div class="atlas-visual" aria-hidden="true">
+    <div class="radar-placeholder"><span>ATLAS</span></div>
+  </div>
 </section>
 
 <section class="double-section" aria-labelledby="titre-double">
-    <div class="section-heading">
-        <h2 id="titre-double">Double diplôme</h2>
-        <p>Découvre les possibilités de mobilité académique et les établissements partenaires.</p>
+  <div class="section-heading">
+    <h2 id="titre-double">Double diplôme</h2>
+    <p>Découvre les possibilités de mobilité académique et les établissements partenaires.</p>
+  </div>
+  <div class="double-card">
+    <div>
+      <h3>Prépare ton parcours international.</h3>
+      <p>Explore les écoles, les pays, les domaines et les conditions d'admission.</p>
     </div>
-    <div class="double-card">
-        <div>
-            <h3>Prépare ton parcours international.</h3>
-            <p>Explore les écoles, les pays, les domaines et les conditions d'admission.</p>
-        </div>
-        <a routerLink="/double-diplome" class="btn">Explorer les écoles</a>
-    </div>
+    <a routerLink="/double-diplome" class="btn">Explorer les écoles</a>
+  </div>
 </section>
