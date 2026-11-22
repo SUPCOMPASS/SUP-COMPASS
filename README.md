@@ -286,6 +286,8 @@ Demo accounts:
 | `etudiant@supcom.tn` | `etudiant1234` | user (favorites, saved atlas results) |
 | `admin@supcom.tn` | `admin1234` | admin (admin area: CRUD on all contents) |
 
+📋 Step-by-step run & test checklist (in French, for the evaluation): [`docs/GUIDE_EXECUTION_TESTS.md`](docs/GUIDE_EXECUTION_TESTS.md)
+
 Useful commands:
 
 | Command (in `mock-api/`) | Description |
