@@ -34,6 +34,8 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+# Cache Angular du front (ne doit jamais être commité)
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
@@ -61,3 +63,7 @@ frontend/dist/
 /backend/.env
 /backend/.env.*
 !/backend/.env.example
+
+# Mock API : base modifiée à l'exécution (recréée depuis db.seed.json)
+/mock-api/db.json
+/mock-api/node_modules/
