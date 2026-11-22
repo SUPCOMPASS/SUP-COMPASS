@@ -13,6 +13,8 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'profil', renderMode: RenderMode.Client },
   { path: 'admin', renderMode: RenderMode.Client },
   { path: 'admin/**', renderMode: RenderMode.Client },
+  // Démo du backend Express : appelle l'API dans le navigateur uniquement
+  { path: 'domaines-api', renderMode: RenderMode.Client },
   ...PAGES_STATIQUES.map((path): ServerRoute => ({ path, renderMode: RenderMode.Prerender })),
   { path: '**', renderMode: RenderMode.Server },
 ];

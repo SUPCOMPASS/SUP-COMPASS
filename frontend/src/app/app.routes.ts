@@ -63,6 +63,10 @@ export const routes: Routes = [
     ],
   },
 
+  // Démo de Mahmoud : CRUD des domaines sur le vrai backend Express/PostgreSQL (port 3000)
+  { path: 'domaines-api', title: `Domaines (API Express) | ${TITRE}`,
+    loadComponent: () => import('./features/domaines/domaines').then((m) => m.Domaines) },
+
   // Pied de page et pages système
   { path: 'a-propos', title: `À propos | ${TITRE}`,
     loadComponent: () => import('./features/pages-statiques/a-propos/a-propos').then((m) => m.APropos) },

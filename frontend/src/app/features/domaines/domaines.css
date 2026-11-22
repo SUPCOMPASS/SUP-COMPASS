@@ -1,0 +1,142 @@
+.domaines-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
+    font-family: 'Poppins', sans-serif;
+    color: #14325C;
+}
+
+.page-header {
+    margin-bottom: 35px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: #64748b;
+}
+
+.domaines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.domaine-card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.domaine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(20, 50, 92, 0.12);
+}
+
+.domaine-icon {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.domaine-card h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.domaine-card p {
+    color: #64748b;
+    line-height: 1.6;
+    min-height: 65px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+button {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.edit-btn {
+    background: #3B6EA5;
+    color: white;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.add-section {
+    margin-top: 50px;
+    padding: 30px;
+    background: #f8fafc;
+    border-radius: 14px;
+}
+
+.add-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+input,
+textarea {
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.add-section button {
+    background: #F28C28;
+    color: white;
+    align-self: flex-start;
+}
+
+.message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 7px;
+}
+
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.loading,
+.empty-message {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+}
+
+@media (max-width: 600px) {
+    .domaines-container {
+        padding: 20px;
+    }
+}
