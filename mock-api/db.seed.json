@@ -1,0 +1,803 @@
+{
+  "criteres": [
+    {
+      "id": "materiel",
+      "label": "Matériel",
+      "type": "interet"
+    },
+    {
+      "id": "maths",
+      "label": "Maths",
+      "type": "interet"
+    },
+    {
+      "id": "equipe",
+      "label": "Équipe",
+      "type": "interet"
+    },
+    {
+      "id": "concret",
+      "label": "Concret",
+      "type": "interet"
+    },
+    {
+      "id": "code",
+      "label": "Code",
+      "type": "disposition"
+    },
+    {
+      "id": "creativite",
+      "label": "Créativité",
+      "type": "disposition"
+    },
+    {
+      "id": "rigueur",
+      "label": "Rigueur",
+      "type": "disposition"
+    },
+    {
+      "id": "recherche",
+      "label": "Recherche",
+      "type": "disposition"
+    }
+  ],
+  "domaines": [
+    {
+      "id": "ia",
+      "nom": "IA & Data",
+      "resume": "Analyser les données, développer des modèles intelligents et créer des systèmes prédictifs.",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Probabilités et statistiques",
+        "Algèbre linéaire",
+        "Programmation Python"
+      ],
+      "competences": [
+        "Machine learning",
+        "Traitement de données",
+        "Visualisation",
+        "MLOps"
+      ],
+      "debouches": [
+        "Data scientist",
+        "Ingénieur ML",
+        "Data engineer"
+      ],
+      "profil": [
+        1,
+        5,
+        3,
+        2,
+        5,
+        4,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "cy",
+      "nom": "Cybersécurité",
+      "resume": "Protéger les réseaux, les applications et les systèmes contre les cyberattaques.",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Réseaux de base",
+        "Systèmes d’exploitation",
+        "Notions de cryptographie"
+      ],
+      "competences": [
+        "Tests d’intrusion",
+        "Analyse de risques",
+        "Cryptographie",
+        "Supervision SOC"
+      ],
+      "debouches": [
+        "Analyste SOC",
+        "Pentester",
+        "Consultant sécurité"
+      ],
+      "profil": [
+        2,
+        3,
+        3,
+        3,
+        4,
+        3,
+        5,
+        3
+      ]
+    },
+    {
+      "id": "em",
+      "nom": "Systèmes embarqués",
+      "resume": "Concevoir des solutions combinant matériel, logiciel et objets connectés.",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Électronique numérique",
+        "Langage C",
+        "Architecture des ordinateurs"
+      ],
+      "competences": [
+        "Microcontrôleurs",
+        "Temps réel",
+        "Protocoles IoT",
+        "Conception de cartes"
+      ],
+      "debouches": [
+        "Ingénieur embarqué",
+        "Concepteur IoT",
+        "Ingénieur firmware"
+      ],
+      "profil": [
+        5,
+        3,
+        3,
+        5,
+        4,
+        3,
+        4,
+        2
+      ]
+    },
+    {
+      "id": "rt",
+      "nom": "Réseaux & Télécoms",
+      "resume": "Concevoir et exploiter les réseaux mobiles, fibre et cœur de réseau (5G et au-delà).",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Théorie du signal",
+        "Protocoles TCP/IP",
+        "Probabilités"
+      ],
+      "competences": [
+        "Architecture 5G",
+        "Routage",
+        "Virtualisation réseau",
+        "Qualité de service"
+      ],
+      "debouches": [
+        "Ingénieur réseaux",
+        "Architecte télécoms",
+        "Ingénieur 5G"
+      ],
+      "profil": [
+        4,
+        3,
+        4,
+        4,
+        3,
+        2,
+        4,
+        2
+      ]
+    },
+    {
+      "id": "rf",
+      "nom": "Radiofréquences",
+      "resume": "Maîtriser antennes, circuits hyperfréquences et systèmes de communication sans fil.",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Électromagnétisme",
+        "Théorie du signal",
+        "Analyse mathématique"
+      ],
+      "competences": [
+        "Conception d’antennes",
+        "Circuits RF",
+        "Mesures",
+        "Simulation électromagnétique"
+      ],
+      "debouches": [
+        "Ingénieur RF",
+        "Ingénieur antennes",
+        "Ingénieur satellite"
+      ],
+      "profil": [
+        5,
+        5,
+        2,
+        4,
+        2,
+        3,
+        5,
+        4
+      ]
+    },
+    {
+      "id": "lg",
+      "nom": "Cloud & Logiciel",
+      "resume": "Construire des applications fiables et déployables à grande échelle.",
+      "description": "Contenu symbolique : ce texte sera remplacé par la présentation officielle du domaine, validée avec les enseignants et les anciens.",
+      "prerequis": [
+        "Programmation orientée objet",
+        "Bases de données",
+        "Réseaux de base"
+      ],
+      "competences": [
+        "Architecture logicielle",
+        "DevOps",
+        "Conteneurs",
+        "Développement web"
+      ],
+      "debouches": [
+        "Développeur cloud",
+        "Ingénieur DevOps",
+        "Architecte logiciel"
+      ],
+      "profil": [
+        1,
+        2,
+        4,
+        2,
+        5,
+        5,
+        3,
+        2
+      ]
+    }
+  ],
+  "combinaisons": [
+    {
+      "id": "ia-cy",
+      "nom": "IA + Cyber",
+      "domaines": [
+        "ia",
+        "cy"
+      ],
+      "resume": "Détecter les attaques avec l’apprentissage automatique.",
+      "prerequis": [
+        "Bases en machine learning",
+        "Bases en sécurité des réseaux"
+      ],
+      "debouches": [
+        "Ingénieur IA sécurité",
+        "Chercheur en détection d’intrusion"
+      ]
+    },
+    {
+      "id": "em-ia",
+      "nom": "Embarqué + IA",
+      "domaines": [
+        "em",
+        "ia"
+      ],
+      "resume": "Faire tourner l’IA directement sur l’appareil.",
+      "prerequis": [
+        "Langage C / Python",
+        "Bases en machine learning"
+      ],
+      "debouches": [
+        "Ingénieur Edge AI",
+        "Ingénieur vision embarquée"
+      ]
+    },
+    {
+      "id": "rt-cy",
+      "nom": "Réseaux + Cyber",
+      "domaines": [
+        "rt",
+        "cy"
+      ],
+      "resume": "Sécuriser les infrastructures de télécoms.",
+      "prerequis": [
+        "Protocoles réseau",
+        "Notions de cryptographie"
+      ],
+      "debouches": [
+        "Architecte sécurité réseau",
+        "Ingénieur sécurité 5G"
+      ]
+    }
+  ],
+  "metiers": [
+    {
+      "id": "m1",
+      "nom": "Data scientist",
+      "resume": "Transforme les données en décisions.",
+      "sources": [
+        "ia"
+      ]
+    },
+    {
+      "id": "m2",
+      "nom": "Ingénieur IA sécurité",
+      "resume": "Conçoit des outils de détection d’intrusion.",
+      "sources": [
+        "ia-cy"
+      ]
+    },
+    {
+      "id": "m3",
+      "nom": "Ingénieur Edge AI",
+      "resume": "Déploie des modèles sur des puces à faible énergie.",
+      "sources": [
+        "em-ia"
+      ]
+    },
+    {
+      "id": "m4",
+      "nom": "Architecte sécurité réseau",
+      "resume": "Dessine des réseaux résistants aux attaques.",
+      "sources": [
+        "rt-cy"
+      ]
+    },
+    {
+      "id": "m5",
+      "nom": "Ingénieur RF",
+      "resume": "Conçoit les chaînes de communication sans fil.",
+      "sources": [
+        "rf"
+      ]
+    },
+    {
+      "id": "m6",
+      "nom": "Développeur cloud",
+      "resume": "Déploie des services à grande échelle.",
+      "sources": [
+        "lg"
+      ]
+    }
+  ],
+  "parcours": [
+    {
+      "id": "ia-1a",
+      "cible": "ia",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "ia-2a",
+      "cible": "ia",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "ia-3a",
+      "cible": "ia",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "cy-1a",
+      "cible": "cy",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "cy-2a",
+      "cible": "cy",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "cy-3a",
+      "cible": "cy",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "em-1a",
+      "cible": "em",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "em-2a",
+      "cible": "em",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "em-3a",
+      "cible": "em",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "rt-1a",
+      "cible": "rt",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "rt-2a",
+      "cible": "rt",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "rt-3a",
+      "cible": "rt",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "rf-1a",
+      "cible": "rf",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "rf-2a",
+      "cible": "rf",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "rf-3a",
+      "cible": "rf",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "lg-1a",
+      "cible": "lg",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "lg-2a",
+      "cible": "lg",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "lg-3a",
+      "cible": "lg",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "ia-cy-1a",
+      "cible": "ia-cy",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "ia-cy-2a",
+      "cible": "ia-cy",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "ia-cy-3a",
+      "cible": "ia-cy",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "em-ia-1a",
+      "cible": "em-ia",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "em-ia-2a",
+      "cible": "em-ia",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "em-ia-3a",
+      "cible": "em-ia",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    },
+    {
+      "id": "rt-cy-1a",
+      "cible": "rt-cy",
+      "annee": "1A",
+      "titre": "Découverte",
+      "contenu": [
+        "Tronc commun",
+        "Projet d’initiation",
+        "Contenu symbolique"
+      ]
+    },
+    {
+      "id": "rt-cy-2a",
+      "cible": "rt-cy",
+      "annee": "2A",
+      "titre": "Approfondissement",
+      "contenu": [
+        "Matières de spécialité",
+        "Projet en équipe",
+        "Stage d’été"
+      ]
+    },
+    {
+      "id": "rt-cy-3a",
+      "cible": "rt-cy",
+      "annee": "3A",
+      "titre": "Spécialisation",
+      "contenu": [
+        "Options avancées",
+        "Projet de fin d’études",
+        "Stage PFE"
+      ]
+    }
+  ],
+  "ecoles": [
+    {
+      "id": "telecom-paris",
+      "nom": "Télécom Paris",
+      "pays": "France",
+      "langue": "Français",
+      "rangMin": 1,
+      "rangMax": 15,
+      "domaines": [
+        "ia",
+        "cy",
+        "rt"
+      ],
+      "deadline": "Février 2027",
+      "siteWeb": "https://www.telecom-paris.fr",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    },
+    {
+      "id": "imt-atlantique",
+      "nom": "IMT Atlantique",
+      "pays": "France",
+      "langue": "Français",
+      "rangMin": 15,
+      "rangMax": 30,
+      "domaines": [
+        "ia",
+        "em",
+        "rt"
+      ],
+      "deadline": "Mars 2027",
+      "siteWeb": "https://www.imt-atlantique.fr",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    },
+    {
+      "id": "polytechnique-montreal",
+      "nom": "Polytechnique Montréal",
+      "pays": "Canada",
+      "langue": "Français",
+      "rangMin": 10,
+      "rangMax": 30,
+      "domaines": [
+        "ia",
+        "lg",
+        "rt"
+      ],
+      "deadline": "Janvier 2027",
+      "siteWeb": "https://www.polymtl.ca",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    },
+    {
+      "id": "politecnico-torino",
+      "nom": "Politecnico di Torino",
+      "pays": "Italie",
+      "langue": "Anglais",
+      "rangMin": 20,
+      "rangMax": 40,
+      "domaines": [
+        "em",
+        "rf"
+      ],
+      "deadline": "Avril 2027",
+      "siteWeb": "https://www.polito.it",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    },
+    {
+      "id": "tu-munich",
+      "nom": "TU Munich",
+      "pays": "Allemagne",
+      "langue": "Anglais",
+      "rangMin": 1,
+      "rangMax": 20,
+      "domaines": [
+        "cy",
+        "rf"
+      ],
+      "deadline": "Mai 2027",
+      "siteWeb": "https://www.tum.de",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    },
+    {
+      "id": "insa-lyon",
+      "nom": "INSA Lyon",
+      "pays": "France",
+      "langue": "Français",
+      "rangMin": 30,
+      "rangMax": 50,
+      "domaines": [
+        "em",
+        "lg"
+      ],
+      "deadline": "Mars 2027",
+      "siteWeb": "https://www.insa-lyon.fr",
+      "programme": "Programme d’ingénieur en double diplôme (contenu symbolique)",
+      "duree": "2 ans",
+      "conditions": [
+        "Dossier académique",
+        "Niveau de langue requis",
+        "Lettre de motivation"
+      ],
+      "miseAJour": "2026-11-20"
+    }
+  ],
+  "utilisateurs": [
+    {
+      "id": "u-admin",
+      "nom": "Admin SUP'COMPASS",
+      "email": "admin@supcom.tn",
+      "role": "admin",
+      "motDePasse": "b488fcf2e98f1b9264b8e6ee7e76cec8:e2e2ac8181b46b342a9d6da78dfe0328dac84515ca5b6c1f3eb83ee1f9ea9166"
+    },
+    {
+      "id": "u-etudiant",
+      "nom": "Étudiant démo",
+      "email": "etudiant@supcom.tn",
+      "role": "user",
+      "motDePasse": "71f966cb7c6f7f16c95a00c2b666d812:c4757a036f50d4e632803a637fc052c04d4f87d8fb0578bf7e83b69a257ae69b"
+    }
+  ],
+  "sessions": [],
+  "favoris": [
+    {
+      "id": "f-1",
+      "userId": "u-etudiant",
+      "domaineId": "cy"
+    }
+  ],
+  "resultats": [],
+  "messages": []
+}

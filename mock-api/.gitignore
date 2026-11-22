@@ -1,0 +1,3 @@
+node_modules/
+# Base modifiée à l’exécution (recréée depuis db.seed.json)
+db.json
