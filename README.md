@@ -318,6 +318,7 @@ To switch to the real backend later, change `API_URL` in `frontend/src/app/core/
 | `npm start` | Development server (`http://localhost:4200`) |
 | `npm run build` | Production build (lazy-loaded pages, SSR + prerendering) |
 | `npm test` | Unit tests (Vitest) |
+| `npm run lint` | ESLint (TypeScript, Angular and template accessibility rules) |
 | `npm run format` / `npm run format:check` | Format / check the code with Prettier |
 
 ### Frontend features (Objectif 4)
@@ -333,6 +334,29 @@ To switch to the real backend later, change `API_URL` in `frontend/src/app/core/
 - UX: loading skeletons and spinners, error messages, light CSS transitions, responsive menu (mobile / tablet).
 - Accessibility: skip link, focus management after navigation, ARIA labels and live regions, keyboard-usable
   map and tabs, `prefers-reduced-motion` support.
+
+### Technical choices
+
+- **Angular** (imposed for the projects that start development, and a good fit here): standalone components,
+  signals for state, built-in router with lazy loading and guards, SSR + prerendering for fast first display
+  and good SEO, TypeScript everywhere (shared with the Express backend).
+- **Mock API (json-server)** instead of hard-coded data: the frontend already talks HTTP/REST exactly as it will
+  with the real backend (same routes, `Authorization: Bearer` token, error codes 400/401/403/404/409).
+  This let the frontend be finished and tested while the Express/PostgreSQL backend is still being built.
+- **Switching to the real backend**: set `API_URL` in `frontend/src/app/core/config/api.config.ts` to
+  `http://localhost:3000/api` and implement the same routes in Express (`/domaines`, `/ecoles`, `/auth/login`…).
+  The pages do not change: they only use `DataService`, `AuthService` and `ProfileService`.
+  A first real-backend page already exists: `/domaines-api` (CRUD on PostgreSQL domains, port 3000).
+- **Quality**: ESLint (angular-eslint), Prettier, Vitest unit tests (services, matching algorithm, pages).
+
+### Lighthouse (production build, with the mock API)
+
+| Page | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|
+| `/` | 96 | 100 | 100 | 100 |
+| `/domaines/domaine/ia` | 96 | 100 | 100 | 100 |
+| `/double-diplome` | 88 | 100 | 100 | 100 |
+| `/atlas` | 88 | 100 | 100 | 100 |
 
 ### Backend (Express + PostgreSQL — in progress)
 
